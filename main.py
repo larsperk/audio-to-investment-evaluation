@@ -8,20 +8,51 @@ import threading
 import openai
 from dotenv import load_dotenv
 
+import email_utils
+
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
 SAMPLE_RATE = 44100
 CHANNELS = 1
 DATA_TYPE = np.int16
-RAW_FILENAME = "54 Clay Brook Rd 2.m4a"
-# "recorded_audio.wav"
 
-TRANSCRIPTION_FILENAME = "transcription.text"
+RAW_FILENAME_BASE = "recorded_audio"
+TRANSCRIPTION_FILENAME = "transcription.txt"
+SUMMARY_FILENAME = "summary.txt"
+EVALUATION_FILENAME = "evaluation.txt"
+
 OPENAI_MODEL = 'gpt-4'
-
+MODE = 'EMAIL'  # EMAIL or MICROPHONE
 
 audio_buffer = []
+
+# decorator to calculate duration
+# taken by any function.
+def calculate_time(func):
+    # added arguments inside the inner1,
+    # if function takes any arguments,
+    # can be added like this.
+    def inner1(*args, **kwargs):
+        # storing time before function execution
+        begin = time.time()
+
+        func(*args, **kwargs)
+
+        # storing time after function execution
+        end = time.time()
+        print("Total time taken in : ", func.__name__, end - begin)
+
+    return inner1
+def get_unique_audio_filename():
+    filename_base = RAW_FILENAME_BASE
+    i = 0
+    filename = filename_base + "_" + str(i)
+    while os.path.isfile(filename):
+        i += 1
+        filename = filename_base + "_" + str(i)
+
+    return filename
 
 
 def recording_callback(indata, frames, time, status):
@@ -51,6 +82,7 @@ def save_audio(raw_audio_data, filename):
     return
 
 
+@calculate_time
 def transcribe_audio(raw_audio_file, transcription_file):
     model = whisper.load_model("base")
     audio = raw_audio_file
@@ -65,7 +97,7 @@ def chunk_text(raw_text):
     chunked_text = [raw_text]
     return chunked_text
 
-
+@calculate_time
 def ask_questions_of_chunk(prelude, prompt_list, prompts, text):
     aggregate_response = ''
     for prompt in prompt_list:
@@ -83,7 +115,7 @@ def ask_questions_of_chunk(prelude, prompt_list, prompts, text):
         aggregate_response += prompt + '\r' + chat_response + '\r'
 
     return aggregate_response
-
+@calculate_time
 def evaluate_business_for_investment(prelude, company_summary):
 
     response = openai.ChatCompletion.create(
@@ -99,75 +131,92 @@ def evaluate_business_for_investment(prelude, company_summary):
     return chat_response
 
 #, only using information in the supplied text transcript'        + 'of the interview.\r'\
+
+
 def main():
-    prelude = 'The following is a transcript between an interviewer and an entrepreneur,\r'\
-        + 'who is starting a business and discussing their business and their product.\r'\
-        + 'Please call the entrepreneur "they." rather than "the entrepreneur"\r'\
-        + 'please answer as a helpful ai agent'\
-        + 'please be as detailed as possible. if you don\'t know the answer, please answer "unknown",' \
-        + 'try not to say "the information is not in the supplied transcript", just answer "unknown"\r'
+    while True:
+        prelude = 'The following is a transcript between an interviewer and an entrepreneur,\r'\
+            + 'who is starting a business and discussing their business and their product.\r'\
+            + 'Please call the entrepreneur "they." rather than "the entrepreneur"\r'\
+            + 'please answer as a helpful ai agent'\
+            + 'please be as detailed as possible. if you don\'t know the answer, please answer "unknown",' \
+            + 'try not to say "the information is not in the supplied transcript", just answer "unknown"\r'
 
-    prompt_list = ["NAME", "PROBLEM", "SOLUTION", "TEAM", "TRACTION", "TECH", "TAM", "TIMING", "COMPETITION", "LEISURE", "TEAM EXPERIENCE", "FIRST TIME FOUNDER?"]
+        prompt_list = ["NAME", "PROBLEM", "SOLUTION", "TEAM", "TRACTION", "TECH", "TAM", "TIMING", "COMPETITION", "LEISURE", "TEAM EXPERIENCE", "FIRST TIME FOUNDER?"]
 
-    prompts = {
-                "NAME": 'what is the name of the company that the entrepreneur is talking about and how long has it been in business',
-                "PROBLEM": 'what problems are they solving, and what customers have these problems',
-                "SOLUTION": 'how does their product solve the problem',
-                "TEAM": 'what are the names and roles of founders and cofounders of the company and what are their educations and roles. That includes CEO, CTO, COO, and any other C-level executives  and are they working full time',
-                "TRACTION": 'how many customers do they have, and what are the names of their customers and prospects, including those on their waitlist',
-                "FUNDING": 'how has the company been funded to-date, is it bootstrapped, self-funded, or has it received friends and family investment or professional investment. and how much has been raised',
-                "TECH": 'what technologies are they using in their product and what makes those technologies unique',
-                "TAM": 'how big is the market they\'re addressing both in numbers of customers and dollar size',
-                "TIMING": 'is there something happening in technology or the market or society that makes this more relevant or more possible right now',
-                "COMPETITION": "who are the company's competitors and whart are their weakneseses",
-                "LEISURE": 'what do the founders and cofounders do in their spare time for hobbies, avocations and interests, sports',
-                "TEAM EXPERIENCE": 'is this the first time the founders have worked together or do they have prior experience together',
-                "FIRST TIME FOUNDER?": 'has the ceo and other members of the founding team started another startup previously or is this their first company'
-            }
+        prompts = {
+                    "NAME": 'what is the name of the company that the entrepreneur is talking about and how long has it been in business',
+                    "PROBLEM": 'what problems are they solving, and what customers have these problems',
+                    "SOLUTION": 'how does their product solve the problem',
+                    "TEAM": 'what are the names and roles of founders and cofounders of the company and what are their educations and roles. That includes CEO, CTO, COO, and any other C-level executives  and are they working full time',
+                    "TRACTION": 'how many customers do they have, and what are the names of their customers and prospects, including those on their waitlist',
+                    "FUNDING": 'how has the company been funded to-date, is it bootstrapped, self-funded, or has it received friends and family investment or professional investment. and how much has been raised',
+                    "TECH": 'what technologies are they using in their product and what makes those technologies unique',
+                    "TAM": 'how big is the market they\'re addressing both in numbers of customers and dollar size',
+                    "TIMING": 'is there something happening in technology or the market or society that makes this more relevant or more possible right now',
+                    "COMPETITION": "who are the company's competitors and whart are their weakneseses",
+                    "LEISURE": 'what do the founders and cofounders do in their spare time for hobbies, avocations and interests, sports',
+                    "TEAM EXPERIENCE": 'is this the first time the founders have worked together or do they have prior experience together',
+                    "FIRST TIME FOUNDER?": 'has the ceo and other members of the founding team started another startup previously or is this their first company'
+                }
 
-    techstars_prelude = 'the following is a summary of a business that is being considered for investment.\r'\
-                        + 'The positive characteristics of a business that is good to invest in are:\r'\
-                        + ' 1. significant traction in terms of waitlist, customers, and revenue\r'\
-                        + ' 2. an experienced founding team who either together or individually have founder other businesses\r'\
-                        + ' 3. a large potential market\r'\
-                        + ' 4. a team that has worked together before, preferably at a company with an exit\r'\
-                        + ' 5. Proprietary differentiated technology\r'\
-                        + ' 6. The team members have been involved in competitive sports or other disciplined activities in their free time\r'\
-                        + ' 7. They have raised at least 250000 in funding\r'\
-                        + ' 8. The company has been in business for less than three years\r'\
-                        + ' The negative characteristics of a business that is not a good investment candidate are:\r'\
-                        + ' 1. Sole founders without other co-founders\r'\
-                        + ' 2. Been in business longer than 5 years\r'\
-                        + ' 3. Small market that is less than 500 million dollars\r'\
-                        + ' 4. Strong competition without a clear differentiation\r'\
-                        + ' 5. Not much technology in their solution or nothing proprietary\r'\
-                        + ' 6. Founders who are not working full-time for the business\r'\
-                        + 'please evaluate the business from the summary and give your conclusion as to whether\r' \
-                        + ' it is a good investment. Please enumerate the points above as they apply to the presented business'
+        evaluation_prelude = 'the following is a summary of a business that is being considered for investment.\r'\
+                            + 'The positive characteristics of a business that is good to invest in are:\r'\
+                            + ' 1. significant traction in terms of waitlist, customers, and revenue\r'\
+                            + ' 2. an experienced founding team who either together or individually have founded other businesses\r'\
+                            + ' 3. a large potential market\r'\
+                            + ' 4. a team that has worked together before, preferably at a company with an exit\r'\
+                            + ' 5. Proprietary differentiated technology\r'\
+                            + ' 6. The team members have been involved in competitive sports or other disciplined activities in their free time\r'\
+                            + ' 7. They have raised at least 250000 in funding\r'\
+                            + ' 8. The company has been in business for less than three years\r'\
+                            + ' The negative characteristics of a business that is not a good investment candidate are:\r'\
+                            + ' 1. Sole founders without other co-founders\r'\
+                            + ' 2. Been in business longer than 5 years\r'\
+                            + ' 3. Small market that is less than 500 million dollars\r'\
+                            + ' 4. No clear differentiation from competition\r'\
+                            + ' 5. Not much technology in their solution or nothing proprietary\r'\
+                            + ' 6. Founders who are not working full-time for the business\r'\
+                            + 'please evaluate the business from the summary and give your conclusion as to whether\r' \
+                            + ' it is a good investment. Please enumerate the points above as they apply to the presented business'
 
+        audio_filename = ""
+        from_email = None
+        if MODE == "MICROPHONE":
+            global stop_recording
+            stop_recording = False
 
-    """
-    global stop_recording
-    stop_recording = False
+            recording_thread = threading.Thread(target=record_audio)
+            recording_thread.start()
 
-    recording_thread = threading.Thread(target=record_audio)
-    recording_thread.start()
+            input("Press Enter to stop recording...")
+            stop_recording = True
+            recording_thread.join()
+            audio_filename = get_unique_audio_filename()
+            save_audio(raw_audio_data, audio_filename)
 
-    input("Press Enter to stop recording...")
-    stop_recording = True
-    recording_thread.join()
+        elif MODE == "EMAIL":
+            from_email, audio_filename = email_utils.check_email_and_download()
 
-    save_audio(raw_audio_data, RAW_FILENAME)
-    """
+        raw_text = transcribe_audio(audio_filename, TRANSCRIPTION_FILENAME)
+        chunked_text = chunk_text(raw_text)
 
-    raw_text = transcribe_audio(RAW_FILENAME, TRANSCRIPTION_FILENAME)
-    chunked_text = chunk_text(raw_text)
+        evaluation = ""
+        chunk_answers = ""
+        for chunk in chunked_text:
+            chunk_answers = ask_questions_of_chunk(prelude, prompt_list, prompts, chunk)
+            evaluation = evaluate_business_for_investment(evaluation_prelude, chunk_answers)
+            pass
 
-    for chunk in chunked_text:
-        chunk_answers = ask_questions_of_chunk(prelude, prompt_list, prompts, chunk)
+        if from_email:
+            with open(SUMMARY_FILENAME, "w", encoding="utf-8") as txt:
+                txt.write(chunk_answers)
 
-        evalution = evaluate_business_for_investment(techstars_prelude, chunk_answers)
-        pass
+            with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
+                txt.write(evaluation)
+
+            email_utils.send_email(from_email, [TRANSCRIPTION_FILENAME, SUMMARY_FILENAME, EVALUATION_FILENAME])
+
 
 if __name__ == "__main__":
     main()
