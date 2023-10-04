@@ -158,12 +158,12 @@ def main():
                             + ' 7. They have raised at least 250000 in funding\r'\
                             + ' 8. The company has been in business for less than three years\r'\
                             + ' The negative characteristics of a business that is not a good investment candidate are:\r'\
-                            + ' 1. Sole founders without other co-founders\r'\
-                            + ' 2. Been in business longer than 5 years\r'\
-                            + ' 3. Small market that is less than 500 million dollars\r'\
-                            + ' 4. No clear differentiation from competition\r'\
-                            + ' 5. Not much technology in their solution or nothing proprietary\r'\
-                            + ' 6. Founders who are not working full-time for the business\r'\
+                            + ' 1. There is only one founder without other co-founders\r'\
+                            + ' 2. They have been in business longer than 5 years\r'\
+                            + ' 3. They have a small potential market that is less than 500 million dollars in total size\r'\
+                            + ' 4. They have no clear differentiation from their competition\r'\
+                            + ' 5. There is not much technology in their solution or there is no proprietary technology\r'\
+                            + ' 6. The founders are not working full-time for the business\r'\
                             + 'please evaluate the business from the summary and give your conclusion as to whether\r' \
                             + ' it is a good investment. Please enumerate the points above as they apply to the presented business'
 
