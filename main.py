@@ -1,5 +1,6 @@
 import os
 
+import time
 import whisper
 import sounddevice as sd
 import numpy as np
@@ -27,23 +28,7 @@ MODE = 'EMAIL'  # EMAIL or MICROPHONE
 
 audio_buffer = []
 
-# decorator to calculate duration
-# taken by any function.
-def calculate_time(func):
-    # added arguments inside the inner1,
-    # if function takes any arguments,
-    # can be added like this.
-    def inner1(*args, **kwargs):
-        # storing time before function execution
-        begin = time.time()
 
-        func(*args, **kwargs)
-
-        # storing time after function execution
-        end = time.time()
-        print("Total time taken in : ", func.__name__, end - begin)
-
-    return inner1
 def get_unique_audio_filename():
     filename_base = RAW_FILENAME_BASE
     i = 0
@@ -82,7 +67,6 @@ def save_audio(raw_audio_data, filename):
     return
 
 
-@calculate_time
 def transcribe_audio(raw_audio_file, transcription_file):
     model = whisper.load_model("base")
     audio = raw_audio_file
@@ -93,11 +77,12 @@ def transcribe_audio(raw_audio_file, transcription_file):
 
     return result["text"]
 
+
 def chunk_text(raw_text):
     chunked_text = [raw_text]
     return chunked_text
 
-@calculate_time
+
 def ask_questions_of_chunk(prelude, prompt_list, prompts, text):
     aggregate_response = ''
     for prompt in prompt_list:
@@ -115,7 +100,9 @@ def ask_questions_of_chunk(prelude, prompt_list, prompts, text):
         aggregate_response += prompt + '\r' + chat_response + '\r'
 
     return aggregate_response
-@calculate_time
+
+
+
 def evaluate_business_for_investment(prelude, company_summary):
 
     response = openai.ChatCompletion.create(
@@ -154,7 +141,7 @@ def main():
                     "TECH": 'what technologies are they using in their product and what makes those technologies unique',
                     "TAM": 'how big is the market they\'re addressing both in numbers of customers and dollar size',
                     "TIMING": 'is there something happening in technology or the market or society that makes this more relevant or more possible right now',
-                    "COMPETITION": "who are the company's competitors and whart are their weakneseses",
+                    "COMPETITION": "who are the company's competitors and what are their weakneseses",
                     "LEISURE": 'what do the founders and cofounders do in their spare time for hobbies, avocations and interests, sports',
                     "TEAM EXPERIENCE": 'is this the first time the founders have worked together or do they have prior experience together',
                     "FIRST TIME FOUNDER?": 'has the ceo and other members of the founding team started another startup previously or is this their first company'
@@ -197,16 +184,20 @@ def main():
 
         elif MODE == "EMAIL":
             from_email, audio_filename = email_utils.check_email_and_download()
+            print(f"Email received from: {from_email}")
 
         raw_text = transcribe_audio(audio_filename, TRANSCRIPTION_FILENAME)
         chunked_text = chunk_text(raw_text)
+        print("Transcription complete")
 
         evaluation = ""
         chunk_answers = ""
         for chunk in chunked_text:
-            chunk_answers = ask_questions_of_chunk(prelude, prompt_list, prompts, chunk)
-            evaluation = evaluate_business_for_investment(evaluation_prelude, chunk_answers)
-            pass
+            if chunk:
+                chunk_answers = ask_questions_of_chunk(prelude, prompt_list, prompts, chunk)
+                print("Summary complete")
+                evaluation = evaluate_business_for_investment(evaluation_prelude, chunk_answers)
+                print("Evaluation complete")
 
         if from_email:
             with open(SUMMARY_FILENAME, "w", encoding="utf-8") as txt:
@@ -216,7 +207,7 @@ def main():
                 txt.write(evaluation)
 
             email_utils.send_email(from_email, [TRANSCRIPTION_FILENAME, SUMMARY_FILENAME, EVALUATION_FILENAME])
-
+            print("Reply sent")
 
 if __name__ == "__main__":
     main()
