@@ -9,10 +9,12 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
+from dotenv import load_dotenv
+load_dotenv()
 
 # Set your email and password
 email_user = "investmentevaluator@gmail.com"
-email_pass = "ifhn mwsk huxc ahjg"
+email_pass = os.getenv('EMAIL_PASS')
 
 def check_email_and_download():
 
