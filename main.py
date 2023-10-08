@@ -61,7 +61,6 @@ def save_audio(raw_audio_data, filename):
         wf.setsampwidth(2)  # 2 bytes for int16
         wf.setframerate(SAMPLE_RATE)
         wf.writeframes(raw_audio_data.tobytes())
-
     print(f"Saved to {filename}")
 
     return
@@ -80,6 +79,7 @@ def transcribe_audio(raw_audio_file, transcription_file):
 
 def chunk_text(raw_text):
     chunked_text = [raw_text]
+
     return chunked_text
 
 
@@ -124,27 +124,30 @@ def main():
     while True:
         prelude = 'The following is a transcript between an interviewer and an entrepreneur,\r'\
             + 'who is starting a business and discussing their business and their product.\r'\
-            + 'Please call the entrepreneur "they." rather than "the entrepreneur"\r'\
+            + 'Please refer to the entrepreneur "they" rather than "the entrepreneur"\r'\
             + 'please answer as a helpful ai agent'\
             + 'please be as detailed as possible. if you don\'t know the answer, please answer "unknown",' \
             + 'try not to say "the information is not in the supplied transcript", just answer "unknown"\r'
 
-        prompt_list = ["NAME", "PROBLEM", "SOLUTION", "TEAM", "TRACTION", "TECH", "TAM", "TIMING", "COMPETITION", "LEISURE", "TEAM EXPERIENCE", "FIRST TIME FOUNDER?"]
+        prompt_list = ["NAME", "PROBLEM", "SOLUTION", "TEAM", "TRACTION", "CTO", "FUNDING", "TECH", "TAM", "TIMING",
+                       "COMPETITION", "WHY", "LEISURE", "TEAM EXPERIENCE", "FIRST TME FOUNDER"]
 
         prompts = {
-                    "NAME": 'what is the name of the company that the entrepreneur is talking about and how long has it been in business',
-                    "PROBLEM": 'what problems are they solving, and what customers have these problems',
+                    "NAME": 'what is the name of the company that the entrepreneur is talking about and how long has it been in business?',
+                    "PROBLEM": 'what problems are they solving, and what customers have these problems?',
                     "SOLUTION": 'how does their product solve the problem',
-                    "TEAM": 'what are the names and roles of founders and cofounders of the company and what are their educations and roles. That includes CEO, CTO, COO, and any other C-level executives  and are they working full time',
-                    "TRACTION": 'how many customers do they have, and what are the names of their customers and prospects, including those on their waitlist',
+                    "TEAM": 'what are the names and roles of founders and co-founders of (CEO, CTO, COO, and any other C-level executives) and are they working full time on the company?',
+                    "TRACTION": 'how many customers do they have and what is their revenue?, and what are the names of their customers and prospects, including those on their waitlist',
+                    "CTO": 'Who is the chief technology officer and what are his/her qualifications?',
                     "FUNDING": 'how has the company been funded to-date, is it bootstrapped, self-funded, or has it received friends and family investment or professional investment. and how much has been raised',
                     "TECH": 'what technologies are they using in their product and what makes those technologies unique',
                     "TAM": 'how big is the market they\'re addressing both in numbers of customers and dollar size',
                     "TIMING": 'is there something happening in technology or the market or society that makes this more relevant or more possible right now',
                     "COMPETITION": "who are the company's competitors and what are their weakneseses",
+                    "WHY": 'What is their primary motivation for building the business',
                     "LEISURE": 'what do the founders and cofounders do in their spare time for hobbies, avocations and interests, sports',
                     "TEAM EXPERIENCE": 'is this the first time the founders have worked together or do they have prior experience together',
-                    "FIRST TIME FOUNDER?": 'has the ceo and other members of the founding team started another startup previously or is this their first company'
+                    "FIRST TIME FOUNDER?": 'has the ceo fonded any other company? with the other members of the founding team?'
                 }
 
         evaluation_prelude = 'the following is a summary of a business that is being considered for investment.\r'\
