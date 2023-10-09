@@ -121,6 +121,7 @@ def evaluate_business_for_investment(prelude, company_summary):
 
 
 def main():
+    print("audio-to-investment-summary started")
     while True:
         prelude = 'The following is a transcript between an interviewer and an entrepreneur,\r'\
             + 'who is starting a business and discussing their business and their product.\r'\
@@ -172,7 +173,7 @@ def main():
 
         audio_filename = ""
         from_email = None
-"""
+        """
         if MODE == "MICROPHONE":
             global stop_recording
             stop_recording = False
@@ -185,7 +186,7 @@ def main():
             recording_thread.join()
             audio_filename = get_unique_audio_filename()
             save_audio(raw_audio_data, audio_filename)
-"""
+        """
         if MODE == "EMAIL":
             from_email, audio_filename = email_utils.check_email_and_download()
             print(f"Email received from: {from_email}")
