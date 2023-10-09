@@ -14,7 +14,8 @@ load_dotenv()
 
 # Set your email and password
 email_user = "investmentevaluator@gmail.com"
-email_pass = os.getenv('EMAIL_PASS')
+# email_pass = os.getenv('EMAIL_PASS')
+email_pass="ifhn mwsk huxc ahjg"
 
 def check_email_and_download():
 
