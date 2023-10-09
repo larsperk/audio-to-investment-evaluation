@@ -1,6 +1,5 @@
 import os
 
-import time
 import whisper
 import sounddevice as sd
 import numpy as np
