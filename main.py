@@ -131,7 +131,7 @@ def main():
             + 'try not to say "the information is not in the supplied transcript", just answer "unknown"\r'
 
         prompt_list = ["NAME", "PROBLEM", "SOLUTION", "TEAM", "TRACTION", "CTO", "FUNDING", "TECH", "TAM", "TIMING",
-                       "COMPETITION", "WHY", "LEISURE", "TEAM EXPERIENCE", "FIRST TME FOUNDER"]
+                       "COMPETITION", "WHY", "LEISURE", "TEAM EXPERIENCE", "FIRST TIME FOUNDER"]
 
         prompts = {
                     "NAME": 'what is the name of the company that the entrepreneur is talking about and how long has it been in business?',
