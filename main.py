@@ -148,7 +148,7 @@ def main():
                     "WHY": 'What is their primary motivation for building the business',
                     "LEISURE": 'what do the founders and cofounders do in their spare time for hobbies, avocations and interests, sports',
                     "TEAM EXPERIENCE": 'is this the first time the founders have worked together or do they have prior experience together',
-                    "FIRST TIME FOUNDER?": 'has the ceo fonded any other company? with the other members of the founding team?'
+                    "FIRST TIME FOUNDER": 'has the ceo fonded any other company? with the other members of the founding team?'
                 }
 
         evaluation_prelude = 'the following is a summary of a business that is being considered for investment.\r'\
