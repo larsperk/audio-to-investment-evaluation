@@ -1,17 +1,21 @@
 import os
 
-import whisper
-# import sounddevice as sd
-import numpy as np
+"""
 import wave
 import threading
+import sounddevice as sd
+"""
+
+import whisper
+import numpy as np
 import openai
 from dotenv import load_dotenv
-
 import email_utils
 
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
+
+MODE = 'EMAIL'  # EMAIL or MICROPHONE or AUDIO
 
 SAMPLE_RATE = 44100
 CHANNELS = 1
@@ -23,7 +27,6 @@ SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
 
 OPENAI_MODEL = 'gpt-4'
-MODE = 'EMAIL'  # EMAIL or MICROPHONE
 
 audio_buffer = []
 
@@ -37,6 +40,7 @@ def get_unique_audio_filename():
         filename = filename_base + "_" + str(i)
 
     return filename
+
 
 """
 def recording_callback(indata, frames, time, status):
@@ -102,7 +106,6 @@ def ask_questions_of_chunk(prelude, prompt_list, prompts, text):
     return aggregate_response
 
 
-
 def evaluate_business_for_investment(prelude, company_summary):
 
     response = openai.ChatCompletion.create(
@@ -116,8 +119,6 @@ def evaluate_business_for_investment(prelude, company_summary):
     chat_response = response.choices[0]['message']['content'] + '\r'
 
     return chat_response
-
-#, only using information in the supplied text transcript'        + 'of the interview.\r'\
 
 
 def main():
@@ -190,8 +191,16 @@ def main():
         if MODE == "EMAIL":
             from_email, audio_filename = email_utils.check_email_and_download()
             print(f"Email received from: {from_email}")
+        elif MODE == "AUDIO":
+            audio_filename = "54 Clay Brook Rd 2.m4a"
 
-        raw_text = transcribe_audio(audio_filename, TRANSCRIPTION_FILENAME)
+        if audio_filename.endswith("txt"):
+            text_filename = audio_filename
+            with open(text_filename, "r") as file:
+                    raw_text = file.read()
+        else:
+            raw_text = transcribe_audio(audio_filename, TRANSCRIPTION_FILENAME)
+
         chunked_text = chunk_text(raw_text)
         print("Transcription complete")
 

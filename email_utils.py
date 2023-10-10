@@ -17,6 +17,7 @@ email_user = "investmentevaluator@gmail.com"
 # email_pass = os.getenv('EMAIL_PASS')
 email_pass="ifhn mwsk huxc ahjg"
 
+
 def check_email_and_download():
 
     # Connect to the server
@@ -73,7 +74,7 @@ def check_email_and_download():
 
                     # Download attachment
                     filepath = download_attachment(msg)
-                    if filepath.lower().endswith((".wav", "m4a")):
+                    if filepath.lower().endswith((".wav", "m4a", "txt")):
                         return from_email, filepath
 
                 last_email_uid = new_email_uid
