@@ -27,7 +27,7 @@ TRANSCRIPTION_FILENAME = "transcription.txt"
 SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
 
-OPENAI_MODEL = 'gpt-3.5-turbo'      # 'gpt-3.5-turbo'
+OPENAI_MODEL = 'gpt-4'      # 'gpt-3.5-turbo'
 
 audio_buffer = []
 
@@ -108,6 +108,7 @@ def ask_questions_of_text(prelude, prompt_list, prompts, text):
             temperature=0.9
         )
 
+        time.sleep(30)
         chat_response = response.choices[0]['message']['content'] + '\r'
         aggregate_response[prompt] = chat_response
 
@@ -274,6 +275,7 @@ def main():
 
             email_utils.send_email(from_email, [TRANSCRIPTION_FILENAME, SUMMARY_FILENAME, EVALUATION_FILENAME])
             print("Reply sent")
+
 
 if __name__ == "__main__":
     main()
