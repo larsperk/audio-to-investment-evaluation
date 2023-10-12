@@ -83,7 +83,7 @@ def transcribe_audio(raw_audio_file, transcription_file):
 
 
 def chunk_text(raw_text):
-    chunk_size = 10000
+    chunk_size = 5000
     chunk_overlap = 200
 
     chunked_text = []
