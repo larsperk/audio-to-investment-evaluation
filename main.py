@@ -267,7 +267,7 @@ def main():
 
         if from_email:
             with open(SUMMARY_FILENAME, "w", encoding="utf-8") as txt:
-                txt.write(chunk_answers)
+                txt.write(summary_of_summaries)
 
             with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
                 txt.write(evaluation)
