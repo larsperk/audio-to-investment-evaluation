@@ -11,11 +11,12 @@ import numpy as np
 import openai
 from dotenv import load_dotenv
 import email_utils
+import time
 
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
-MODE = 'EMAIL'  # EMAIL or MICROPHONE or AUDIO
+MODE = 'EMAIL'  # EMAIL or MICROPHONE or AUDIO or FORCE TEXT
 
 SAMPLE_RATE = 44100
 CHANNELS = 1
@@ -26,7 +27,7 @@ TRANSCRIPTION_FILENAME = "transcription.txt"
 SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
 
-OPENAI_MODEL = 'gpt-4'
+OPENAI_MODEL = 'gpt-3.5-turbo'      # 'gpt-3.5-turbo'
 
 audio_buffer = []
 
@@ -82,13 +83,20 @@ def transcribe_audio(raw_audio_file, transcription_file):
 
 
 def chunk_text(raw_text):
-    chunked_text = [raw_text]
+    chunk_size = 10000
+    chunk_overlap = 200
+
+    chunked_text = []
+    while len(raw_text) > 0:
+        chunked_text.append(raw_text[:chunk_size])
+        temp = raw_text[(chunk_size-chunk_overlap):]
+        raw_text = temp
 
     return chunked_text
 
 
-def ask_questions_of_chunk(prelude, prompt_list, prompts, text):
-    aggregate_response = ''
+def ask_questions_of_text(prelude, prompt_list, prompts, text):
+    aggregate_response = {}
     for prompt in prompt_list:
 
         response = openai.ChatCompletion.create(
@@ -101,13 +109,12 @@ def ask_questions_of_chunk(prelude, prompt_list, prompts, text):
         )
 
         chat_response = response.choices[0]['message']['content'] + '\r'
-        aggregate_response += prompt + '\r' + chat_response + '\r'
+        aggregate_response[prompt] = chat_response
 
     return aggregate_response
 
 
 def evaluate_business_for_investment(prelude, company_summary):
-
     response = openai.ChatCompletion.create(
         model=OPENAI_MODEL,
         messages=[
@@ -120,6 +127,32 @@ def evaluate_business_for_investment(prelude, company_summary):
 
     return chat_response
 
+def consolidate_answers(chunk_answers):
+    prelude = "The supplied documents are\r" \
+            + "summaries of conversations with an entrepreneur about a new business.\r" \
+            + "Please act as a helpful AI agent."
+
+    i = 1
+    documents = ""
+    for chunk_answer in chunk_answers:
+        documents += "Document "+ str(i) + '\r\n'
+        documents += chunk_answer + '\r\n\r\n'
+        i += 1
+    documents += "Please consolidate\r" \
+                 + "the information in the preceding " + str(len(chunk_answers)) + " documents into a single document\r" \
+                 + "preserving section headings and eliminating duplicate information\r\n"
+
+    response = openai.ChatCompletion.create(
+        model=OPENAI_MODEL,
+        messages=[
+            {"role": "system", "content": prelude},
+            {"role": "user", "content": documents},
+        ],
+        temperature=0.9
+    )
+    chat_response = response.choices[0]['message']['content'] + '\r'
+
+    return chat_response
 
 def main():
     print("audio-to-investment-summary started")
@@ -193,25 +226,44 @@ def main():
             print(f"Email received from: {from_email}")
         elif MODE == "AUDIO":
             audio_filename = "54 Clay Brook Rd 2.m4a"
+        elif MODE == "FORCE TEXT":
+            audio_filename = "sample-andres.txt"
 
         if audio_filename.endswith("txt"):
             text_filename = audio_filename
             with open(text_filename, "r") as file:
-                    raw_text = file.read()
+                raw_text = file.read()
         else:
             raw_text = transcribe_audio(audio_filename, TRANSCRIPTION_FILENAME)
 
         chunked_text = chunk_text(raw_text)
         print("Transcription complete")
 
-        evaluation = ""
-        chunk_answers = ""
+        evaluation = []
+        chunk_answers = []
         for chunk in chunked_text:
             if chunk:
-                chunk_answers = ask_questions_of_chunk(prelude, prompt_list, prompts, chunk)
+                chunk_answers.append(ask_questions_of_text(prelude, prompt_list, prompts, chunk))
                 print("Summary complete")
-                evaluation = evaluate_business_for_investment(evaluation_prelude, chunk_answers)
-                print("Evaluation complete")
+                # time.sleep(60)
+
+        big_summary = ""
+        for prompt in prompt_list:
+            big_summary += prompt + '\r\n'
+            for chunk_answer in chunk_answers:
+                big_summary += chunk_answer[prompt]
+
+        if len(chunk_answers) > 1:
+            summary_of_summaries = ask_questions_of_text(prelude, prompt_list, prompts, big_summary)
+        else:
+            summary_of_summaries = big_summary
+
+        summary_of_summaries_text = ""
+        for prompt in prompt_list:
+            summary_of_summaries_text += prompt + "\r\n\r\n" + summary_of_summaries[prompt] + "\r\n"
+
+        evaluation = evaluate_business_for_investment(evaluation_prelude, summary_of_summaries_text)
+        print("Evaluation complete")
 
         if from_email:
             with open(SUMMARY_FILENAME, "w", encoding="utf-8") as txt:
