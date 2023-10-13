@@ -26,6 +26,7 @@ RAW_FILENAME_BASE = "recorded_audio"
 SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
 FORCED_TEXT_FILENAME = "sample-andres.txt"
+TRANSCRIPTION_FILENAME = "transcription.txt"
 
 OPENAI_MODEL = 'gpt-4'      # 'gpt-3.5-turbo'
 CHUNK_SIZE = 10000
