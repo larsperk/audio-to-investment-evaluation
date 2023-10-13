@@ -10,6 +10,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from dotenv import load_dotenv
+from rtf_converter import rtf_to_txt
+import PyPDF2
+
 load_dotenv()
 
 # Set your email and password
@@ -49,6 +52,29 @@ def check_email_and_download():
                 return filepath
         return None
 
+    def convert_pdf_to_txt(pdf_path):
+        with open(pdf_path, 'rb') as file:
+            # Create a PDF reader object
+            pdf_reader = PyPDF2.PdfReader(file)
+
+            # Initialize text variable to store all content
+            plain_text = ""
+
+            # Loop through all pages and extract text
+            for i in range(len(pdf_reader.pages)):
+                page = pdf_reader.pages[i]
+                plain_text += page.extract_text()
+
+        return plain_text
+
+    def convert_rtf_to_txt(rtf_path):
+        with open(rtf_path, 'r', encoding='utf-8') as file:
+            rtf_content = file.read()
+
+        # Convert RTF content to plain text
+        plain_text = rtf_to_txt(rtf_content)
+        return plain_text
+
     while True:
         # Reconnect and select the inbox
         mail = imaplib.IMAP4_SSL("imap.gmail.com")
@@ -74,8 +100,23 @@ def check_email_and_download():
 
                     # Download attachment
                     filepath = download_attachment(msg)
-                    if filepath.lower().endswith((".wav", "m4a", "txt")):
+
+                    if filepath.lower().endswith((".wav", ".m4a", ".txt")):
                         return from_email, filepath
+                    elif filepath.lower().endswith(".rtf"):
+                        base, extension = os.path.splitext(filepath)
+                        output_file = base + ".txt"
+                        text = convert_rtf_to_txt(filepath)
+                        with open(output_file, 'w') as file:
+                            file.write(text)
+                        return from_email, base + ".txt"
+                    elif filepath.lower().endswith(".pdf"):
+                        base, extension = os.path.splitext(filepath)
+                        output_file = base + ".txt"
+                        text = convert_pdf_to_txt(filepath)
+                        with open(output_file, 'w') as file:
+                            file.write(text)
+                        return from_email, base + ".txt"
 
                 last_email_uid = new_email_uid
 

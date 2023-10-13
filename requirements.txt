@@ -2,4 +2,5 @@ openai-whisper
 numpy
 openai
 python-dotenv
-
+pypdf2
+rtf-converter
