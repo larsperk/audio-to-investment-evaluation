@@ -268,7 +268,7 @@ def main():
 
         if from_email:
             with open(SUMMARY_FILENAME, "w", encoding="utf-8") as txt:
-                txt.write(summary_of_summaries) #trying again for git
+                txt.write(summary_of_summaries_text) #trying again for git
 
             with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
                 txt.write(evaluation)
