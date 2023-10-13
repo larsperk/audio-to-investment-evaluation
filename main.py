@@ -23,14 +23,12 @@ CHANNELS = 1
 DATA_TYPE = np.int16
 
 RAW_FILENAME_BASE = "recorded_audio"
-TRANSCRIPTION_FILENAME = "transcription.txt"
 SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
 FORCED_TEXT_FILENAME = "sample-andres.txt"
 
 OPENAI_MODEL = 'gpt-4'      # 'gpt-3.5-turbo'
 CHUNK_SIZE = 10000
-
 
 audio_buffer = []
 
@@ -259,7 +257,7 @@ def main():
 
         if from_email:
             with open(SUMMARY_FILENAME, "w", encoding="utf-8") as txt:
-                txt.write(summary_of_summaries) #trying again for git
+                txt.write(summary_of_summaries)
 
             with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
                 txt.write(evaluation)

@@ -13,6 +13,8 @@ from dotenv import load_dotenv
 from rtf_converter import rtf_to_txt
 import PyPDF2
 
+TRANSCRIPTION_FILENAME = "transcription.txt"
+
 load_dotenv()
 
 # Set your email and password
@@ -105,14 +107,14 @@ def check_email_and_download():
                         return from_email, filepath
                     elif filepath.lower().endswith(".rtf"):
                         base, extension = os.path.splitext(filepath)
-                        output_file = base + ".txt"
+                        output_file = TRANSCRIPTION_FILENAME
                         text = convert_rtf_to_txt(filepath)
                         with open(output_file, 'w') as file:
                             file.write(text)
                         return from_email, base + ".txt"
                     elif filepath.lower().endswith(".pdf"):
                         base, extension = os.path.splitext(filepath)
-                        output_file = base + ".txt"
+                        output_file = TRANSCRIPTION_FILENAME
                         text = convert_pdf_to_txt(filepath)
                         with open(output_file, 'w') as file:
                             file.write(text)
