@@ -234,7 +234,7 @@ def main():
             audio_filename = FORCED_TEXT_FILENAME
 
         if audio_filename.endswith(".txt"):
-            text_filename = TRANSCRIPTION_FILENAME #fix
+            text_filename = TRANSCRIPTION_FILENAME #fix 2
             with open(text_filename, "r") as file:
                 raw_text = file.read()
         else:
