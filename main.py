@@ -26,8 +26,11 @@ RAW_FILENAME_BASE = "recorded_audio"
 TRANSCRIPTION_FILENAME = "transcription.txt"
 SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
+FORCED_TEXT_FILENAME = "sample-andres.txt"
 
 OPENAI_MODEL = 'gpt-4'      # 'gpt-3.5-turbo'
+CHUNK_SIZE = 10000
+
 
 audio_buffer = []
 
@@ -83,7 +86,7 @@ def transcribe_audio(raw_audio_file, transcription_file):
 
 
 def chunk_text(raw_text):
-    chunk_size = 5000
+    chunk_size = CHUNK_SIZE
     chunk_overlap = 200
 
     chunked_text = []
@@ -96,24 +99,23 @@ def chunk_text(raw_text):
 
 
 def ask_questions_of_text(prelude, prompt_list, prompts, text):
-    aggregate_response = {}
+    aggregate_questions = ""
     for prompt in prompt_list:
+        aggregate_questions += prompts[prompt] + ". Please put the answer under the heading '" + prompt + "'" + "\r"
 
-        response = openai.ChatCompletion.create(
-            model=OPENAI_MODEL,
-            messages=[
-                {"role": "system", "content": prelude + '\r\r\"' + text},
-                {"role": "user", "content": prompts[prompt]},
-            ],
-            temperature=0.9
-        )
+    messages = [
+        {"role": "system", "content": prelude + '\r\r\"' + text},
+        {"role": "user", "content": aggregate_questions},
+    ]
+    response = openai.ChatCompletion.create(
+        model=OPENAI_MODEL,
+        messages=messages,
+        temperature=0.9
+    )
 
-        time.sleep(30)
-        chat_response = response.choices[0]['message']['content'] + '\r'
-        aggregate_response[prompt] = chat_response
+    chat_response = response.choices[0]['message']['content'] + '\r'
 
-    return aggregate_response
-
+    return chat_response
 
 def evaluate_business_for_investment(prelude, company_summary):
     response = openai.ChatCompletion.create(
@@ -127,6 +129,7 @@ def evaluate_business_for_investment(prelude, company_summary):
     chat_response = response.choices[0]['message']['content'] + '\r'
 
     return chat_response
+
 
 def consolidate_answers(chunk_answers):
     prelude = "The supplied documents are\r" \
@@ -154,6 +157,7 @@ def consolidate_answers(chunk_answers):
     chat_response = response.choices[0]['message']['content'] + '\r'
 
     return chat_response
+
 
 def main():
     print("audio-to-investment-summary started")
@@ -228,7 +232,7 @@ def main():
         elif MODE == "AUDIO":
             audio_filename = "54 Clay Brook Rd 2.m4a"
         elif MODE == "FORCE TEXT":
-            audio_filename = "sample-andres.txt"
+            audio_filename = FORCED_TEXT_FILENAME
 
         if audio_filename.endswith("txt"):
             text_filename = audio_filename
@@ -241,34 +245,21 @@ def main():
         print("Transcription complete")
 
         evaluation = []
-        chunk_answers = []
+        consolidated_answers = ''
         for chunk in chunked_text:
             if chunk:
-                chunk_answers.append(ask_questions_of_text(prelude, prompt_list, prompts, chunk))
-                print("Summary complete")
-                # time.sleep(60)
+                answers = (ask_questions_of_text(prelude, prompt_list, prompts, chunk))
+                consolidated_answers += answers
 
-        big_summary = ""
-        for prompt in prompt_list:
-            big_summary += prompt + '\r\n'
-            for chunk_answer in chunk_answers:
-                big_summary += chunk_answer[prompt]
+        print("Summary complete")
 
-        if len(chunk_answers) > 1:
-            summary_of_summaries = ask_questions_of_text(prelude, prompt_list, prompts, big_summary)
-        else:
-            summary_of_summaries = big_summary
-
-        summary_of_summaries_text = ""
-        for prompt in prompt_list:
-            summary_of_summaries_text += prompt + "\r\n\r\n" + summary_of_summaries[prompt] + "\r\n"
-
-        evaluation = evaluate_business_for_investment(evaluation_prelude, summary_of_summaries_text)
+        summary_of_summaries = ask_questions_of_text(prelude, prompt_list, prompts, consolidated_answers)
+        evaluation = evaluate_business_for_investment(evaluation_prelude, summary_of_summaries)
         print("Evaluation complete")
 
         if from_email:
             with open(SUMMARY_FILENAME, "w", encoding="utf-8") as txt:
-                txt.write(summary_of_summaries_text) #trying again for git
+                txt.write(summary_of_summaries) #trying again for git
 
             with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
                 txt.write(evaluation)
