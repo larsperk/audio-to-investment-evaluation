@@ -24,7 +24,7 @@ def check_email_and_download():
     mail = imaplib.IMAP4_SSL("imap.gmail.com")
 
     # Login to the account
-    mail.login(main.email_user, main.email_pass)
+    mail.login(email_user, email_pass)
 
     # Select the mailbox
     mail.select("inbox")
@@ -75,7 +75,7 @@ def check_email_and_download():
     while True:
         # Reconnect and select the inbox
         mail = imaplib.IMAP4_SSL("imap.gmail.com")
-        mail.login(main.email_user, main.email_pass)
+        mail.login(email_user, email_pass)
         mail.select("inbox")
 
         # Search for new emails
