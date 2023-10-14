@@ -1,26 +1,19 @@
 import imaplib
 import email
-from email.header import decode_header
 import os
 import time
 import email.utils
 import smtplib
+import PyPDF2
+
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
-from dotenv import load_dotenv
 from rtf_converter import rtf_to_txt
-import PyPDF2
+from email.header import decode_header
 
-TRANSCRIPTION_FILENAME = "transcription.txt"
-
-load_dotenv()
-
-# Set your email and password
-email_user = "investmentevaluator@gmail.com"
-# email_pass = os.getenv('EMAIL_PASS')
-email_pass="ifhn mwsk huxc ahjg"
+import main
 
 
 def check_email_and_download():
@@ -29,7 +22,7 @@ def check_email_and_download():
     mail = imaplib.IMAP4_SSL("imap.gmail.com")
 
     # Login to the account
-    mail.login(email_user, email_pass)
+    mail.login(main.email_user, main.email_pass)
 
     # Select the mailbox
     mail.select("inbox")
@@ -80,7 +73,7 @@ def check_email_and_download():
     while True:
         # Reconnect and select the inbox
         mail = imaplib.IMAP4_SSL("imap.gmail.com")
-        mail.login(email_user, email_pass)
+        mail.login(main.email_user, main.email_pass)
         mail.select("inbox")
 
         # Search for new emails
@@ -114,7 +107,7 @@ def check_email_and_download():
                         return from_email, base + ".txt"
                     elif filepath.lower().endswith(".pdf"):
                         base, extension = os.path.splitext(filepath)
-                        output_file = TRANSCRIPTION_FILENAME
+                        output_file = main.TRANSCRIPTION_FILENAME
                         text = convert_pdf_to_txt(filepath)
                         with open(output_file, 'w') as file:
                             file.write(text)

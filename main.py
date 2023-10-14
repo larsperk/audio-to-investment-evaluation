@@ -1,22 +1,11 @@
-import os
-
-"""
-import wave
-import threading
-import sounddevice as sd
-"""
-
-import whisper
-import numpy as np
 import openai
-from dotenv import load_dotenv
+import numpy as np
+import os
+import whisper
 import email_utils
-import time
+from dotenv import load_dotenv
 
-load_dotenv()
-openai.api_key = os.getenv('OPENAI_API_KEY')
-
-MODE = 'EMAIL'  # EMAIL or MICROPHONE or AUDIO or FORCE TEXT
+MODE = 'EMAIL'  # EMAIL or MICROPHONE or FORCE AUDIO or FORCE TEXT
 
 SAMPLE_RATE = 44100
 CHANNELS = 1
@@ -25,13 +14,24 @@ DATA_TYPE = np.int16
 RAW_FILENAME_BASE = "recorded_audio"
 SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
-FORCED_TEXT_FILENAME = "sample-andres.txt"
 TRANSCRIPTION_FILENAME = "transcription.txt"
+
+FORCED_TEXT_FILENAME = "sample-andres.txt"
+FORCED_AUDIO_FILENAME = "54 Clay Brook Rd 2.m4a"
 
 OPENAI_MODEL = 'gpt-4'      # 'gpt-3.5-turbo'
 CHUNK_SIZE = 10000
 
-audio_buffer = []
+load_dotenv()
+openai.api_key = os.getenv('OPENAI_API_KEY')
+email_pass = os.getenv('EMAIL_PASS')
+email_user = "investmentevaluator@gmail.com"
+
+"""
+import wave
+import threading
+import sounddevice as sd
+"""
 
 
 def get_unique_audio_filename():
@@ -100,7 +100,7 @@ def chunk_text(raw_text):
 def ask_questions_of_text(prelude, prompt_list, prompts, text):
     aggregate_questions = ""
     for prompt in prompt_list:
-        aggregate_questions += prompts[prompt] + ". Please put the answer under the heading '" + prompt + "'" + "\r"
+        aggregate_questions += prompts[prompt] + ". Please put the answer under the heading " + prompt + "" + "\r"
 
     messages = [
         {"role": "system", "content": prelude + '\r\r\"' + text},
@@ -115,6 +115,7 @@ def ask_questions_of_text(prelude, prompt_list, prompts, text):
     chat_response = response.choices[0]['message']['content'] + '\r'
 
     return chat_response
+
 
 def evaluate_business_for_investment(prelude, company_summary):
     response = openai.ChatCompletion.create(
@@ -211,6 +212,7 @@ def main():
 
         audio_filename = ""
         from_email = None
+
         """
         if MODE == "MICROPHONE":
             global stop_recording
@@ -225,11 +227,14 @@ def main():
             audio_filename = get_unique_audio_filename()
             save_audio(raw_audio_data, audio_filename)
         """
+
         if MODE == "EMAIL":
             from_email, audio_filename = email_utils.check_email_and_download()
             print(f"Email received from: {from_email}")
-        elif MODE == "AUDIO":
-            audio_filename = "54 Clay Brook Rd 2.m4a"
+
+        elif MODE == "FORCE AUDIO":
+            audio_filename = FORCED_AUDIO_FILENAME
+
         elif MODE == "FORCE TEXT":
             audio_filename = FORCED_TEXT_FILENAME
 
@@ -237,19 +242,18 @@ def main():
             text_filename = TRANSCRIPTION_FILENAME #fix 2
             with open(text_filename, "r") as file:
                 raw_text = file.read()
+
         else:
             raw_text = transcribe_audio(audio_filename, TRANSCRIPTION_FILENAME)
 
         chunked_text = chunk_text(raw_text)
         print("Transcription complete")
 
-        evaluation = []
         consolidated_answers = ''
         for chunk in chunked_text:
             if chunk:
                 answers = (ask_questions_of_text(prelude, prompt_list, prompts, chunk))
                 consolidated_answers += answers
-
         print("Summary complete")
 
         summary_of_summaries = ask_questions_of_text(prelude, prompt_list, prompts, consolidated_answers)
