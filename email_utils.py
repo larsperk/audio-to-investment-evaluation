@@ -15,8 +15,8 @@ from email.header import decode_header
 
 import main
 
-email_pass = "ifhn mwsk huxc ahjg"
-email_user = "investmentevaluator@gmail.com"
+email_pass = main.email_pass
+email_user = main.email_user
 
 def check_email_and_download():
 
