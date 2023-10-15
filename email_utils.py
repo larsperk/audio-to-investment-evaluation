@@ -99,22 +99,20 @@ def check_email_and_download():
                     # Download attachment
                     filepath = download_attachment(msg)
 
-                    if filepath.lower().endswith((".wav", ".m4a", ".txt")):
+                    if filepath.lower().endswith((".wav", ".m4a")):
                         return from_email, filepath
                     elif filepath.lower().endswith(".rtf"):
-                        base, extension = os.path.splitext(filepath)
-                        output_file = main.TRANSCRIPTION_FILENAME
                         text = convert_rtf_to_txt(filepath)
-                        with open(output_file, 'w') as file:
-                            file.write(text)
-                        return from_email, base + ".txt"
                     elif filepath.lower().endswith(".pdf"):
-                        base, extension = os.path.splitext(filepath)
-                        output_file = main.TRANSCRIPTION_FILENAME
                         text = convert_pdf_to_txt(filepath)
-                        with open(output_file, 'w') as file:
-                            file.write(text)
-                        return from_email, base + ".txt"
+                    elif filepath.lower().endswith(".txt"):
+                        with open(filepath, "r") as file:
+                            text = file.read()
+
+                    output_file = main.TRANSCRIPTION_FILENAME
+                    with open(output_file, 'w') as file:
+                        file.write(text)
+                    return from_email, main.TRANSCRIPTION_FILENAME
 
                 last_email_uid = new_email_uid
 
