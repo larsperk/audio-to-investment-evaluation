@@ -210,7 +210,7 @@ def main():
                             + 'please evaluate the business from the summary and give your conclusion as to whether\r' \
                             + ' it is a good investment. Please enumerate the points above as they apply to the presented business'
 
-        audio_filename = ""
+        source_filename = ""
         from_email = None
 
         """
@@ -229,22 +229,20 @@ def main():
         """
 
         if MODE == "EMAIL":
-            from_email, audio_filename = email_utils.check_email_and_download()
+            from_email, source_filename = email_utils.check_email_and_download()
             print(f"Email received from: {from_email}")
-
         elif MODE == "FORCE AUDIO":
-            audio_filename = FORCED_AUDIO_FILENAME
-
+            source_filename = FORCED_AUDIO_FILENAME
         elif MODE == "FORCE TEXT":
-            audio_filename = FORCED_TEXT_FILENAME
+            source_filename = FORCED_TEXT_FILENAME
 
-        if audio_filename.endswith(".txt"):
-            text_filename = TRANSCRIPTION_FILENAME #fix 2
+        if source_filename.endswith(".txt"):
+            text_filename = source_filename
             with open(text_filename, "r") as file:
                 raw_text = file.read()
 
         else:
-            raw_text = transcribe_audio(audio_filename, TRANSCRIPTION_FILENAME)
+            raw_text = transcribe_audio(source_filename, TRANSCRIPTION_FILENAME)
 
         chunked_text = chunk_text(raw_text)
         print("Transcription complete")
