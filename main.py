@@ -33,7 +33,6 @@ import threading
 import sounddevice as sd
 """
 
-
 def get_unique_audio_filename():
     filename_base = RAW_FILENAME_BASE
     i = 0
@@ -169,25 +168,24 @@ def main():
             + 'please be as detailed as possible. if you don\'t know the answer, please answer "unknown",' \
             + 'try not to say "the information is not in the supplied transcript", just answer "unknown"\r'
 
-        prompt_list = ["NAME", "PROBLEM", "SOLUTION", "TEAM", "TRACTION", "CTO", "FUNDING", "TECH", "TAM", "TIMING",
-                       "COMPETITION", "WHY", "LEISURE", "TEAM EXPERIENCE", "FIRST TIME FOUNDER"]
+        prompt_list = ["NAME", "PROBLEM", "SOLUTION", "WHY", "TEAM", "CTO", "TEAM EXPERIENCE", "TRACTION", "FUNDING",
+                       "TECH", "TAM", "TIMING", "COMPETITION", "LEISURE"]
 
         prompts = {
                     "NAME": 'what is the name of the company that the entrepreneur is talking about and how long has it been in business?',
                     "PROBLEM": 'what problems are they solving, and what customers have these problems?',
                     "SOLUTION": 'how does their product solve the problem',
+                    "WHY": 'What is their primary motivation for building the business',
                     "TEAM": 'what are the names and roles of founders and co-founders of (CEO, CTO, COO, and any other C-level executives) and are they working full time on the company?',
-                    "TRACTION": 'how many customers do they have and what is their revenue?, and what are the names of their customers and prospects, including those on their waitlist',
                     "CTO": 'Who is the chief technology officer and what are his/her qualifications?',
+                    "TEAM EXPERIENCE": 'has the CEO founded any other company, and is this the first time the founders have worked together',
+                    "TRACTION": 'how many customers do they have and what is their revenue?, and what are the names of their customers and prospects, including those on their waitlist',
                     "FUNDING": 'how has the company been funded to-date, is it bootstrapped, self-funded, or has it received friends and family investment or professional investment. and how much has been raised',
                     "TECH": 'what technologies are they using in their product and what makes those technologies unique',
                     "TAM": 'how big is the market they\'re addressing both in numbers of customers and dollar size',
                     "TIMING": 'is there something happening in technology or the market or society that makes this more relevant or more possible right now',
                     "COMPETITION": "who are the company's competitors and what are their weakneseses",
-                    "WHY": 'What is their primary motivation for building the business',
-                    "LEISURE": 'what do the founders and cofounders do in their spare time for hobbies, avocations and interests, sports',
-                    "TEAM EXPERIENCE": 'is this the first time the founders have worked together or do they have prior experience together',
-                    "FIRST TIME FOUNDER": 'has the ceo fonded any other company? with the other members of the founding team?'
+                    "LEISURE": 'what do the founders and cofounders do in their spare time for hobbies, avocations and interests, sports'
                 }
 
         evaluation_prelude = 'the following is a summary of a business that is being considered for investment.\r'\
