@@ -102,7 +102,7 @@ def check_email_and_download():
                         return from_email, filepath
                     elif filepath.lower().endswith(".rtf"):
                         base, extension = os.path.splitext(filepath)
-                        output_file = TRANSCRIPTION_FILENAME
+                        output_file = main.TRANSCRIPTION_FILENAME
                         text = convert_rtf_to_txt(filepath)
                         with open(output_file, 'w') as file:
                             file.write(text)
