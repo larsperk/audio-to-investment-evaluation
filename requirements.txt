@@ -4,3 +4,4 @@ openai
 python-dotenv
 pypdf2
 rtf-converter
+pycryptodome

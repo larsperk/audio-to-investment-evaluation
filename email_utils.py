@@ -98,6 +98,7 @@ def check_email_and_download():
 
                     # Download attachment
                     filepath = download_attachment(msg)
+                    text = "(blank)"
 
                     if filepath.lower().endswith((".wav", ".m4a")):
                         return from_email, filepath
@@ -110,8 +111,7 @@ def check_email_and_download():
                             text = file.read()
 
                     output_file = main.TRANSCRIPTION_FILENAME
-                    if not text:
-                        text = "(blank)"
+
                     with open(output_file, 'w') as file:
                         file.write(text)
                     return from_email, main.TRANSCRIPTION_FILENAME

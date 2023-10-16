@@ -20,6 +20,7 @@ FORCED_TEXT_FILENAME = "sample-andres.txt"
 FORCED_AUDIO_FILENAME = "54 Clay Brook Rd 2.m4a"
 
 OPENAI_MODEL = 'gpt-4'      # 'gpt-3.5-turbo'
+TEMPERATURE = 0.5
 CHUNK_SIZE = 10000
 
 load_dotenv()
@@ -108,7 +109,7 @@ def ask_questions_of_text(prelude, prompt_list, prompts, text):
     response = openai.ChatCompletion.create(
         model=OPENAI_MODEL,
         messages=messages,
-        temperature=0.9
+        temperature=TEMPERATURE
     )
 
     chat_response = response.choices[0]['message']['content'] + '\r'
@@ -123,7 +124,7 @@ def evaluate_business_for_investment(prelude, company_summary):
             {"role": "system", "content": prelude},
             {"role": "user", "content": company_summary},
         ],
-        temperature=0.9
+        temperature=TEMPERATURE
     )
     chat_response = response.choices[0]['message']['content'] + '\r'
 
@@ -151,7 +152,7 @@ def consolidate_answers(chunk_answers):
             {"role": "system", "content": prelude},
             {"role": "user", "content": documents},
         ],
-        temperature=0.9
+        temperature=TEMPERATURE
     )
     chat_response = response.choices[0]['message']['content'] + '\r'
 
@@ -199,12 +200,12 @@ def main():
                             + ' 7. They have raised at least 250000 in funding\r'\
                             + ' 8. The company has been in business for less than three years\r'\
                             + ' The negative characteristics of a business that is not a good investment candidate are:\r'\
-                            + ' 1. There is only one founder without other co-founders\r'\
-                            + ' 2. They have been in business longer than 5 years\r'\
-                            + ' 3. They have a small potential market that is less than 500 million dollars in total size\r'\
-                            + ' 4. They have no clear differentiation from their competition\r'\
-                            + ' 5. There is not much technology in their solution or there is no proprietary technology\r'\
-                            + ' 6. The founders are not working full-time for the business\r'\
+                            + ' 9. There is only one founder without other co-founders\r'\
+                            + ' 10. They have been in business longer than three years\r'\
+                            + ' 11. They have a small potential market that is less than 500 million dollars in total size\r'\
+                            + ' 12. They have no clear differentiation from their competition\r'\
+                            + ' 13. There is no technology in their product or there is no proprietary technology\r'\
+                            + ' 14. The founders are not working full-time for the business\r'\
                             + 'please evaluate the business from the summary and give your conclusion as to whether\r' \
                             + ' it is a good investment. Please enumerate the points above as they apply to the presented business'
 
