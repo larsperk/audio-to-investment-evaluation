@@ -34,6 +34,7 @@ import threading
 import sounddevice as sd
 """
 
+
 def get_unique_audio_filename():
     filename_base = RAW_FILENAME_BASE
     i = 0
@@ -193,21 +194,18 @@ def main():
                             + 'The positive characteristics of a business that is good to invest in are:\r'\
                             + ' 1. significant traction in terms of waitlist, customers, and revenue\r'\
                             + ' 2. an experienced founding team who either together or individually have founded other businesses\r'\
-                            + ' 3. a large potential market\r'\
+                            + ' 3. a large potential market greater than 500 million in size\r'\
                             + ' 4. a team that has worked together before, preferably at a company with an exit\r'\
                             + ' 5. Proprietary differentiated technology\r'\
                             + ' 6. The team members have been involved in competitive sports or other disciplined activities in their free time\r'\
                             + ' 7. They have raised at least 250000 in funding\r'\
                             + ' 8. The company has been in business for less than three years\r'\
-                            + ' The negative characteristics of a business that is not a good investment candidate are:\r'\
-                            + ' 9. There is only one founder without other co-founders\r'\
-                            + ' 10. They have been in business longer than three years\r'\
-                            + ' 11. They have a small potential market that is less than 500 million dollars in total size\r'\
-                            + ' 12. They have no clear differentiation from their competition\r'\
-                            + ' 13. There is no technology in their product or there is no proprietary technology\r'\
-                            + ' 14. The founders are not working full-time for the business\r'\
-                            + 'please evaluate the business from the summary and give your conclusion as to whether\r' \
-                            + ' it is a good investment. Please enumerate the points above as they apply to the presented business'
+                            + ' 9. More than one founder\r'\
+                            + ' 10. The founders are  working full-time for the business\r'\
+                            + 'please evaluate the business from the summary and enumerate the points above as they\r'\
+                            + ' apply to the presented business. Also give your overall conclusion about whether this\r'\
+                            + 'business is a good candidate for investment.'
+
 
         source_filename = ""
         from_email = None
