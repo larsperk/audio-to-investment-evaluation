@@ -5,7 +5,7 @@ import whisper
 import email_utils
 from dotenv import load_dotenv
 
-MODE = 'EMAIL'  # EMAIL or MICROPHONE or FORCE AUDIO or FORCE TEXT
+MODE = 'FORCE TEXT'  # EMAIL or MICROPHONE or FORCE AUDIO or FORCE TEXT
 
 SAMPLE_RATE = 44100
 CHANNELS = 1
@@ -16,7 +16,7 @@ SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
 TRANSCRIPTION_FILENAME = "transcription.txt"
 
-FORCED_TEXT_FILENAME = "sample-andres.txt"
+FORCED_TEXT_FILENAME = "transcription.txt"
 FORCED_AUDIO_FILENAME = "54 Clay Brook Rd 2.m4a"
 
 OPENAI_MODEL = 'gpt-4'      # 'gpt-3.5-turbo'
@@ -197,13 +197,13 @@ def main():
                             + ' 3. a large potential market greater than 500 million in size\r'\
                             + ' 4. a team that has worked together before, preferably at a company with an exit\r'\
                             + ' 5. Proprietary differentiated technology\r'\
-                            + ' 6. The team members have been involved in competitive sports or other disciplined activities in their free time\r'\
+                            + ' 6. Team members are involved in competitive sports or other disciplined activities in their free time\r'\
                             + ' 7. They have raised at least 250000 in funding\r'\
-                            + ' 8. The company has been in business for less than three years\r'\
-                            + ' 9. More than one founder\r'\
-                            + ' 10. The founders are  working full-time for the business\r'\
-                            + 'please evaluate the business from the summary and enumerate the points above as they\r'\
-                            + ' apply to the presented business. Also give your overall conclusion about whether this\r'\
+                            + ' 8. They been in business for less than three years\r'\
+                            + ' 9. They more than one founder\r'\
+                            + ' 10. All founders working full-time for the business\r'\
+                            + 'Please evaluate the business from the summary and enumerate the points above as they \r'\
+                            + 'apply to the presented business. Also give your overall conclusion about whether this\r'\
                             + 'business is a good candidate for investment.'
 
 
