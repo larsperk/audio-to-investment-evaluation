@@ -5,7 +5,7 @@ import whisper
 import email_utils
 from dotenv import load_dotenv
 
-MODE = 'FORCE TEXT'  # EMAIL or MICROPHONE or FORCE AUDIO or FORCE TEXT
+MODE = 'EMAIL'  # EMAIL or MICROPHONE or FORCE AUDIO or FORCE TEXT
 
 SAMPLE_RATE = 44100
 CHANNELS = 1
