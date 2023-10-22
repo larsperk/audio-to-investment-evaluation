@@ -108,7 +108,12 @@ def check_email_and_download():
                     from_email = email.utils.parseaddr(msg.get("From"))[1]
 
                     # Decode the email subject
-                    subject, encoding = decode_header(msg["Subject"])[0]
+                    if isinstance(msg, dict) and len(decode_header(msg["Subject"])) > 0:
+                        subject, encoding = decode_header(msg["Subject"])[0]
+                    else:
+                        subject = ""
+                        encoding = None
+
                     if isinstance(subject, bytes):
                         subject = subject.decode(encoding or "utf-8")
 
