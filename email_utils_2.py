@@ -73,8 +73,7 @@ def write_json_from_text_filepath(from_email, text_filepath):
         "text": text
     }
 
-    guid = uuid.uuid4()
-    guid_str = str(guid)
+    guid_str = str(uuid.uuid4())
     guid_filename = f"file_{guid_str}.json"
     guid_filepath = work_to_do_dir + "/" + guid_filename
 
@@ -83,6 +82,7 @@ def write_json_from_text_filepath(from_email, text_filepath):
         json.dump(json_dict, json_file)
 
     return
+
 
 def check_email_and_download():
     no_new_work_to_do = True

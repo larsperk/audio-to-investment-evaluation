@@ -198,15 +198,22 @@ def main():
             print("Evaluation complete")
 
             if from_email:
+                with open(TRANSCRIPTION_FILENAME, "w", encoding="utf-8") as txt:
+                    txt.write(raw_text)
+
                 with open(SUMMARY_FILENAME, "w", encoding="utf-8") as txt:
                     txt.write(summary_of_summaries)
 
                 with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
                     txt.write(evaluation)
 
-                email_utils_2.send_email(from_email, "Investment evaluation", "See attachments", [TRANSCRIPTION_FILENAME, SUMMARY_FILENAME, EVALUATION_FILENAME])
+                email_utils_2.send_email(
+                    from_email, "Investment evaluation", "See attachments",
+                    [TRANSCRIPTION_FILENAME, SUMMARY_FILENAME, EVALUATION_FILENAME]
+                )
                 print("Reply sent")
                 os.remove(work_file)
+
 
 if __name__ == "__main__":
     main()
