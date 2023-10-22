@@ -216,6 +216,10 @@ def main():
                     from_email, "Investment evaluation", "See attachments",
                     [TRANSCRIPTION_FILENAME, SUMMARY_FILENAME, EVALUATION_FILENAME]
                 )
+                email_utils_2.send_email(
+                    "lars@larsperkins.com", f"Evaluation processed for {from_email}", "See attachments",
+                    [TRANSCRIPTION_FILENAME, SUMMARY_FILENAME, EVALUATION_FILENAME]
+                )
                 print("Reply sent")
                 os.remove(work_file)
 
