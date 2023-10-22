@@ -60,11 +60,6 @@ def convert_rtf_to_txt(rtf_path):
 
 
 def write_json_from_text_filepath(from_email, text_filepath):
-    work_to_do_dir = WORK_TO_DO_DIR
-
-    if not os.path.exists(work_to_do_dir):
-        os.mkdir(work_to_do_dir)
-
     with open(text_filepath, "r") as f:
         text = f.read()
 
@@ -75,7 +70,7 @@ def write_json_from_text_filepath(from_email, text_filepath):
 
     guid_str = str(uuid.uuid4())
     guid_filename = f"file_{guid_str}.json"
-    guid_filepath = work_to_do_dir + "/" + guid_filename
+    guid_filepath = WORK_TO_DO_DIR + "/" + guid_filename
 
     # Writing data to a JSON file using json.dump()
     with open(guid_filepath, "w") as json_file:
@@ -98,9 +93,9 @@ def check_email_and_download():
         if status == 'OK':
             email_id_list = email_ids[0].split()
             unread_count = len(email_id_list)
-            print(f"Number of unread emails: {unread_count}")
 
             if unread_count > 0:
+                print(f"Number of unread emails: {unread_count}")
                 attachment_dir = 'email_attachments'
                 if not os.path.exists(attachment_dir):
                     os.mkdir(attachment_dir)
