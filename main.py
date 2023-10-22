@@ -177,7 +177,7 @@ def main():
             os.mkdir(work_to_do_dir)
 
         files = [os.path.join(email_utils_2.WORK_TO_DO_DIR, filename) for filename in os.listdir(email_utils_2.WORK_TO_DO_DIR)]
-        if len(files) = 0:
+        if len(files) == 0:
             email_utils_2.check_email_and_download()
 
         files_by_create_date = sorted(files, key=lambda x: os.path.getctime(x))
