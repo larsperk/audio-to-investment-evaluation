@@ -145,10 +145,12 @@ def check_email_and_download():
                                     elif filename.endswith(".PDF"):
                                         text = convert_pdf_to_txt(filepath)
                                         write_text_file(text, transcription_filename)
+                                        os.remove(filepath)
 
                                     elif filename.endswith(".RTF"):
                                         text = convert_rtf_to_txt(filepath)
                                         write_text_file(text, transcription_filename)
+                                        os.remove(filepath)
 
                                     write_json_from_text_filepath(from_email, transcription_filename)
                                     no_new_work_to_do = False
