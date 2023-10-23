@@ -151,7 +151,7 @@ def main():
         "TECH": 'what technologies are they using in their product and what makes those technologies unique',
         "TAM": 'how big is the market they\'re addressing both in numbers of customers and dollar size',
         "TIMING": 'is there something happening in technology or the market or society that makes this more relevant or more possible right now',
-        "COMPETITION": "who are the company's competitors and what are their weakneseses",
+        "COMPETITION": "who are the company's competitors and what are their weaknesses",
         "LEISURE": 'what do the founders and cofounders do in their spare time for hobbies, avocations and interests, sports'
     }
 
@@ -176,11 +176,13 @@ def main():
         if not os.path.exists(work_to_do_dir):
             os.mkdir(work_to_do_dir)
 
-        files = [os.path.join(email_utils_2.WORK_TO_DO_DIR, filename) for filename in os.listdir(email_utils_2.WORK_TO_DO_DIR)]
+        files = [os.path.join(email_utils_2.WORK_TO_DO_DIR, filename)
+                 for filename in os.listdir(email_utils_2.WORK_TO_DO_DIR)]
+
         if len(files) == 0:
             email_utils_2.check_email_and_download()
 
-        files_by_create_date = sorted(files, key=lambda x: os.path.getctime(x))
+        files_by_create_date = sorted(files, key=lambda x: os.path.getctime(x), reverse=True)
 
         for work_file in files_by_create_date:
             with open(work_file, "r") as f:
