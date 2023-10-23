@@ -126,6 +126,17 @@ def consolidate_answers(chunk_answers):
     return chat_response
 
 
+def check_for_work_to_do():
+    work_to_do_dir = email_utils_2.WORK_TO_DO_DIR
+    if not os.path.exists(work_to_do_dir):
+        os.mkdir(work_to_do_dir)
+
+    files = [os.path.join(email_utils_2.WORK_TO_DO_DIR, filename)
+         for filename in os.listdir(email_utils_2.WORK_TO_DO_DIR)]
+
+    return files
+
+
 def main():
     print("audio-to-investment-summary started")
     prelude = 'The following is a transcript between an interviewer and an entrepreneur,\r' \
@@ -172,15 +183,11 @@ def main():
                          + 'business is a good candidate for investment.'
 
     while True:
-        work_to_do_dir = email_utils_2.WORK_TO_DO_DIR
-        if not os.path.exists(work_to_do_dir):
-            os.mkdir(work_to_do_dir)
-
-        files = [os.path.join(email_utils_2.WORK_TO_DO_DIR, filename)
-                 for filename in os.listdir(email_utils_2.WORK_TO_DO_DIR)]
+        files = check_for_work_to_do()
 
         if len(files) == 0:
             email_utils_2.check_email_and_download()
+            files = check_for_work_to_do()
 
         files_by_create_date = sorted(files, key=lambda x: os.path.getctime(x), reverse=True)
 
@@ -200,7 +207,11 @@ def main():
                     consolidated_answers += answers
             print("Summary complete")
 
-            summary_of_summaries = ask_questions_of_text(prelude, prompt_list, prompts, consolidated_answers)
+            if len(chunked_text) > 1:
+                summary_of_summaries = ask_questions_of_text(prelude, prompt_list, prompts, consolidated_answers)
+            else:
+                summary_of_summaries = consolidated_answers
+
             evaluation = evaluate_business_for_investment(evaluation_prelude, summary_of_summaries)
             print("Evaluation complete")
 
