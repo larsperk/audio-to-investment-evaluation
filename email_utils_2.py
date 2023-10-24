@@ -101,11 +101,14 @@ def check_email_and_download():
                     os.mkdir(attachment_dir)
 
                 # Fetch and download attachments from each unread email
+                has_attachment = False
+                from_email = "lars@larsperkins.com"
                 for email_id in email_id_list:
                     _, msg_data = imap_server.fetch(email_id, '(RFC822)')
                     raw_email = msg_data[0][1]
                     msg = email.message_from_bytes(raw_email)
                     from_email = email.utils.parseaddr(msg.get("From"))[1]
+                    has_attachment = False
 
                     # Decode the email subject
                     if isinstance(msg, dict) and len(decode_header(msg["Subject"])) > 0:
@@ -118,6 +121,7 @@ def check_email_and_download():
                         subject = subject.decode(encoding or "utf-8")
 
                     # Process attachments
+
                     valid_attachment = 0
                     for part in msg.walk():
                         if part.get_content_maintype() == 'multipart':
@@ -125,6 +129,7 @@ def check_email_and_download():
                         if part.get('Content-Disposition') is None:
                             continue
 
+                        has_attachment = True
                         filename = part.get_filename().upper()
                         if filename:
                             if filename.endswith((".M4A", ".WAV", ".TXT", ".PDF", ".RTF")):
@@ -159,6 +164,12 @@ def check_email_and_download():
                                                "Request must contain one and only one valid file of type M4A, WAV, PDF, RTF or TXT.",
                                                []
                                                )
+                if not has_attachment:
+                    send_email(from_email,
+                               "Invalid Request",
+                               "Request must contain at lease one valid file of type M4A, WAV, PDF, RTF or TXT.",
+                               []
+                               )
         else:
             print("Failed to retrieve unread emails.")
 
