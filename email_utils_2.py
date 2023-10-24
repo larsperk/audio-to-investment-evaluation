@@ -140,21 +140,25 @@ def check_email_and_download():
 
                                     if filename.endswith((".M4A", ".WAV")):
                                         main.transcribe_audio(filepath, transcription_filename)
-                                        os.remove(filepath)
 
                                     elif filename.endswith(".PDF"):
                                         text = convert_pdf_to_txt(filepath)
                                         write_text_file(text, transcription_filename)
-                                        os.remove(filepath)
 
                                     elif filename.endswith(".RTF"):
                                         text = convert_rtf_to_txt(filepath)
                                         write_text_file(text, transcription_filename)
-                                        os.remove(filepath)
 
                                     write_json_from_text_filepath(from_email, transcription_filename)
+                                    if os.path.exists(filepath):
+                                        os.remove(filepath)
                                     no_new_work_to_do = False
-
+                                else:
+                                    send_email(from_email,
+                                               "Invalid Request",
+                                               "Request must contain one and only one valid file of type M4A, WAV, PDF, RTF or TXT.",
+                                               []
+                                               )
         else:
             print("Failed to retrieve unread emails.")
 
