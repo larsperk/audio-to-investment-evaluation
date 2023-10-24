@@ -79,6 +79,19 @@ def write_json_from_text_filepath(from_email, text_filepath):
     return guid_filepath
 
 
+def send_error_response_and_cleanup(filepath, work_filepath, from_email):
+    send_email(from_email,
+               "Invalid Request",
+               "Request must have one and only one M4A, WAV, PDF, RTF or TXT attachment.",
+               []
+               )
+    if os.path.exists(filepath):
+        os.remove(filepath)
+
+    if os.path.exists(work_filepath):
+        os.remove(work_filepath)
+
+
 def check_email_and_download():
     no_new_work_to_do = True
     while no_new_work_to_do:
@@ -161,18 +174,9 @@ def check_email_and_download():
                                         os.remove(filepath)
                                     no_new_work_to_do = False
                                 else:
-                                    if valid_attachments > 1 or valid_attachments == 0:
-                                        send_email(from_email,
-                                                   "Invalid Request",
-                                                   "Request must have one and only one M4A, WAV, PDF, RTF or TXT attachment.",
-                                                   []
-                                                   )
-                                    if os.path.exists(filepath):
-                                        os.remove(filepath)
-
-                                    if os.path.exists(work_filepath):
-                                        os.remove(work_filepath)
-
+                                    send_error_response_and_cleanup(filepath, work_filepath, from_email)
+                        else:
+                            send_error_response_and_cleanup(filepath, work_filepath, from_email)
         else:
             print("Failed to retrieve unread emails.")
 
