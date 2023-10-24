@@ -1,4 +1,3 @@
-# force git
 import openai
 import numpy as np
 import os
@@ -6,7 +5,6 @@ import whisper
 import json
 
 import email_utils_2
-# import email_utils
 
 from dotenv import load_dotenv
 

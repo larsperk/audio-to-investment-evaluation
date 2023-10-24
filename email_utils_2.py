@@ -101,16 +101,16 @@ def check_email_and_download():
                     os.mkdir(attachment_dir)
 
                 # Fetch and download attachments from each unread email
-                has_attachment = False
+
                 from_email = "lars@larsperkins.com"
                 work_filepath = ""
 
                 for email_id in email_id_list:
+                    valid_attachments = 0
                     _, msg_data = imap_server.fetch(email_id, '(RFC822)')
                     raw_email = msg_data[0][1]
                     msg = email.message_from_bytes(raw_email)
                     from_email = email.utils.parseaddr(msg.get("From"))[1]
-                    has_attachment = False
 
                     # Decode the email subject
                     if isinstance(msg, dict) and len(decode_header(msg["Subject"])) > 0:
@@ -124,20 +124,19 @@ def check_email_and_download():
 
                     # Process attachments
 
-                    valid_attachment = 0
                     for part in msg.walk():
                         if part.get_content_maintype() == 'multipart':
                             continue
                         if part.get('Content-Disposition') is None:
                             continue
 
-                        has_attachment = True
                         filename = part.get_filename().upper()
+                        filepath = ""
 
                         if filename:
                             if filename.endswith((".M4A", ".WAV", ".TXT", ".PDF", ".RTF")):
-                                valid_attachment += 1
-                                if valid_attachment == 1:
+                                valid_attachments += 1
+                                if valid_attachments == 1:
                                     filepath = os.path.join(attachment_dir, filename)
                                     with open(filepath, 'wb') as f:
                                         f.write(part.get_payload(decode=True))
@@ -162,20 +161,18 @@ def check_email_and_download():
                                         os.remove(filepath)
                                     no_new_work_to_do = False
                                 else:
-                                    send_email(from_email,
-                                               "Invalid Request",
-                                               "Request must contain one and only one valid file of type M4A, WAV, PDF, RTF or TXT.",
-                                               []
-                                               )
-                if not has_attachment:
-                    if os.path.exists(work_filepath):
-                        os.remove(work_filepath)
+                                    if valid_attachments > 1 or valid_attachments == 0:
+                                        send_email(from_email,
+                                                   "Invalid Request",
+                                                   "Request must have one and only one M4A, WAV, PDF, RTF or TXT attachment.",
+                                                   []
+                                                   )
+                                    if os.path.exists(filepath):
+                                        os.remove(filepath)
 
-                    send_email(from_email,
-                               "Invalid Request",
-                               "Request must contain at lease one valid file of type M4A, WAV, PDF, RTF or TXT.",
-                               []
-                               )
+                                    if os.path.exists(work_filepath):
+                                        os.remove(work_filepath)
+
         else:
             print("Failed to retrieve unread emails.")
 
