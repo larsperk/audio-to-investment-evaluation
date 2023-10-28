@@ -1,4 +1,3 @@
-# force git
 import imaplib
 import email
 import email.utils
@@ -92,7 +91,7 @@ def send_error_response_and_cleanup(filepath, work_filepath, from_email):
         os.remove(work_filepath)
 
 
-def check_email_and_download():
+def get_emails_and_create_work_files():
     no_new_work_to_do = True
     while no_new_work_to_do:
         # Connect to Gmail's IMAP server
@@ -125,10 +124,11 @@ def check_email_and_download():
                     msg = email.message_from_bytes(raw_email)
                     from_email = email.utils.parseaddr(msg.get("From"))[1]
 
-                    # Decode the email subject
-                    if isinstance(msg, dict) and len(decode_header(msg["Subject"])) > 0:
+                    # Decode the email subject THIS WILL ALWAYS SHORT CIRCUIT - MSG IS NOT A DICT
+                    try:
                         subject, encoding = decode_header(msg["Subject"])[0]
-                    else:
+
+                    except:
                         subject = ""
                         encoding = None
 

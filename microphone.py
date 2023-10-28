@@ -1,8 +1,20 @@
-# force git
 """
 import wave
 import threading
 import sounddevice as sd
+"""
+
+"""
+def get_unique_audio_filename():
+    filename_base = RAW_FILENAME_BASE
+    i = 0
+    filename = filename_base + "_" + str(i)
+    while os.path.isfile(filename):
+        i += 1
+        filename = filename_base + "_" + str(i)
+
+    return filename
+
 """
 
 """
