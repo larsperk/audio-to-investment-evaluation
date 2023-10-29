@@ -1,11 +1,12 @@
 # Ask questions of text
 
-prelude = 'The following is a transcript between an interviewer and an entrepreneur,\r' \
+prelude = 'Please answer as a helpful ai agent.' \
+          + 'The following is a transcript between an interviewer and an entrepreneur,\r' \
           + 'who is starting a business and discussing their business and their product.\r' \
-          + 'Please refer to the entrepreneur "they" rather than "the entrepreneur"\r' \
-          + 'please answer as a helpful ai agent' \
-          + 'please be as detailed as possible. if you don\'t know the answer, please answer "unknown",' \
-          + 'try not to say "the information is not in the supplied transcript", just answer "unknown"\r'
+          + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\r' \
+          + 'Be as detailed as possible when answering the questions."\r' \
+          + 'If you don\'t know the answer, please answer "unknown",'
+
 
 prompt_list = ["NAME", "PROBLEM", "SOLUTION", "WHY", "TEAM", "CTO", "TEAM EXPERIENCE", "TRACTION", "FUNDING",
                "TECH", "TAM", "TIMING", "COMPETITION", "LEISURE"]
@@ -37,24 +38,24 @@ consolidate_postscript_1 = "Please consolidate\r" \
                  + "the information in the preceding "
 
 consolidate_postscript_2 = " documents into a single document\r" \
-                 + "preserving section headings and eliminating duplicate information\r\n"
+                 + "preserving section headings and eliminating duplicate information.\r"\
+                 + "Please be as detailed as possible.\r\n"
+
 
 # Evaluation
 
-evaluation_prelude = 'the following is a summary of a business that is being considered for investment.\r' \
+evaluation_prelude = 'The following is a summary of a business that is being considered for investment.\r' \
                      + 'The positive characteristics of a business that is good to invest in are:\r' \
-                     + ' 1. significant traction in terms of waitlist, customers, and revenue\r' \
-                     + ' 2. an experienced founding team who either together or individually have founded other businesses\r' \
-                     + ' 3. a large potential market greater than 500 million in size\r' \
-                     + ' 4. a team that has worked together before, preferably at a company with an exit\r' \
+                     + ' 1. Significant traction in terms of waitlist, customers, and revenue\r' \
+                     + ' 2. An experienced founding team who either together or individually have founded other businesses\r' \
+                     + ' 3. A large potential market greater than 500 million in size\r' \
+                     + ' 4. A team that has worked together before, preferably at a company that had an IPO or was acquired\r' \
                      + ' 5. Proprietary differentiated technology\r' \
-                     + ' 6. Team members are involved in competitive sports or other disciplined activities in their free time\r' \
-                     + ' 7. They have raised at least 250000 in funding\r' \
-                     + ' 8. They been in business for less than three years\r' \
-                     + ' 9. They more than one founder\r' \
-                     + ' 10. All founders working full-time for the business\r' \
+                     + ' 6. Already raised (not the amount they are trying to raise now) at least 250,000 dollars in funding\r' \
+                     + ' 7. Have been in business for less than three years\r' \
+                     + ' 8. More than one founder\r' \
+                     + ' 9. All founders working full-time for the business\r' \
                      + 'Please evaluate the business from the summary and enumerate the points above as they \r' \
                      + 'apply to the presented business. Count the number of points that they meet.\r' \
                      + 'Also give your overall conclusion about whether this business is a good candidate for investment.'
-
 
