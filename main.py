@@ -2,6 +2,7 @@ import openai
 import numpy as np
 import os
 import json
+import whisper
 
 import email_utils
 import constants
@@ -25,6 +26,17 @@ load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 email_pass = os.getenv('EMAIL_PASS')
 email_user = "investmentevaluator@gmail.com"
+
+
+def transcribe_audio(raw_audio_file, transcription_file):
+    model = whisper.load_model("base")
+    audio = raw_audio_file
+    result = model.transcribe(audio)
+
+    with open(transcription_file, "w", encoding="utf-8") as txt:
+        txt.write(result["text"])
+
+    return result["text"]
 
 
 def chunk_text(raw_text):

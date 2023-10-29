@@ -6,6 +6,7 @@ import uuid
 import smtplib
 import PyPDF2
 from rtf_converter import rtf_to_txt
+from pptx import Presentation
 
 from email import encoders
 from email.mime.text import MIMEText
@@ -58,6 +59,19 @@ def convert_rtf_to_txt(rtf_path):
     return plain_text
 
 
+def convert_pptx_to_text(pptx_path):
+    prs = Presentation(pptx_path)
+    plain_text = ""
+
+    # Iterate through each slide and its shapes to extract text
+    for slide in prs.slides:
+        for shape in slide.shapes:
+            if hasattr(shape, "text"):
+                plain_text += shape.text + "\n"
+
+    return plain_text
+
+
 def write_json_from_text_filepath(from_email, text_filepath):
     with open(text_filepath, "r") as f:
         text = f.read()
@@ -81,7 +95,7 @@ def write_json_from_text_filepath(from_email, text_filepath):
 def send_error_response_and_cleanup(filepath, work_filepath, from_email):
     send_email(from_email,
                "Invalid Request",
-               "Request must have one and only one M4A, WAV, PDF, RTF or TXT attachment.",
+               "Request must have one and only one M4A, WAV, PDF, RTF, PPTX or TXT attachment.",
                []
                )
     if os.path.exists(filepath):
@@ -147,7 +161,7 @@ def get_emails_and_create_work_files():
                         filepath = ""
 
                         if filename:
-                            if filename.endswith((".M4A", ".WAV", ".TXT", ".PDF", ".RTF")):
+                            if filename.endswith((".M4A", ".WAV", ".TXT", ".PDF", ".RTF", ".PPTX")):
                                 valid_attachments += 1
                                 if valid_attachments == 1:
                                     filepath = os.path.join(attachment_dir, filename)
@@ -167,6 +181,10 @@ def get_emails_and_create_work_files():
 
                                     elif filename.endswith(".RTF"):
                                         text = convert_rtf_to_txt(filepath)
+                                        write_text_file(text, transcription_filename)
+
+                                    elif filename.endswith(".PPTX"):
+                                        text = convert_pptx_to_text(filepath)
                                         write_text_file(text, transcription_filename)
 
                                     work_filepath = write_json_from_text_filepath(from_email, transcription_filename)
