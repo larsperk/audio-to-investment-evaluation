@@ -9,7 +9,7 @@ prelude = 'Please answer as a helpful ai agent.' \
 
 
 prompt_list = ["NAME", "PROBLEM", "SOLUTION", "WHY", "TEAM", "CTO", "TEAM EXPERIENCE", "TRACTION", "FUNDING",
-               "TECH", "TAM", "TIMING", "COMPETITION", "LEISURE"]
+               "TECH", "TAM", "TIMING", "COMPETITION", "LEISURE", "OTHER PROGRAMS"]
 
 prompts = {
     "NAME": 'what is the name of the company that the entrepreneur is talking about and how long has it been in business?',
@@ -25,7 +25,8 @@ prompts = {
     "TAM": 'how big is the market they\'re addressing both in numbers of customers and dollar size',
     "TIMING": 'is there something happening in technology or the market or society that makes this more relevant or more possible right now',
     "COMPETITION": "who are the company's competitors and what are their weaknesses",
-    "LEISURE": 'what do the founders and cofounders do in their spare time for hobbies, avocations and interests, or sports'
+    "LEISURE": 'what do the founders and cofounders do in their spare time for hobbies, avocations and interests, or sports',
+    "OTHER PROGRAMS": 'Has the company attended any other accelerator, incubator, or similar program'
 }
 
 # Consolidate Answers
