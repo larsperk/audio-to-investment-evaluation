@@ -216,11 +216,11 @@ def send_email(recipient_email, subject, body, attachments):
     # body = "See attachments."
 
     # Create a multipart email
-    email = MIMEMultipart()
-    email["From"] = sender_email
-    email["To"] = receiver_email
-    email["Subject"] = subject
-    email.attach(MIMEText(body, "plain"))
+    outbound_email = MIMEMultipart()
+    outbound_email["From"] = sender_email
+    outbound_email["To"] = receiver_email
+    outbound_email["Subject"] = subject
+    outbound_email.attach(MIMEText(body, "plain"))
 
     for attachment_file in attachments:
         # Open the file in binary mode and create a MIME object
@@ -236,7 +236,7 @@ def send_email(recipient_email, subject, body, attachments):
         )
 
         # Attach the MIME object to the email
-        email.attach(part)
+        outbound_email.attach(part)
 
     # Set up the server and port
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -246,7 +246,7 @@ def send_email(recipient_email, subject, body, attachments):
     server.login(sender_email, password)
 
     # Send the email
-    text = email.as_string()  # Convert the MIMEMultipart object to a string
+    text = outbound_email.as_string()  # Convert the MIMEMultipart object to a string
     server.sendmail(sender_email, receiver_email, text)
 
     # Quit the server

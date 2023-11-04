@@ -90,7 +90,7 @@ def consolidate_answers(chunk_answers):
     i = 1
     documents = ""
     for chunk_answer in chunk_answers:
-        documents += "Document "+ str(i) + '\r\n'
+        documents += "Document " + str(i) + '\r\n'
         documents += chunk_answer + '\r\n\r\n'
         i += 1
     documents += constants.consolidate_postscript_1 + str(len(chunk_answers)) + constants.consolidate_postscript_2
@@ -114,7 +114,7 @@ def check_for_work_to_do():
         os.mkdir(work_to_do_dir)
 
     files = [os.path.join(email_utils.WORK_TO_DO_DIR, filename)
-         for filename in os.listdir(email_utils.WORK_TO_DO_DIR)]
+             for filename in os.listdir(email_utils.WORK_TO_DO_DIR)]
 
     return files
 
@@ -183,4 +183,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
