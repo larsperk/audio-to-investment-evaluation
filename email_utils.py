@@ -5,6 +5,7 @@ import time
 import uuid
 import smtplib
 import PyPDF2
+import docx2txt
 from rtf_converter import rtf_to_txt
 from pptx import Presentation
 
@@ -161,7 +162,7 @@ def get_emails_and_create_work_files():
                         filepath = ""
 
                         if filename:
-                            if filename.endswith((".M4A", ".WAV", ".TXT", ".PDF", ".RTF", ".PPTX")):
+                            if filename.endswith((".M4A", ".WAV", ".TXT", ".PDF", ".RTF", ".PPTX", ".DOCX")):
                                 valid_attachments += 1
                                 if valid_attachments == 1:
                                     filepath = os.path.join(attachment_dir, filename)
@@ -185,6 +186,10 @@ def get_emails_and_create_work_files():
 
                                     elif filename.endswith(".PPTX"):
                                         text = convert_pptx_to_text(filepath)
+                                        write_text_file(text, transcription_filename)
+
+                                    elif filename.endswith(".DOCX"):
+                                        text = docx2txt.process(filepath)
                                         write_text_file(text, transcription_filename)
 
                                     work_filepath = write_json_from_text_filepath(from_email, transcription_filename)

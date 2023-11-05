@@ -6,3 +6,4 @@ pypdf2
 rtf-converter
 pycryptodome
 python-pptx
+docx2txt
