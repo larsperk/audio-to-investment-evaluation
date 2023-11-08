@@ -13,7 +13,7 @@ SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
 TRANSCRIPTION_FILENAME = "transcription.txt"
 
-OPENAI_MODEL = 'gpt-4'      # 'gpt-3.5-turbo'
+OPENAI_MODEL = 'gpt-3.5-turbo'      # 'gpt-4'
 TEMPERATURE = 0.5
 CHUNK_SIZE = 10000
 CHUNK_OVERLAP = 200
@@ -62,7 +62,7 @@ def ask_questions_of_text(prelude, prompt_list, prompts, text):
         temperature=TEMPERATURE
     )
 
-    chat_response = response.choices[0]['message']['content'] + '\r'
+    chat_response = response.choices[0].message.content + '\r'
 
     return chat_response
 
@@ -76,7 +76,7 @@ def evaluate_business_for_investment(prelude, company_summary):
         ],
         temperature=TEMPERATURE
     )
-    chat_response = response.choices[0]['message']['content'] + '\r'
+    chat_response = response.choices[0].message.content + '\r'
 
     return chat_response
 
