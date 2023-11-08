@@ -9,7 +9,6 @@ import constants
 
 from dotenv import load_dotenv
 
-
 RAW_FILENAME_BASE = "recorded_audio"
 SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
@@ -29,8 +28,9 @@ email_user = "investmentevaluator@gmail.com"
 def transcribe_audio(raw_audio_file, transcription_file):
     model = whisper.load_model("base")
     audio = raw_audio_file
-    log_message(f"About to transcribe {raw_audio_file} to {transcription_file}")
+    log_message(f"transcribe {raw_audio_file} -> {transcription_file}")
     result = model.transcribe(audio)
+    log_message(f"transcribe {raw_audio_file} -> {transcription_file} complete")
 
     with open(transcription_file, "w", encoding="utf-8") as txt:
         txt.write(result["text"])
