@@ -2,6 +2,13 @@
 import wave
 import threading
 import sounddevice as sd
+import numpy as np
+"""
+
+"""
+SAMPLE_RATE = 44100
+CHANNELS = 1
+DATA_TYPE = np.int16
 """
 
 """

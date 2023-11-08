@@ -1,5 +1,4 @@
 import openai
-import numpy as np
 import os
 import json
 import whisper
@@ -8,10 +7,6 @@ import email_utils
 import constants
 
 from dotenv import load_dotenv
-
-SAMPLE_RATE = 44100
-CHANNELS = 1
-DATA_TYPE = np.int16
 
 RAW_FILENAME_BASE = "recorded_audio"
 SUMMARY_FILENAME = "summary.txt"
