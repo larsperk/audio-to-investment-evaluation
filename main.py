@@ -56,7 +56,7 @@ def ask_questions_of_text(prelude, prompt_list, prompts, text):
         {"role": "system", "content": prelude + '\r\r\"' + text},
         {"role": "user", "content": aggregate_questions},
     ]
-    response = openai.ChatCompletion.create(
+    response = openai.chat.completions.create(
         model=OPENAI_MODEL,
         messages=messages,
         temperature=TEMPERATURE
@@ -68,7 +68,7 @@ def ask_questions_of_text(prelude, prompt_list, prompts, text):
 
 
 def evaluate_business_for_investment(prelude, company_summary):
-    response = openai.ChatCompletion.create(
+    response = openai.chat.completions.create(
         model=OPENAI_MODEL,
         messages=[
             {"role": "system", "content": prelude},
@@ -90,7 +90,7 @@ def consolidate_answers(chunk_answers):
         i += 1
     documents += constants.consolidate_postscript_1 + str(len(chunk_answers)) + constants.consolidate_postscript_2
 
-    response = openai.ChatCompletion.create(
+    response = openai.chat.completions.create(
         model=OPENAI_MODEL,
         messages=[
             {"role": "system", "content": constants.role_description},
