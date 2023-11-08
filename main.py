@@ -144,6 +144,7 @@ def main():
             consolidated_summary = ''
             for chunk in chunked_text:
                 if chunk:
+                    print("Summary start")
                     summary = ask_questions_of_text(
                         constants.prelude, constants.prompt_list, constants.prompts, chunk
                     )
@@ -158,6 +159,7 @@ def main():
             else:
                 summary_of_summaries = consolidated_summary
 
+            print("Evaluation start")
             evaluation = evaluate_business_for_investment(constants.evaluation_prelude, summary_of_summaries)
             print("Evaluation complete")
 

@@ -114,6 +114,8 @@ def get_emails_and_create_work_files():
         no_new_work_to_do = True
 
     while no_new_work_to_do:
+        print("checking email again ...")
+
         # Connect to Gmail's IMAP server
         imap_server = imaplib.IMAP4_SSL("imap.gmail.com")
         imap_server.login(email_user, email_pass)
@@ -179,7 +181,9 @@ def get_emails_and_create_work_files():
                                     transcription_filename = root_filepath + ".TXT"
 
                                     if filename.endswith((".M4A", ".WAV")):
+                                        print("transcribe start")
                                         main.transcribe_audio(filepath, transcription_filename)
+                                        print("transcribe end")
 
                                     elif filename.endswith(".PDF"):
                                         text = convert_pdf_to_txt(filepath)
@@ -201,6 +205,9 @@ def get_emails_and_create_work_files():
                                     if os.path.exists(filepath):
                                         os.remove(filepath)
                                     no_new_work_to_do = False
+
+                                    print("we got some work to do ...")
+
                                 else:
                                     send_error_response_and_cleanup(filepath, work_filepath, from_email)
                         else:
@@ -215,8 +222,6 @@ def get_emails_and_create_work_files():
 
         if no_new_work_to_do:
             time.sleep(30)
-
-
 
     return
 
