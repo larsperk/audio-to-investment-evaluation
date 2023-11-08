@@ -5,7 +5,7 @@ prelude = 'Please answer as a helpful ai agent.' \
           + 'who is starting a business and discussing their business and their product.\r' \
           + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\r' \
           + 'Be as detailed as possible when answering the questions."\r' \
-          + 'If you don\'t know the answer, please answer "unknown",'
+          + 'If you don\'t know the answer, please answer "unknown"'
 
 
 prompt_list = ["NAME", "PROBLEM", "SOLUTION", "WHY", "TEAM", "CTO", "TEAM EXPERIENCE", "TRACTION", "FUNDING",
@@ -32,7 +32,7 @@ prompts = {
     "TIMING": 'is there something happening in technology or the market or society '
               'that makes this more relevant or more possible right now',
     "COMPETITION": "who are the company's competitors and what are their weaknesses",
-    "LEISURE": 'what do the founders and cofounders do in their spare time '
+    "LEISURE": 'what do the founders and co-founders do in their spare time '
                'for hobbies, avocations and interests, or sports',
     "OTHER PROGRAMS": 'has the company attended any other accelerator, incubator, or similar program'
 }

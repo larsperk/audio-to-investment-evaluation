@@ -21,6 +21,7 @@ import json
 import main
 
 MODE = 'EMAIL'  # EMAIL or MICROPHONE or FORCE AUDIO or FORCE TEXT
+
 FORCED_TEXT_FILENAME = "transcription.txt"
 FORCED_AUDIO_FILENAME = "54 Clay Brook Rd 2.m4a"
 WORK_TO_DO_DIR = "work-to-do"
@@ -96,7 +97,7 @@ def write_json_from_text_filepath(from_email, text_filepath):
 def send_error_response_and_cleanup(filepath, work_filepath, from_email):
     send_email(from_email,
                "Invalid Request",
-               "Request must have one and only one M4A, WAV, PDF, RTF, PPTX or TXT attachment.",
+               "Request must have one and only one M4A, WAV, PDF, RTF, PPTX, DOC or TXT attachment.",
                []
                )
     if os.path.exists(filepath):
@@ -107,7 +108,11 @@ def send_error_response_and_cleanup(filepath, work_filepath, from_email):
 
 
 def get_emails_and_create_work_files():
-    no_new_work_to_do = True
+    if MODE == 'FORCE TEXT':
+        no_new_work_to_do = False
+    else:
+        no_new_work_to_do = True
+
     while no_new_work_to_do:
         # Connect to Gmail's IMAP server
         imap_server = imaplib.IMAP4_SSL("imap.gmail.com")
@@ -206,6 +211,8 @@ def get_emails_and_create_work_files():
         imap_server.logout()
         if no_new_work_to_do:
             time.sleep(30)
+
+
 
     return
 

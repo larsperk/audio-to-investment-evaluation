@@ -21,6 +21,7 @@ TRANSCRIPTION_FILENAME = "transcription.txt"
 OPENAI_MODEL = 'gpt-4'      # 'gpt-3.5-turbo'
 TEMPERATURE = 0.5
 CHUNK_SIZE = 10000
+CHUNK_OVERLAP = 200
 
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -41,13 +42,12 @@ def transcribe_audio(raw_audio_file, transcription_file):
 
 def chunk_text(raw_text):
     chunk_size = CHUNK_SIZE
-    chunk_overlap = 200
+    chunk_overlap = CHUNK_OVERLAP
 
     chunked_text = []
     while len(raw_text) > 0:
         chunked_text.append(raw_text[:chunk_size])
-        temp = raw_text[(chunk_size-chunk_overlap):]
-        raw_text = temp
+        raw_text = raw_text[(chunk_size-chunk_overlap):]
 
     return chunked_text
 
@@ -113,8 +113,10 @@ def check_for_work_to_do():
     if not os.path.exists(work_to_do_dir):
         os.mkdir(work_to_do_dir)
 
-    files = [os.path.join(email_utils.WORK_TO_DO_DIR, filename)
-             for filename in os.listdir(email_utils.WORK_TO_DO_DIR)]
+    files = [
+        os.path.join(email_utils.WORK_TO_DO_DIR, filename)
+        for filename in os.listdir(email_utils.WORK_TO_DO_DIR)
+    ]
 
     return files
 
