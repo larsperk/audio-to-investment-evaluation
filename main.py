@@ -2,6 +2,7 @@ import openai
 import os
 import json
 import whisper
+from datetime import datetime
 
 import email_utils
 import constants
@@ -116,8 +117,17 @@ def check_for_work_to_do():
     return files
 
 
+def log_message(message):
+    print(f"{datetime.now()} : {message}\r\n")
+    with open("log_IE.txt", "a") as myfile:
+        myfile.write(f"{datetime.now()} : {message}\r\n")
+
+    return
+
+
 def main():
-    print("audio-to-investment-summary started")
+    log_message("audio-to-investment-summary started")
+
     while True:
         files = check_for_work_to_do()
 
@@ -139,13 +149,13 @@ def main():
             consolidated_summary = ''
             for chunk in chunked_text:
                 if chunk:
-                    print("Summary start")
+                    log_message("Summary start")
                     summary = ask_questions_of_text(
                         constants.prelude, constants.prompt_list, constants.prompts, chunk
                     )
 
                     consolidated_summary += summary
-            print("Summary complete")
+            log_message("Summary complete")
 
             if len(chunked_text) > 1:
                 summary_of_summaries = ask_questions_of_text(
@@ -154,9 +164,9 @@ def main():
             else:
                 summary_of_summaries = consolidated_summary
 
-            print("Evaluation start")
+            log_message("Evaluation start")
             evaluation = evaluate_business_for_investment(constants.evaluation_prelude, summary_of_summaries)
-            print("Evaluation complete")
+            log_message("Evaluation complete")
 
             if from_email:
                 with open(TRANSCRIPTION_FILENAME, "w", encoding="utf-8") as txt:
@@ -176,7 +186,7 @@ def main():
                     "lars@larsperkins.com", f"Evaluation processed for {from_email}", "See attachments",
                     [TRANSCRIPTION_FILENAME, SUMMARY_FILENAME, EVALUATION_FILENAME]
                 )
-                print("Reply sent")
+                log_message("Reply sent")
                 os.remove(work_file)
 
 

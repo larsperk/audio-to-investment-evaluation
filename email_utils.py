@@ -114,7 +114,7 @@ def get_emails_and_create_work_files():
         no_new_work_to_do = True
 
     while no_new_work_to_do:
-        print("checking email again ...")
+        main.log_message("checking email again ...")
 
         # Connect to Gmail's IMAP server
         imap_server = imaplib.IMAP4_SSL("imap.gmail.com")
@@ -129,7 +129,7 @@ def get_emails_and_create_work_files():
             unread_count = len(email_id_list)
 
             if unread_count > 0:
-                print(f"Number of unread emails: {unread_count}")
+                main.log_message(f"Number of unread emails: {unread_count}")
                 attachment_dir = 'email_attachments'
                 if not os.path.exists(attachment_dir):
                     os.mkdir(attachment_dir)
@@ -175,15 +175,15 @@ def get_emails_and_create_work_files():
                                     filepath = os.path.join(attachment_dir, filename)
                                     with open(filepath, 'wb') as f:
                                         f.write(part.get_payload(decode=True))
-                                    print(f"Downloaded attachment: {filename}")
+                                    main.log_message(f"Downloaded attachment: {filename}")
 
                                     root_filepath, _ = os.path.splitext(filepath)
                                     transcription_filename = root_filepath + ".TXT"
 
                                     if filename.endswith((".M4A", ".WAV")):
-                                        print("transcribe start")
+                                        main.log_message("transcribe start")
                                         main.transcribe_audio(filepath, transcription_filename)
-                                        print("transcribe end")
+                                        main.log_message("transcribe end")
 
                                     elif filename.endswith(".PDF"):
                                         text = convert_pdf_to_txt(filepath)
@@ -206,14 +206,14 @@ def get_emails_and_create_work_files():
                                         os.remove(filepath)
                                     no_new_work_to_do = False
 
-                                    print("we got some work to do ...")
+                                    main.log_message("we got some work to do ...")
 
                                 else:
                                     send_error_response_and_cleanup(filepath, work_filepath, from_email)
                         else:
                             send_error_response_and_cleanup(filepath, work_filepath, from_email)
         else:
-            print("Failed to retrieve unread emails.")
+            main.log_message("Failed to retrieve unread emails.")
 
         try:
             imap_server.logout()
