@@ -208,7 +208,11 @@ def get_emails_and_create_work_files():
         else:
             print("Failed to retrieve unread emails.")
 
-        imap_server.logout()
+        try:
+            imap_server.logout()
+        except:
+            pass
+
         if no_new_work_to_do:
             time.sleep(30)
 
