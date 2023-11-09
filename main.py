@@ -39,16 +39,20 @@ def transcribe_audio_using_whisper(raw_audio_file, transcription_file):
 
     return result["text"]
 
+
 def transcribe_audio_using_aai(raw_audio_file, transcription_file):
 
     transcriber = aai.Transcriber()
 
+    log_message(f"transcribe {raw_audio_file} -> {transcription_file}")
     result = transcriber.transcribe(raw_audio_file)
+    log_message(f"transcribe {transcription_file} complete")
 
     with open(transcription_file, "w", encoding="utf-8") as txt:
         txt.write(result.text)
 
     return result.text
+
 
 def chunk_text(raw_text):
     chunk_size = CHUNK_SIZE
