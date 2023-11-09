@@ -26,11 +26,11 @@ email_user = "investmentevaluator@gmail.com"
 
 
 def transcribe_audio(raw_audio_file, transcription_file):
-    model = whisper.load_model("base")
+    model = whisper.load_model("tiny")
     audio = raw_audio_file
     log_message(f"transcribe {raw_audio_file} -> {transcription_file}")
     result = model.transcribe(audio)
-    log_message(f"transcribe {raw_audio_file} -> {transcription_file} complete")
+    log_message(f"transcribe {transcription_file} complete")
 
     with open(transcription_file, "w", encoding="utf-8") as txt:
         txt.write(result["text"])

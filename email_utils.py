@@ -114,8 +114,6 @@ def get_emails_and_create_work_files():
         no_new_work_to_do = True
 
     while no_new_work_to_do:
-        main.log_message("checking email again ...")
-
         # Connect to Gmail's IMAP server
         imap_server = imaplib.IMAP4_SSL("imap.gmail.com")
         imap_server.login(email_user, email_pass)
