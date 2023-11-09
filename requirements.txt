@@ -7,3 +7,4 @@ rtf-converter
 pycryptodome
 python-pptx
 docx2txt
+assemblyai

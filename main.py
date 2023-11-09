@@ -3,6 +3,7 @@ import os
 import json
 import whisper
 from datetime import datetime
+import assemblyai as aai
 
 import email_utils
 import constants
@@ -23,9 +24,10 @@ load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 email_pass = os.getenv('EMAIL_PASS')
 email_user = "investmentevaluator@gmail.com"
+aai.settings.api_key = os.getenv('AAI_API_KEY')
 
 
-def transcribe_audio(raw_audio_file, transcription_file):
+def transcribe_audio_using_whisper(raw_audio_file, transcription_file):
     model = whisper.load_model("tiny")
     audio = raw_audio_file
     log_message(f"transcribe {raw_audio_file} -> {transcription_file}")
@@ -37,6 +39,16 @@ def transcribe_audio(raw_audio_file, transcription_file):
 
     return result["text"]
 
+def transcribe_audio_using_aai(raw_audio_file, transcription_file):
+
+    transcriber = aai.Transcriber()
+
+    result = transcriber.transcribe(raw_audio_file)
+
+    with open(transcription_file, "w", encoding="utf-8") as txt:
+        txt.write(result.text)
+
+    return result.text
 
 def chunk_text(raw_text):
     chunk_size = CHUNK_SIZE

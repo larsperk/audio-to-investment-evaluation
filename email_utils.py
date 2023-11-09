@@ -180,7 +180,7 @@ def get_emails_and_create_work_files():
 
                                     if filename.endswith((".M4A", ".WAV")):
                                         main.log_message("transcribe start")
-                                        main.transcribe_audio(filepath, transcription_filename)
+                                        main.transcribe_audio_using_aai(filepath, transcription_filename)
                                         main.log_message("transcribe end")
 
                                     elif filename.endswith(".PDF"):
