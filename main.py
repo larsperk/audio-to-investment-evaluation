@@ -66,24 +66,28 @@ def chunk_text(raw_text):
     return chunked_text
 
 
-def ask_questions_of_text(prelude, prompt_list, prompts, text):
+def ask_questions_of_text(categories, prelude, prompt_list, prompts, text):
     aggregate_questions = ""
-    for prompt in prompt_list:
-        aggregate_questions += prompts[prompt] + ". Please put the answer under the heading " + prompt + "" + "\r"
+    chat_responses = ""
 
-    messages = [
-        {"role": "system", "content": prelude + '\r\r\"' + text},
-        {"role": "user", "content": aggregate_questions},
-    ]
-    response = openai.chat.completions.create(
-        model=OPENAI_MODEL,
-        messages=messages,
-        temperature=TEMPERATURE
-    )
+    for category in categories:
+        for prompt in prompt_list[category]:
+            aggregate_questions += prompts[category][prompt] + ". Please put the answer under the heading " + prompt + "\r"
 
-    chat_response = response.choices[0].message.content + '\r'
+        messages = [
+            {"role": "system", "content": prelude + '\r\r\"' + text},
+            {"role": "user", "content": aggregate_questions},
+        ]
+        response = openai.chat.completions.create(
+            model=OPENAI_MODEL,
+            messages=messages,
+            temperature=TEMPERATURE
+        )
 
-    return chat_response
+        chat_response = response.choices[0].message.content + '\r'
+        chat_responses += chat_response
+
+    return chat_responses
 
 
 def evaluate_business_for_investment(prelude, company_summary):
@@ -107,12 +111,12 @@ def consolidate_answers(chunk_answers):
         documents += "Document " + str(i) + '\r\n'
         documents += chunk_answer + '\r\n\r\n'
         i += 1
-    documents += constants.consolidate_postscript_1 + str(len(chunk_answers)) + constants.consolidate_postscript_2
+    documents += constants.consolidate_prompt_1 + str(len(chunk_answers)) + constants.consolidate_prompt_2
 
     response = openai.chat.completions.create(
         model=OPENAI_MODEL,
         messages=[
-            {"role": "system", "content": constants.role_description},
+            {"role": "system", "content": constants.consolidate_prelude},
             {"role": "user", "content": documents},
         ],
         temperature=TEMPERATURE
@@ -169,7 +173,11 @@ def main():
                 if chunk:
                     log_message("Summary start")
                     summary = ask_questions_of_text(
-                        constants.prelude, constants.prompt_list, constants.prompts, chunk
+                        constants.summary_prompt_categories,
+                        constants.summary_prelude,
+                        constants.summary_prompt_list,
+                        constants.summary_prompts,
+                        chunk
                     )
 
                     consolidated_summary += summary
@@ -177,13 +185,20 @@ def main():
 
             if len(chunked_text) > 1:
                 summary_of_summaries = ask_questions_of_text(
-                    constants.prelude, constants.prompt_list, constants.prompts, consolidated_summary
+                    constants.summary_prompt_categories,
+                    constants.summary_prelude,
+                    constants.summary_prompt_list,
+                    constants.summary_prompts,
+                    consolidated_summary
                 )
             else:
                 summary_of_summaries = consolidated_summary
 
             log_message("Evaluation start")
-            evaluation = evaluate_business_for_investment(constants.evaluation_prelude, summary_of_summaries)
+            evaluation = evaluate_business_for_investment(
+                constants.evaluation_prelude,
+                summary_of_summaries
+            )
             log_message("Evaluation complete")
 
             if from_email:
