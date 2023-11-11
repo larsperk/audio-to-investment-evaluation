@@ -121,7 +121,7 @@ def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
 
     company_name = main.get_name_of_company(total_file_contents[1])
     if company_name[:26].upper() == 'THE NAME OF THE COMPANY IS':
-        company_name = company_name[27:-1]
+        company_name = company_name[27:]
 
     """
     if total_file_contents[1][:26].upper() == 'THE NAME OF THE COMPANY IS':
