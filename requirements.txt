@@ -8,3 +8,4 @@ pycryptodome
 python-pptx
 docx2txt
 assemblyai
+python-docx

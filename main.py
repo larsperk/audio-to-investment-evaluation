@@ -72,7 +72,8 @@ def ask_questions_of_text(categories, prelude, prompt_list, prompts, text):
 
     for category in categories:
         for prompt in prompt_list[category]:
-            aggregate_questions += prompts[category][prompt] + ". Please put the answer under the heading " + prompt + "\r"
+            aggregate_questions += prompts[category][prompt] + \
+                                   ". Please put the answer under the heading " + prompt + "\r"
 
         messages = [
             {"role": "system", "content": prelude + '\r\r\"' + text},
@@ -149,7 +150,7 @@ def log_message(message):
 
 def main():
     log_message("audio-to-investment-summary started")
-
+    # docx_filename = email_utils.convert_txt_to_docx(SUMMARY_FILENAME, EVALUATION_FILENAME)
     while True:
         files = check_for_work_to_do()
 
@@ -202,22 +203,26 @@ def main():
             log_message("Evaluation complete")
 
             if from_email:
+                docx_filename = email_utils.convert_txt_to_docx(SUMMARY_FILENAME, EVALUATION_FILENAME)
+
                 with open(TRANSCRIPTION_FILENAME, "w", encoding="utf-8") as txt:
                     txt.write(raw_text)
 
+                """
                 with open(SUMMARY_FILENAME, "w", encoding="utf-8") as txt:
                     txt.write(summary_of_summaries)
 
                 with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
                     txt.write(evaluation)
+                """
 
                 email_utils.send_email(
                     from_email, "Investment evaluation", "See attachments",
-                    [TRANSCRIPTION_FILENAME, SUMMARY_FILENAME, EVALUATION_FILENAME]
+                    [TRANSCRIPTION_FILENAME, docx_filename]
                 )
                 email_utils.send_email(
                     "lars@larsperkins.com", f"Evaluation processed for {from_email}", "See attachments",
-                    [TRANSCRIPTION_FILENAME, SUMMARY_FILENAME, EVALUATION_FILENAME]
+                    [TRANSCRIPTION_FILENAME, docx_filename]
                 )
                 log_message("Reply sent")
                 os.remove(work_file)

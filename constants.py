@@ -89,6 +89,6 @@ evaluation_prelude = 'The following is a summary of a business that is being con
                      + 'apply to the presented business. Count the number of points that they meet.\r' \
                      + 'Also give your overall conclusion about whether ' \
                        'this business is a good candidate for investment. Also, after the preceding overview, ' \
-                       'under the heading "SUGGESTED QUESTION suggest questions to be asked to elicit information' \
+                       'under the heading "SUGGESTED QUESTIONS:" suggest questions to be asked to elicit information' \
                        ' on the unknown characteristics.\r'
 

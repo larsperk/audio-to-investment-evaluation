@@ -8,6 +8,9 @@ import PyPDF2
 import docx2txt
 from rtf_converter import rtf_to_txt
 from pptx import Presentation
+import docx
+from docx.shared import RGBColor
+from datetime import datetime
 
 from email import encoders
 from email.mime.text import MIMEText
@@ -106,6 +109,45 @@ def send_error_response_and_cleanup(filepath, work_filepath, from_email):
     if os.path.exists(work_filepath):
         os.remove(work_filepath)
 
+
+def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
+    with open(summary_txt_file, "r") as f:
+        summary_txt_file_contents = [line.strip() for line in f]
+
+    with open(evaluation_txt_file,"r") as f:
+        evaluation_txt_file_contents = [line.strip() for line in f]
+
+    total_file_contents = summary_txt_file_contents + evaluation_txt_file_contents
+
+    company_name = None
+    if total_file_contents[1][:26].upper() == 'THE NAME OF THE COMPANY IS':
+        company_name = total_file_contents[1][27:-1].upper()
+    company_name = company_name or "UNKNOWN"
+    todays_datetime = datetime.now().strftime("%Y-%m-%d %H%M")
+
+    doc = docx.Document()
+
+    title = doc.add_paragraph(f"SUMMARY OF {company_name}\n{todays_datetime}")
+
+    run = title.runs[0]
+    run.font.size = docx.shared.Pt(14)
+    run.font.bold = True
+
+    for line in total_file_contents:
+        if line != "":
+            if line.endswith(":"):
+                heading = doc.add_heading(line)
+                run = heading.runs[0]
+                run.font.color.rgb = RGBColor(0, 0, 0)
+
+            else:
+                graph = doc.add_paragraph(line)
+                graph.paragraph_format.line_spacing = 1
+                graph.paragraph_format.space_after = 0
+
+    docx_filename = f"summary-{company_name}-{todays_datetime}.docx"
+    doc.save(docx_filename)
+    return docx_filename
 
 def get_emails_and_create_work_files():
     if MODE == 'FORCE TEXT':
