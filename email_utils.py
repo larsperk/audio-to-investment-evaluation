@@ -156,6 +156,7 @@ def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
 
 
 def get_emails_and_create_work_files():
+    no_new_work_to_do = True
     while no_new_work_to_do:
         # Connect to Gmail's IMAP server
         imap_server = imaplib.IMAP4_SSL("imap.gmail.com")
