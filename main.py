@@ -138,7 +138,7 @@ def get_name_of_company(input_line):
         messages=messages,
         temperature=0.0
     )
-    chat_response = response.choices[0].message.content + '\r'
+    chat_response = response.choices[0].message.content
     if chat_response[-1:] == ".":
         chat_response = chat_response[:-1]
 
