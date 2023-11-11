@@ -114,7 +114,7 @@ def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
     with open(summary_txt_file, "r") as f:
         summary_txt_file_contents = [line.strip() for line in f]
 
-    with open(evaluation_txt_file,"r") as f:
+    with open(evaluation_txt_file, "r") as f:
         evaluation_txt_file_contents = [line.strip() for line in f]
 
     total_file_contents = summary_txt_file_contents + evaluation_txt_file_contents
@@ -122,6 +122,11 @@ def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
     company_name = None
     if total_file_contents[1][:26].upper() == 'THE NAME OF THE COMPANY IS':
         company_name = total_file_contents[1][27:-1].upper()
+    elif total_file_contents[1][:22].upper() == 'THE COMPANY IS CALLED':
+        company_name = total_file_contents[1][23:-1].upper()
+    elif ' ' not in total_file_contents[1]:
+        company_name = total_file_contents[1][:-1]
+
     company_name = company_name or "UNKNOWN"
     todays_datetime = datetime.now().strftime("%Y-%m-%d %H%M")
 
@@ -149,12 +154,8 @@ def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
     doc.save(docx_filename)
     return docx_filename
 
-def get_emails_and_create_work_files():
-    if MODE == 'FORCE TEXT':
-        no_new_work_to_do = False
-    else:
-        no_new_work_to_do = True
 
+def get_emails_and_create_work_files():
     while no_new_work_to_do:
         # Connect to Gmail's IMAP server
         imap_server = imaplib.IMAP4_SSL("imap.gmail.com")

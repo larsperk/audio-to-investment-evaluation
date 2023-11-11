@@ -203,21 +203,19 @@ def main():
             log_message("Evaluation complete")
 
             if from_email:
-                docx_filename = email_utils.convert_txt_to_docx(SUMMARY_FILENAME, EVALUATION_FILENAME)
-
                 with open(TRANSCRIPTION_FILENAME, "w", encoding="utf-8") as txt:
                     txt.write(raw_text)
 
-                """
                 with open(SUMMARY_FILENAME, "w", encoding="utf-8") as txt:
                     txt.write(summary_of_summaries)
 
                 with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
                     txt.write(evaluation)
-                """
+
+                docx_filename = email_utils.convert_txt_to_docx(SUMMARY_FILENAME, EVALUATION_FILENAME)
 
                 email_utils.send_email(
-                    from_email, "Investment evaluation", "See attachments",
+                    from_email, docx_filename, "See attachments",
                     [TRANSCRIPTION_FILENAME, docx_filename]
                 )
                 email_utils.send_email(
