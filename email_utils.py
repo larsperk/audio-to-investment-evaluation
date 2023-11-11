@@ -124,6 +124,10 @@ def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
         company_name = total_file_contents[1][27:-1].upper()
     elif total_file_contents[1][:22].upper() == 'THE COMPANY IS CALLED':
         company_name = total_file_contents[1][23:-1].upper()
+    elif total_file_contents[1][:55].upper() == 'THE COMPANY THE ENTREPRENEUR IS TALKING ABOUT IS CALLED':
+        company_name = total_file_contents[1][56:-1].upper()
+    elif total_file_contents[1][:48].upper() == 'THE COMPANY THE ENTREPRENEUR IS TALKING ABOUT IS':
+        company_name = total_file_contents[1][49:-1].upper()
     elif ' ' not in total_file_contents[1]:
         company_name = total_file_contents[1][:-1]
 
