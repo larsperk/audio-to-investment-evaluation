@@ -141,7 +141,7 @@ def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
 
     doc = docx.Document()
 
-    title = doc.add_paragraph(f"SUMMARY OF {company_name}\n{todays_datetime}")
+    title = doc.add_paragraph(f"Summary of {company_name}\n{todays_datetime}")
 
     run = title.runs[0]
     run.font.size = docx.shared.Pt(14)

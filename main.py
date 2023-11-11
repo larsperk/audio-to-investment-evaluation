@@ -141,6 +141,8 @@ def get_name_of_company(input_line):
     chat_response = response.choices[0].message.content
     if chat_response[-1:] == ".":
         chat_response = chat_response[:-1]
+    if chat_response[9:].upper() == "I'M SORRY":
+        chat_response = "Unknown"
 
     return chat_response
 
