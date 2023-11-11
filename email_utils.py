@@ -149,7 +149,7 @@ def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
 
     for line in total_file_contents:
         if line != "":
-            if line.endswith(":"):
+            if line.endswith(":") or (line == line.upper()):
                 heading = doc.add_heading(line)
                 run = heading.runs[0]
                 run.font.color.rgb = RGBColor(0, 0, 0)
