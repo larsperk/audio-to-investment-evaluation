@@ -127,6 +127,22 @@ def consolidate_answers(chunk_answers):
     return chat_response
 
 
+def get_name_of_company(input_line):
+    messages = [
+        {"role": "system", "content": "Consider the following sentence and answer "
+                                      "as a helpful AI agent with only the name of the company"},
+        {"role": "user", "content": f'"{input_line}"\n"What is the name of the company?' },
+    ]
+    response = openai.chat.completions.create(
+        model=OPENAI_MODEL,
+        messages=messages,
+        temperature=0.0
+    )
+    chat_response = response.choices[0].message.content + '\r'
+
+    return chat_response
+
+
 def check_for_work_to_do():
     work_to_do_dir = email_utils.WORK_TO_DO_DIR
     if not os.path.exists(work_to_do_dir):

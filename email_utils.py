@@ -119,17 +119,22 @@ def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
 
     total_file_contents = summary_txt_file_contents + evaluation_txt_file_contents
 
-    company_name = None
+    company_name = main.get_name_of_company(total_file_contents[1])
+    if company_name[:26].upper() == 'THE NAME OF THE COMPANY IS':
+        company_name = company_name[27:-1].upper()
+
+    """
     if total_file_contents[1][:26].upper() == 'THE NAME OF THE COMPANY IS':
         company_name = total_file_contents[1][27:-1].upper()
-    elif total_file_contents[1][:22].upper() == 'THE COMPANY IS CALLED':
-        company_name = total_file_contents[1][23:-1].upper()
+    elif total_file_contents[1][:21].upper() == 'THE COMPANY IS CALLED':
+        company_name = total_file_contents[1][22:-1].upper()
     elif total_file_contents[1][:55].upper() == 'THE COMPANY THE ENTREPRENEUR IS TALKING ABOUT IS CALLED':
         company_name = total_file_contents[1][56:-1].upper()
     elif total_file_contents[1][:48].upper() == 'THE COMPANY THE ENTREPRENEUR IS TALKING ABOUT IS':
         company_name = total_file_contents[1][49:-1].upper()
     elif ' ' not in total_file_contents[1]:
         company_name = total_file_contents[1][:-1]
+    """
 
     company_name = company_name or "UNKNOWN"
     todays_datetime = datetime.now().strftime("%Y-%m-%d %H%M")
