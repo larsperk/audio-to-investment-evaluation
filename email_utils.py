@@ -111,56 +111,75 @@ def send_error_response_and_cleanup(filepath, work_filepath, from_email):
 
 
 def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
+    filename_list = []
     with open(summary_txt_file, "r") as f:
         summary_txt_file_contents = [line.strip() for line in f]
+
+    temp = []
+    for line in summary_txt_file_contents:
+        first_space = line.find(" ")
+        if first_space > 1:
+            left_of_space = line[:first_space]
+            if left_of_space == left_of_space.upper() and left_of_space.endswith(":"):
+                temp.append(left_of_space)
+                temp.append(line[first_space+1:])
+            else:
+                temp.append(line)
+        else:
+            temp.append(line)
+
+    summary_txt_file_contents = temp
 
     with open(evaluation_txt_file, "r") as f:
         evaluation_txt_file_contents = [line.strip() for line in f]
 
-    total_file_contents = summary_txt_file_contents + evaluation_txt_file_contents
-
-    company_name = main.get_name_of_company(total_file_contents[1])
+    company_name = main.get_name_of_company(summary_txt_file_contents[1])
     if company_name[:26].upper() == 'THE NAME OF THE COMPANY IS':
         company_name = company_name[27:]
 
-    """
-    if total_file_contents[1][:26].upper() == 'THE NAME OF THE COMPANY IS':
-        company_name = total_file_contents[1][27:-1].upper()
-    elif total_file_contents[1][:21].upper() == 'THE COMPANY IS CALLED':
-        company_name = total_file_contents[1][22:-1].upper()
-    elif total_file_contents[1][:55].upper() == 'THE COMPANY THE ENTREPRENEUR IS TALKING ABOUT IS CALLED':
-        company_name = total_file_contents[1][56:-1].upper()
-    elif total_file_contents[1][:48].upper() == 'THE COMPANY THE ENTREPRENEUR IS TALKING ABOUT IS':
-        company_name = total_file_contents[1][49:-1].upper()
-    elif ' ' not in total_file_contents[1]:
-        company_name = total_file_contents[1][:-1]
-    """
-
     company_name = company_name or "UNKNOWN"
-    todays_datetime = datetime.now().strftime("%Y-%m-%d %H%M")
 
+    docx_filename = write_docx_file("Summary", company_name, summary_txt_file_contents)
+    filename_list.append(docx_filename)
+    docx_filename = write_docx_file("Evaluation", company_name, evaluation_txt_file_contents)
+    filename_list.append(docx_filename)
+
+    return filename_list[0], filename_list[1]
+
+
+def write_docx_file(output_file_prefix, company_name, text_file_contents):
+    todays_datetime = datetime.now().strftime("%Y-%m-%d %H%M")
     doc = docx.Document()
 
-    title = doc.add_paragraph(f"Summary of {company_name}\n{todays_datetime}")
+    title = doc.add_paragraph(f"{output_file_prefix} of {company_name}\n{todays_datetime}")
 
     run = title.runs[0]
     run.font.size = docx.shared.Pt(14)
     run.font.bold = True
 
-    for line in total_file_contents:
+    for line in text_file_contents:
         if line != "":
             if line.endswith(":") or (line == line.upper()):
                 heading = doc.add_heading(line)
                 run = heading.runs[0]
+                run.font.size = docx.shared.Pt(14)
+                run.font.bold = True
                 run.font.color.rgb = RGBColor(0, 0, 0)
+
+            elif output_file_prefix == "Evaluation":
+                while line[:1] in "01234567890. ":
+                    line = line[1:]
+                doc.add_paragraph(line, style="List Number")
 
             else:
                 graph = doc.add_paragraph(line)
                 graph.paragraph_format.line_spacing = 1
                 graph.paragraph_format.space_after = 0
 
-    docx_filename = f"summary-{company_name}-{todays_datetime}.docx"
+    todays_datetime = datetime.now().strftime("%Y-%m-%d %H%M")
+    docx_filename = f"{output_file_prefix}-{company_name}-{todays_datetime}.docx"
     doc.save(docx_filename)
+
     return docx_filename
 
 
@@ -186,8 +205,6 @@ def get_emails_and_create_work_files():
                     os.mkdir(attachment_dir)
 
                 # Fetch and download attachments from each unread email
-
-                from_email = "lars@larsperkins.com"
                 work_filepath = ""
 
                 for email_id in email_id_list:
@@ -206,6 +223,7 @@ def get_emails_and_create_work_files():
                         encoding = None
 
                     if isinstance(subject, bytes):
+                        # TODO use subject to determine questions
                         subject = subject.decode(encoding or "utf-8")
 
                     # Process attachments

@@ -15,7 +15,7 @@ summary_prompt_categories = [
 summary_prompt_list = {
     "TOPICS": [
         "NAME", "PROBLEM", "SOLUTION", "WHY", "TEAM", "CTO", "TEAM EXPERIENCE", "TRACTION", "FUNDING",
-        "TECH", "TAM", "TIMING", "COMPETITION", "LEISURE", "OTHER PROGRAMS"
+        "TECH", "TAM", "TIMING", "COMPETITION", "LEISURE", "PROGRAMS"
     ],
     "OVERVIEW": [
         "OVERVIEW"

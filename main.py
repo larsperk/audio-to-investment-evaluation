@@ -15,9 +15,9 @@ SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
 TRANSCRIPTION_FILENAME = "transcription.txt"
 
-OPENAI_MODEL = 'gpt-3.5-turbo'      # 'gpt-3.5-turbo'
-TEMPERATURE = 0.5
-CHUNK_SIZE = 4095
+OPENAI_MODEL = 'gpt-3.5-turbo'      # 'gpt-4'
+TEMPERATURE = 0.0
+CHUNK_SIZE = 8192
 CHUNK_OVERLAP = 200
 
 load_dotenv()
@@ -73,10 +73,10 @@ def ask_questions_of_text(categories, prelude, prompt_list, prompts, text):
     for category in categories:
         for prompt in prompt_list[category]:
             aggregate_questions += prompts[category][prompt] + \
-                                   ". Please put the answer under the heading " + prompt + "\r"
+                                   ". Please put the answer underneath the heading " + prompt + ":\n\n"
 
         messages = [
-            {"role": "system", "content": prelude + '\r\r\"' + text},
+            {"role": "system", "content": prelude + '\n\n' + text},
             {"role": "user", "content": aggregate_questions},
         ]
         response = openai.chat.completions.create(
@@ -85,7 +85,7 @@ def ask_questions_of_text(categories, prelude, prompt_list, prompts, text):
             temperature=TEMPERATURE
         )
 
-        chat_response = response.choices[0].message.content + '\r'
+        chat_response = response.choices[0].message.content + '\n'
         chat_responses += chat_response
 
     return chat_responses
@@ -130,8 +130,8 @@ def consolidate_answers(chunk_answers):
 def get_name_of_company(input_line):
     messages = [
         {"role": "system", "content": "Consider the following sentence and answer "
-                                      "as a helpful AI agent with only the name of the company"},
-        {"role": "user", "content": f'"{input_line}"\n"What is the name of the company?' },
+                                      "as a helpful AI agent with only the name of the company:\n\n"},
+        {"role": "user", "content": f'"{input_line}"\n\n"What is the name of the company?' },
     ]
     response = openai.chat.completions.create(
         model=OPENAI_MODEL,
@@ -141,7 +141,7 @@ def get_name_of_company(input_line):
     chat_response = response.choices[0].message.content
     if chat_response[-1:] == ".":
         chat_response = chat_response[:-1]
-    if chat_response[9:].upper() == "I'M SORRY":
+    if chat_response[:9].upper() == "I'M SORRY":
         chat_response = "Unknown"
 
     return chat_response
@@ -161,7 +161,7 @@ def check_for_work_to_do():
 
 
 def log_message(message):
-    print(f"{datetime.now()} : {message}\r\n")
+    print(f"{datetime.now()} : {message}")
     with open("log_IE.txt", "a") as myfile:
         myfile.write(f"{datetime.now()} : {message}\r\n")
 
@@ -232,15 +232,15 @@ def main():
                 with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
                     txt.write(evaluation)
 
-                docx_filename = email_utils.convert_txt_to_docx(SUMMARY_FILENAME, EVALUATION_FILENAME)
+                summary_docx, evaluation_docx = email_utils.convert_txt_to_docx(SUMMARY_FILENAME, EVALUATION_FILENAME)
 
                 email_utils.send_email(
-                    from_email, docx_filename, "See attachments",
-                    [TRANSCRIPTION_FILENAME, docx_filename]
+                    from_email, summary_docx, "See attachments",
+                    [TRANSCRIPTION_FILENAME, summary_docx, evaluation_docx]
                 )
                 email_utils.send_email(
                     "lars@larsperkins.com", f"Evaluation processed for {from_email}", "See attachments",
-                    [TRANSCRIPTION_FILENAME, docx_filename]
+                    [TRANSCRIPTION_FILENAME, summary_docx, evaluation_docx]
                 )
                 log_message("Reply sent")
                 os.remove(work_file)
