@@ -223,7 +223,6 @@ def get_emails_and_create_work_files():
                         encoding = None
 
                     if isinstance(subject, bytes):
-                        # TODO use subject to determine questions
                         subject = subject.decode(encoding or "utf-8")
 
                     # Process attachments
