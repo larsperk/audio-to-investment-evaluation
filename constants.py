@@ -47,7 +47,7 @@ summary_prompts = {
             "COMPETITION": "who are the company's competitors and what are their weaknesses",
             "LEISURE": 'what do the founders and co-founders do in their spare time '
                        'for hobbies, avocations and interests, or sports',
-            "OTHER PROGRAMS": 'has the company attended any other accelerator, incubator, or similar program'
+            "PROGRAMS": 'has the company attended any other accelerator, incubator, or similar program'
          },
     "OVERVIEW": {
             "OVERVIEW": "Separately from the preceding summary, summarize the major points of the interview transcript in 10 bullets or less."
