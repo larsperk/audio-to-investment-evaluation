@@ -157,6 +157,7 @@ def write_docx_file(output_file_prefix, company_name, text_file_contents):
     run.font.size = docx.shared.Pt(14)
     run.font.bold = True
 
+    line_numbering_is_on = False
     for line in text_file_contents:
         if line != "":
             if line.endswith(":") or (line == line.upper()):
@@ -165,11 +166,15 @@ def write_docx_file(output_file_prefix, company_name, text_file_contents):
                 run.font.size = docx.shared.Pt(14)
                 run.font.bold = True
                 run.font.color.rgb = RGBColor(0, 0, 0)
+                line_numbering_is_on = not line_numbering_is_on
 
             elif output_file_prefix == "Evaluation":
                 while line[:1] in "01234567890. ":
                     line = line[1:]
-                doc.add_paragraph(line, style="List Number")
+                if line_numbering_is_on:
+                    doc.add_paragraph(line, style="List Number")
+                else:
+                    doc.add_paragraph(line, style="List Bullet")
 
             else:
                 graph = doc.add_paragraph(line)
