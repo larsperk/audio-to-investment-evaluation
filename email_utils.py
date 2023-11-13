@@ -136,6 +136,8 @@ def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
     company_name = main.get_name_of_company(summary_txt_file_contents[1])
     if company_name[:26].upper() == 'THE NAME OF THE COMPANY IS':
         company_name = company_name[27:]
+    if company_name[:33].upper() == "THE INFORMATION PROVIDED DOES NOT":
+        company_name = "Unknown"
 
     company_name = company_name or "UNKNOWN"
 
@@ -158,6 +160,7 @@ def write_docx_file(output_file_prefix, company_name, text_file_contents):
     run.font.bold = True
 
     line_numbering_is_on = False
+    bulleting_is_on = False
     for line in text_file_contents:
         if line != "":
             if line.endswith(":") or (line == line.upper()):
@@ -166,7 +169,7 @@ def write_docx_file(output_file_prefix, company_name, text_file_contents):
                 run.font.size = docx.shared.Pt(14)
                 run.font.bold = True
                 run.font.color.rgb = RGBColor(0, 0, 0)
-                line_numbering_is_on = not line_numbering_is_on
+                line_numbering_is_on = not line_numbering_is_on and not bulleting_is_on
 
             elif output_file_prefix == "Evaluation":
                 while line[:1] in "01234567890. ":
@@ -175,6 +178,7 @@ def write_docx_file(output_file_prefix, company_name, text_file_contents):
                     doc.add_paragraph(line, style="List Number")
                 else:
                     doc.add_paragraph(line, style="List Bullet")
+                    bulleting_is_on = True
 
             else:
                 graph = doc.add_paragraph(line)
