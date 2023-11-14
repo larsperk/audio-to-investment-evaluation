@@ -136,7 +136,7 @@ def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
     company_name = main.get_name_of_company(summary_txt_file_contents[1])
     if company_name[:26].upper() == 'THE NAME OF THE COMPANY IS':
         company_name = company_name[27:]
-    if company_name[:33].upper() == "THE INFORMATION PROVIDED DOES NOT":
+    if "DOES NOT" in company_name:
         company_name = "Unknown"
 
     company_name = company_name or "UNKNOWN"
