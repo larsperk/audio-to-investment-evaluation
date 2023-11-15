@@ -15,9 +15,9 @@ SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
 TRANSCRIPTION_FILENAME = "transcription.txt"
 
-OPENAI_MODEL = 'gpt-3.5-turbo'      # 'gpt-4'
+OPENAI_MODEL = 'gpt-4-1106-preview'      # 'gpt-4'
 TEMPERATURE = 0.0
-CHUNK_SIZE = 2048
+CHUNK_SIZE = 16384
 CHUNK_OVERLAP = 200
 
 load_dotenv()
