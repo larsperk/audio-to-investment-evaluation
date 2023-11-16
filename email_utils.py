@@ -145,8 +145,12 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
     if len(evaluation_txt_file_contents) != 0:
         docx_filename = write_docx_file("Evaluation", subject_name, evaluation_txt_file_contents)
         filename_list.append(docx_filename)
+        evaluation_file = filename_list[1]
 
-    return filename_list[0], filename_list[1]
+    else:
+        evaluation_file = ""
+
+    return filename_list[0], evaluation_file
 
 
 def write_docx_file(output_file_prefix, company_name, text_file_contents):
@@ -326,20 +330,21 @@ def send_email(recipient_email, subject, body, attachments):
     outbound_email.attach(MIMEText(body, "plain"))
 
     for attachment_file in attachments:
-        # Open the file in binary mode and create a MIME object
-        with open(attachment_file, "rb") as attachment:
-            part = MIMEBase("application", "octet-stream")
-            part.set_payload(attachment.read())
+        if attachment_file:
+            # Open the file in binary mode and create a MIME object
+            with open(attachment_file, "rb") as attachment:
+                part = MIMEBase("application", "octet-stream")
+                part.set_payload(attachment.read())
 
-        # Encode the payload and add the necessary headers
-        encoders.encode_base64(part)
-        part.add_header(
-            "Content-Disposition",
-            f"attachment; filename= {attachment_file}",
-        )
+            # Encode the payload and add the necessary headers
+            encoders.encode_base64(part)
+            part.add_header(
+                "Content-Disposition",
+                f"attachment; filename= {attachment_file}",
+            )
 
-        # Attach the MIME object to the email
-        outbound_email.attach(part)
+            # Attach the MIME object to the email
+            outbound_email.attach(part)
 
     # Set up the server and port
     server = smtplib.SMTP('smtp.gmail.com', 587)

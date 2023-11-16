@@ -249,7 +249,9 @@ def main():
                     with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
                         txt.write(evaluation)
 
-                summary_docx, evaluation_docx = email_utils.convert_txt_to_docx(subject, SUMMARY_FILENAME, EVALUATION_FILENAME)
+                summary_docx, evaluation_docx = email_utils.convert_txt_to_docx(
+                    subject, SUMMARY_FILENAME, EVALUATION_FILENAME
+                )
 
                 email_utils.send_email(
                     from_email, summary_docx, "See attachments",
