@@ -142,7 +142,7 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
 
     docx_filename = write_docx_file("Summary", subject_name, summary_txt_file_contents)
     filename_list.append(docx_filename)
-    if len(evaluation_txt_file_contents) == 0:
+    if len(evaluation_txt_file_contents) != 0:
         docx_filename = write_docx_file("Evaluation", subject_name, evaluation_txt_file_contents)
         filename_list.append(docx_filename)
 
