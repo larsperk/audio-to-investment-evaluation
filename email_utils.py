@@ -77,12 +77,13 @@ def convert_pptx_to_text(pptx_path):
     return plain_text
 
 
-def write_json_from_text_filepath(from_email, text_filepath):
+def write_json_from_text_filepath(from_email, subject, text_filepath):
     with open(text_filepath, "r") as f:
         text = f.read()
 
     json_dict = {
         "from": from_email,
+        "subject": subject,
         "text": text
     }
 
@@ -110,7 +111,7 @@ def send_error_response_and_cleanup(filepath, work_filepath, from_email):
         os.remove(work_filepath)
 
 
-def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
+def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
     filename_list = []
     with open(summary_txt_file, "r") as f:
         summary_txt_file_contents = [line.strip() for line in f]
@@ -133,17 +134,12 @@ def convert_txt_to_docx(summary_txt_file, evaluation_txt_file):
     with open(evaluation_txt_file, "r") as f:
         evaluation_txt_file_contents = [line.strip() for line in f]
 
-    company_name = main.get_name_of_company(summary_txt_file_contents[1])
-    if company_name[:26].upper() == 'THE NAME OF THE COMPANY IS':
-        company_name = company_name[27:]
-    if "DOES NOT" in company_name:
-        company_name = "Unknown"
+    generated_name = main.subject_name(subject, summary_txt_file_contents)
+    subject_name = generated_name or "UNKNOWN"
 
-    company_name = company_name or "UNKNOWN"
-
-    docx_filename = write_docx_file("Summary", company_name, summary_txt_file_contents)
+    docx_filename = write_docx_file("Summary", subject_name, summary_txt_file_contents)
     filename_list.append(docx_filename)
-    docx_filename = write_docx_file("Evaluation", company_name, evaluation_txt_file_contents)
+    docx_filename = write_docx_file("Evaluation", subject_name, evaluation_txt_file_contents)
     filename_list.append(docx_filename)
 
     return filename_list[0], filename_list[1]
@@ -231,6 +227,11 @@ def get_emails_and_create_work_files():
                         subject = ""
                         encoding = None
 
+                    while subject[:4] == "Re: ":
+                        subject = subject[4:]
+
+                    subject = subject or "DEFAULT"
+
                     if isinstance(subject, bytes):
                         subject = subject.decode(encoding or "utf-8")
 
@@ -278,7 +279,7 @@ def get_emails_and_create_work_files():
                                         text = docx2txt.process(filepath)
                                         write_text_file(text, transcription_filename)
 
-                                    work_filepath = write_json_from_text_filepath(from_email, transcription_filename)
+                                    work_filepath = write_json_from_text_filepath(from_email, subject, transcription_filename)
                                     if os.path.exists(filepath):
                                         os.remove(filepath)
                                     no_new_work_to_do = False

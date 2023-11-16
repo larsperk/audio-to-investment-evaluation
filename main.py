@@ -41,7 +41,6 @@ def transcribe_audio_using_whisper(raw_audio_file, transcription_file):
 
 
 def transcribe_audio_using_aai(raw_audio_file, transcription_file):
-
     transcriber = aai.Transcriber()
 
     log_message(f"transcribe {raw_audio_file} -> {transcription_file}")
@@ -55,38 +54,34 @@ def transcribe_audio_using_aai(raw_audio_file, transcription_file):
 
 
 def chunk_text(raw_text):
-    chunk_size = CHUNK_SIZE
-    chunk_overlap = CHUNK_OVERLAP
-
     chunked_text = []
     while len(raw_text) > 0:
-        chunked_text.append(raw_text[:chunk_size])
-        raw_text = raw_text[(chunk_size-chunk_overlap):]
+        chunked_text.append(raw_text[:CHUNK_SIZE])
+        raw_text = raw_text[(CHUNK_SIZE-CHUNK_OVERLAP):]
 
     return chunked_text
 
 
-def ask_questions_of_text(categories, prelude, prompt_list, prompts, text):
+def ask_questions_of_text(prelude, prompt_list, prompts, text):
     aggregate_questions = ""
     chat_responses = ""
 
-    for category in categories:
-        for prompt in prompt_list[category]:
-            aggregate_questions += prompts[category][prompt] + \
-                                   ". Please put the answer underneath the heading " + prompt + ":\n\n"
+    for prompt in prompt_list:
+        aggregate_questions += prompts[prompt] + \
+                               ". Please put the answer underneath the heading " + prompt + ":\n\n"
 
-        messages = [
-            {"role": "system", "content": prelude + '\n\n' + text},
-            {"role": "user", "content": aggregate_questions},
-        ]
-        response = openai.chat.completions.create(
-            model=OPENAI_MODEL,
-            messages=messages,
-            temperature=TEMPERATURE
-        )
+    messages = [
+        {"role": "system", "content": prelude + '\n\n' + text},
+        {"role": "user", "content": aggregate_questions},
+    ]
+    response = openai.chat.completions.create(
+        model=OPENAI_MODEL,
+        messages=messages,
+        temperature=TEMPERATURE
+    )
 
-        chat_response = response.choices[0].message.content + '\n'
-        chat_responses += chat_response
+    chat_response = response.choices[0].message.content + '\n'
+    chat_responses += chat_response
 
     return chat_responses
 
@@ -127,24 +122,35 @@ def consolidate_answers(chunk_answers):
     return chat_response
 
 
-def get_name_of_company(input_line):
-    messages = [
-        {"role": "system", "content": "Consider the following sentence and answer "
-                                      "as a helpful AI agent with only the name of the company:\n\n"},
-        {"role": "user", "content": f'"{input_line}"\n\n"What is the name of the company?' },
-    ]
-    response = openai.chat.completions.create(
-        model=OPENAI_MODEL,
-        messages=messages,
-        temperature=0.0
-    )
-    chat_response = response.choices[0].message.content
-    if chat_response[-1:] == ".":
-        chat_response = chat_response[:-1]
-    if chat_response[:9].upper() == "I'M SORRY":
-        chat_response = "Unknown"
+def subject_name(subject, input_line):
+    name_to_use = ""
+    if subject == "DEFAULT":
+        messages = [
+            {"role": "system", "content": "Consider the following sentence and answer "
+                                          "as a helpful AI agent with only the name of the company:\n\n"},
+            {"role": "user", "content": f'"{input_line[1]}"\n\n"What is the name of the company?' },
+        ]
+        response = openai.chat.completions.create(
+            model=OPENAI_MODEL,
+            messages=messages,
+            temperature=0.0
+        )
+        chat_response = response.choices[0].message.content
+        if chat_response[:26].upper() == 'THE NAME OF THE COMPANY IS':
+            chat_response = chat_response[27:]
+        if chat_response[-1:] == ".":
+            chat_response = chat_response[:-1]
+        if chat_response[:9].upper() == "I'M SORRY":
+            chat_response = "Unknown"
+        if "DOES NOT" in generated_name:
+            chat_response = "Unknown"
 
-    return chat_response
+        name_to_use = chat_response
+
+    if subject == "DISCHARGE":
+        name_to_use = "Discharge_Summary"
+
+    return name_to_use
 
 
 def check_for_work_to_do():
@@ -184,8 +190,18 @@ def main():
             with open(work_file, "r") as f:
                 work_task = json.load(f)
 
-            raw_text = work_task["text"]
-            from_email = work_task["from"]
+            subject = ""
+            from_email = ""
+            raw_text = ""
+
+            if "text" in work_task.keys():
+                raw_text = work_task["text"]
+            if "from" in work_task.keys():
+                from_email = work_task["from"]
+            if "subject" in work_task.keys():
+                subject = work_task["subject"]
+
+            subject = subject or "DEFAULT"
 
             chunked_text = chunk_text(raw_text)
 
@@ -194,10 +210,9 @@ def main():
                 if chunk:
                     log_message("Summary start")
                     summary = ask_questions_of_text(
-                        constants.summary_prompt_categories,
-                        constants.summary_prelude,
-                        constants.summary_prompt_list,
-                        constants.summary_prompts,
+                        constants.summary_prelude[subject],
+                        constants.summary_prompt_list[subject],
+                        constants.summary_prompts[subject],
                         chunk
                     )
 
@@ -206,20 +221,21 @@ def main():
 
             if len(chunked_text) > 1:
                 summary_of_summaries = ask_questions_of_text(
-                    constants.summary_prompt_categories,
-                    constants.summary_prelude,
-                    constants.summary_prompt_list,
-                    constants.summary_prompts,
+                    constants.summary_prelude[subject],
+                    constants.summary_prompt_list[subject],
+                    constants.summary_prompts[subject],
                     consolidated_summary
                 )
             else:
                 summary_of_summaries = consolidated_summary
 
             log_message("Evaluation start")
-            evaluation = evaluate_business_for_investment(
-                constants.evaluation_prelude,
-                summary_of_summaries
-            )
+            evaluation = ""
+            if constants.evaluation_prelude[subject]:
+                evaluation = evaluate_business_for_investment(
+                    constants.evaluation_prelude[subject],
+                    summary_of_summaries
+                )
             log_message("Evaluation complete")
 
             if from_email:
@@ -229,10 +245,11 @@ def main():
                 with open(SUMMARY_FILENAME, "w", encoding="utf-8") as txt:
                     txt.write(summary_of_summaries)
 
-                with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
-                    txt.write(evaluation)
+                if evaluation:
+                    with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
+                        txt.write(evaluation)
 
-                summary_docx, evaluation_docx = email_utils.convert_txt_to_docx(SUMMARY_FILENAME, EVALUATION_FILENAME)
+                summary_docx, evaluation_docx = email_utils.convert_txt_to_docx(subject, SUMMARY_FILENAME, EVALUATION_FILENAME)
 
                 email_utils.send_email(
                     from_email, summary_docx, "See attachments",
