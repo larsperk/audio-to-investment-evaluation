@@ -131,16 +131,20 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
 
     summary_txt_file_contents = temp
 
-    with open(evaluation_txt_file, "r") as f:
-        evaluation_txt_file_contents = [line.strip() for line in f]
+    if os.path.exists(evaluation_txt_file):
+        with open(evaluation_txt_file, "r") as f:
+            evaluation_txt_file_contents = [line.strip() for line in f]
+    else:
+        evaluation_txt_file_contents = []
 
     generated_name = main.subject_name(subject, summary_txt_file_contents)
     subject_name = generated_name or "UNKNOWN"
 
     docx_filename = write_docx_file("Summary", subject_name, summary_txt_file_contents)
     filename_list.append(docx_filename)
-    docx_filename = write_docx_file("Evaluation", subject_name, evaluation_txt_file_contents)
-    filename_list.append(docx_filename)
+    if len(evaluation_txt_file_contents) == 0:
+        docx_filename = write_docx_file("Evaluation", subject_name, evaluation_txt_file_contents)
+        filename_list.append(docx_filename)
 
     return filename_list[0], filename_list[1]
 
