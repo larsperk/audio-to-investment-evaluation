@@ -62,7 +62,9 @@ summary_prompts = {
     "DISCHARGE": {
         "STORY": "Please tell the story of why the patient was initially hospitalized.",
         "ACTIONS PERFORMED": "Please list the actions performed while the patient was in the hospital",
-        "ACTIONS REQUESTED": "Please list the actions that the physician is requesting from the general practitioner."
+        "ACTIONS REQUESTED": "Please list the actions that the physician is requesting from the general "
+                             "practitioner. Referencing the medical literature, please specify for each requested"
+                             "action whether it is indicated or contraindicated given the patient's story."
     }
 }
 
