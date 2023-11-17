@@ -137,7 +137,7 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
     else:
         evaluation_txt_file_contents = []
 
-    generated_name = main.subject_name(subject, summary_txt_file_contents)
+    generated_name = main.determine_subject_name(subject, summary_txt_file_contents)
     subject_name = generated_name or "UNKNOWN"
 
     docx_filename = write_docx_file("Summary", subject_name, summary_txt_file_contents, False)
@@ -235,8 +235,8 @@ def get_emails_and_create_work_files():
                         subject = ""
                         encoding = None
 
-                    while subject[:5] == "Fwd: ":
-                        subject = subject[5:]
+                    while subject.find(":") != -1:
+                        subject = subject[subject.find(":")+1:].strip()
 
                     subject = subject or "DEFAULT"
 

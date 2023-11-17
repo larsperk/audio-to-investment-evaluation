@@ -122,7 +122,7 @@ def consolidate_answers(chunk_answers):
     return chat_response
 
 
-def subject_name(subject, input_line):
+def determine_subject_name(subject, input_line):
     name_to_use = ""
     if subject == "DEFAULT":
         messages = [
@@ -142,7 +142,7 @@ def subject_name(subject, input_line):
             chat_response = chat_response[:-1]
         if chat_response[:9].upper() == "I'M SORRY":
             chat_response = "Unknown"
-        if "DOES NOT" in generated_name:
+        if "DOES NOT" in chat_response:
             chat_response = "Unknown"
 
         name_to_use = chat_response
