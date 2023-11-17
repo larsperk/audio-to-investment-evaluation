@@ -21,6 +21,7 @@ from email.header import decode_header
 import os
 import json
 
+import constants
 import main
 
 MODE = 'EMAIL'  # EMAIL or MICROPHONE or FORCE AUDIO or FORCE TEXT
@@ -101,7 +102,8 @@ def write_json_from_text_filepath(from_email, subject, text_filepath):
 def send_error_response_and_cleanup(filepath, work_filepath, from_email):
     send_email(from_email,
                "Invalid Request",
-               "Request must have one and only one M4A, WAV, PDF, RTF, PPTX, DOC or TXT attachment.",
+               "Request must have one and only one M4A, WAV, PDF, RTF, PPTX, DOC or TXT attachment.\n"
+               "and a valid subject line.",
                []
                )
     if os.path.exists(filepath):
@@ -234,72 +236,75 @@ def get_emails_and_create_work_files():
                         subject = ""
                         encoding = None
 
+                    if isinstance(subject, bytes):
+                        subject = subject.decode(encoding or "utf-8")
+
                     while subject.find(":") != -1:
                         subject = subject[subject.find(":")+1:].strip()
 
                     subject = subject or "DEFAULT"
+                    if subject in constants.summary_prompt_list.keys():
 
-                    if isinstance(subject, bytes):
-                        subject = subject.decode(encoding or "utf-8")
+                        # Process attachments
 
-                    # Process attachments
+                        for part in msg.walk():
+                            if part.get_content_maintype() == 'multipart':
+                                continue
+                            if part.get('Content-Disposition') is None:
+                                continue
 
-                    for part in msg.walk():
-                        if part.get_content_maintype() == 'multipart':
-                            continue
-                        if part.get('Content-Disposition') is None:
-                            continue
+                            filename = part.get_filename().upper()
+                            filepath = ""
 
-                        filename = part.get_filename().upper()
-                        filepath = ""
+                            if filename:
+                                if filename.endswith((".M4A", ".WAV", ".TXT", ".PDF", ".RTF", ".PPTX", ".DOCX")):
+                                    valid_attachments += 1
+                                    if valid_attachments == 1:
+                                        filepath = os.path.join(attachment_dir, filename)
+                                        with open(filepath, 'wb') as f:
+                                            f.write(part.get_payload(decode=True))
+                                        main.log_message(f"Downloaded attachment: {filename}")
 
-                        if filename:
-                            if filename.endswith((".M4A", ".WAV", ".TXT", ".PDF", ".RTF", ".PPTX", ".DOCX")):
-                                valid_attachments += 1
-                                if valid_attachments == 1:
-                                    filepath = os.path.join(attachment_dir, filename)
-                                    with open(filepath, 'wb') as f:
-                                        f.write(part.get_payload(decode=True))
-                                    main.log_message(f"Downloaded attachment: {filename}")
+                                        root_filepath, _ = os.path.splitext(filepath)
+                                        transcription_filename = root_filepath + ".TXT"
 
-                                    root_filepath, _ = os.path.splitext(filepath)
-                                    transcription_filename = root_filepath + ".TXT"
+                                        if filename.endswith((".M4A", ".WAV")):
+                                            main.log_message("transcribe start")
+                                            main.transcribe_audio_using_aai(filepath, transcription_filename)
+                                            main.log_message("transcribe end")
 
-                                    if filename.endswith((".M4A", ".WAV")):
-                                        main.log_message("transcribe start")
-                                        main.transcribe_audio_using_aai(filepath, transcription_filename)
-                                        main.log_message("transcribe end")
+                                        elif filename.endswith(".PDF"):
+                                            text = convert_pdf_to_txt(filepath)
+                                            write_text_file(text, transcription_filename)
 
-                                    elif filename.endswith(".PDF"):
-                                        text = convert_pdf_to_txt(filepath)
-                                        write_text_file(text, transcription_filename)
+                                        elif filename.endswith(".RTF"):
+                                            text = convert_rtf_to_txt(filepath)
+                                            write_text_file(text, transcription_filename)
 
-                                    elif filename.endswith(".RTF"):
-                                        text = convert_rtf_to_txt(filepath)
-                                        write_text_file(text, transcription_filename)
+                                        elif filename.endswith(".PPTX"):
+                                            text = convert_pptx_to_text(filepath)
+                                            write_text_file(text, transcription_filename)
 
-                                    elif filename.endswith(".PPTX"):
-                                        text = convert_pptx_to_text(filepath)
-                                        write_text_file(text, transcription_filename)
+                                        elif filename.endswith(".DOCX"):
+                                            text = docx2txt.process(filepath)
+                                            write_text_file(text, transcription_filename)
 
-                                    elif filename.endswith(".DOCX"):
-                                        text = docx2txt.process(filepath)
-                                        write_text_file(text, transcription_filename)
+                                        work_filepath = write_json_from_text_filepath(from_email,
+                                                                                      subject,
+                                                                                      transcription_filename
+                                                                                      )
+                                        if os.path.exists(filepath):
+                                            os.remove(filepath)
+                                        no_new_work_to_do = False
 
-                                    work_filepath = write_json_from_text_filepath(from_email,
-                                                                                  subject,
-                                                                                  transcription_filename
-                                                                                  )
-                                    if os.path.exists(filepath):
-                                        os.remove(filepath)
-                                    no_new_work_to_do = False
+                                        main.log_message("we got some work to do ...")
 
-                                    main.log_message("we got some work to do ...")
-
-                                else:
-                                    send_error_response_and_cleanup(filepath, work_filepath, from_email)
-                        else:
-                            send_error_response_and_cleanup(filepath, work_filepath, from_email)
+                                    else:
+                                        send_error_response_and_cleanup(filepath, work_filepath, from_email)
+                            else:
+                                send_error_response_and_cleanup(filepath, work_filepath, from_email)
+                    else:
+                        send_error_response_and_cleanup("none", work_filepath, from_email)
         else:
             main.log_message("Failed to retrieve unread emails.")
 
