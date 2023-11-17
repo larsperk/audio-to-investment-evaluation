@@ -57,14 +57,13 @@ summary_prompts = {
         "PROGRAMS": 'has the company attended any other accelerator, incubator, or similar program'
          },
     "OVERVIEW": {
-        "OVERVIEW": "Please summarize the major points of the interview transcript in 10 bullets or less."
+        "SUMMARY": "Please summarize the major points of the interview transcript in 10 bullets or less."
         },
     "DISCHARGE": {
-        "STORY": "Please tell the story of why the patient was initially hospitalized.",
-        "ACTIONS PERFORMED": "Please list the actions performed while the patient was in the hospital",
-        "ACTIONS REQUESTED": "Please list the actions that the physician is requesting from the general "
-                             "practitioner. Referencing the medical literature, please specify for each requested"
-                             "action whether it is indicated or contraindicated given the patient's story."
+        "STORY": "tell the story of why the patient was initially hospitalized.",
+        "ACTIONS PERFORMED": "list the actions performed while the patient was in the hospital",
+        "ACTIONS REQUESTED": "list the actions that the physician is requesting from the general "
+                             "practitioner and whether they are indicated or contraindicated given the patient's story."
     }
 }
 

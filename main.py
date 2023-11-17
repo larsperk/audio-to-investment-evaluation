@@ -147,8 +147,11 @@ def subject_name(subject, input_line):
 
         name_to_use = chat_response
 
-    if subject == "DISCHARGE":
+    elif subject == "DISCHARGE":
         name_to_use = "Discharge_Summary"
+
+    else:
+        name_to_use = "Summary"
 
     return name_to_use
 

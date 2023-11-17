@@ -140,10 +140,10 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
     generated_name = main.subject_name(subject, summary_txt_file_contents)
     subject_name = generated_name or "UNKNOWN"
 
-    docx_filename = write_docx_file("Summary", subject_name, summary_txt_file_contents)
+    docx_filename = write_docx_file("Summary", subject_name, summary_txt_file_contents, False)
     filename_list.append(docx_filename)
     if len(evaluation_txt_file_contents) != 0:
-        docx_filename = write_docx_file("Evaluation", subject_name, evaluation_txt_file_contents)
+        docx_filename = write_docx_file("Evaluation", subject_name, evaluation_txt_file_contents, True)
         filename_list.append(docx_filename)
         evaluation_file = filename_list[1]
 
@@ -153,11 +153,11 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
     return filename_list[0], evaluation_file
 
 
-def write_docx_file(output_file_prefix, company_name, text_file_contents):
+def write_docx_file(output_file_prefix, generated_name, text_file_contents, use_numbering):
     todays_datetime = datetime.now().strftime("%Y-%m-%d %H%M")
     doc = docx.Document()
 
-    title = doc.add_paragraph(f"{output_file_prefix} of {company_name}\n{todays_datetime}")
+    title = doc.add_paragraph(f"{output_file_prefix} of {generated_name}\n{todays_datetime}")
 
     run = title.runs[0]
     run.font.size = docx.shared.Pt(14)
@@ -175,7 +175,7 @@ def write_docx_file(output_file_prefix, company_name, text_file_contents):
                 run.font.color.rgb = RGBColor(0, 0, 0)
                 line_numbering_is_on = not line_numbering_is_on and not bulleting_is_on
 
-            elif output_file_prefix == "Evaluation":
+            elif use_numbering:
                 while line[:1] in "01234567890. ":
                     line = line[1:]
                 if line_numbering_is_on:
@@ -190,7 +190,7 @@ def write_docx_file(output_file_prefix, company_name, text_file_contents):
                 graph.paragraph_format.space_after = 0
 
     todays_datetime = datetime.now().strftime("%Y-%m-%d %H%M")
-    docx_filename = f"{output_file_prefix}-{company_name}-{todays_datetime}.docx"
+    docx_filename = f"{output_file_prefix}-{generated_name}-{todays_datetime}.docx"
     doc.save(docx_filename)
 
     return docx_filename
@@ -235,8 +235,8 @@ def get_emails_and_create_work_files():
                         subject = ""
                         encoding = None
 
-                    while subject[:4] == "Re: ":
-                        subject = subject[4:]
+                    while subject[:5] == "Fwd: ":
+                        subject = subject[5:]
 
                     subject = subject or "DEFAULT"
 
