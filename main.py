@@ -143,7 +143,7 @@ def determine_subject_name(subject, input_line):
         if chat_response[:9].upper() == "I'M SORRY":
             chat_response = "Unknown"
         if "DOES NOT" in chat_response:
-            chat_response = "Unknown"
+            chat_response = "Unknown"''''''
 
         name_to_use = chat_response
 

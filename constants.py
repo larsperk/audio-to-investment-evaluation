@@ -7,7 +7,7 @@ summary_prelude = {
                + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\r'
                + 'Be as detailed as possible when answering the questions."\r'
                + 'If you don\'t know the answer, please answer "unknown"',
-    "OVERVIEW": 'Please answer as a helpful AI agent.',
+    "SUMMARY": 'Please answer as a helpful AI agent.',
     "DISCHARGE": 'Please act as a helpful AI agent.\n'
                  'The following is a letter describing a patient who has received medical care.\n'
                  'The author is a doctor and is written to a general practitioner who will be responsible'
@@ -21,7 +21,7 @@ summary_prompt_list = {
         "NAME", "PROBLEM", "SOLUTION", "WHY", "TEAM", "CTO", "TEAM EXPERIENCE", "TRACTION", "FUNDING",
         "TECH", "TAM", "TIMING", "COMPETITION", "LEISURE", "PROGRAMS",
         ],
-    "OVERVIEW": [
+    "SUMMARY": [
         "SUMMARY"
         ],
     "DISCHARGE": [
@@ -56,8 +56,8 @@ summary_prompts = {
                    'for hobbies, avocations and interests, or sports',
         "PROGRAMS": 'has the company attended any other accelerator, incubator, or similar program'
          },
-    "OVERVIEW": {
-        "SUMMARY": "Please summarize the major points of the interview transcript in 10 bullets or less."
+    "SUMMARY": {
+        "SUMMARY": "Please summarize the major points of this transcript in 10 bullets or less."
         },
     "DISCHARGE": {
         "STORY": "tell the story of why the patient was initially hospitalized.",

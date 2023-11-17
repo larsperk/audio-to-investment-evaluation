@@ -227,7 +227,6 @@ def get_emails_and_create_work_files():
                     msg = email.message_from_bytes(raw_email)
                     from_email = email.utils.parseaddr(msg.get("From"))[1]
 
-                    # Decode the email subject THIS WILL ALWAYS SHORT CIRCUIT - MSG IS NOT A DICT
                     try:
                         subject, encoding = decode_header(msg["Subject"])[0]
 
@@ -287,7 +286,10 @@ def get_emails_and_create_work_files():
                                         text = docx2txt.process(filepath)
                                         write_text_file(text, transcription_filename)
 
-                                    work_filepath = write_json_from_text_filepath(from_email, subject, transcription_filename)
+                                    work_filepath = write_json_from_text_filepath(from_email,
+                                                                                  subject,
+                                                                                  transcription_filename
+                                                                                  )
                                     if os.path.exists(filepath):
                                         os.remove(filepath)
                                     no_new_work_to_do = False
