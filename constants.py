@@ -105,6 +105,7 @@ evaluation_prelude = {
                'this business is a good candidate for investment. Also, after the preceding overview, '
                'under the heading "SUGGESTED QUESTIONS:" suggest questions to be asked to elicit information'
                ' on the unknown characteristics.\r',
-    "DISCHARGE": ''
+    "DISCHARGE": '',
+    "SUMMARY": ''
 }
 
