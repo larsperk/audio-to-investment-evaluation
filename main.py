@@ -123,7 +123,6 @@ def consolidate_answers(chunk_answers):
 
 
 def determine_subject_name(subject, input_line):
-    name_to_use = ""
     if subject == "DEFAULT":
         messages = [
             {"role": "system", "content": "Consider the following sentence and answer "
