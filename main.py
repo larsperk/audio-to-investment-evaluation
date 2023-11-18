@@ -255,11 +255,11 @@ def main():
 
                 email_utils.send_email(
                     from_email, summary_docx, "See attachments",
-                    [files_to_send]
+                    files_to_send
                 )
                 email_utils.send_email(
                     "lars@larsperkins.com", f"Evaluation processed for {from_email}", "See attachments",
-                    [files_to_send]
+                    files_to_send
                 )
                 log_message("Reply sent")
                 os.remove(work_file)
