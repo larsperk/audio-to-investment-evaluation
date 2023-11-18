@@ -24,7 +24,6 @@ import json
 import constants
 import main
 
-
 MODE = 'EMAIL'  # EMAIL or MICROPHONE or FORCE AUDIO or FORCE TEXT
 
 FORCED_TEXT_FILENAME = "transcription.txt"
@@ -245,7 +244,7 @@ def get_emails_and_create_work_files():
                         subject = subject[subject.find(":")+1:].strip()
 
                     subject = subject.upper() or "DEFAULT"
-                    if subject in constants.summary_prompt_list.keys() or True:
+                    if subject in constants.summary_prompt_list.keys():
 
                         # Process attachments
                         msg_txt = ""

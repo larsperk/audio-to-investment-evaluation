@@ -134,15 +134,14 @@ def determine_subject_name(subject, input_line):
             messages=messages,
             temperature=0.0
         )
-        chat_response = response.choices[0].message.content
+        chat_response = response.choices[0].message.content.strip().upper()
         if chat_response[:26].upper() == 'THE NAME OF THE COMPANY IS':
             chat_response = chat_response[27:]
         if chat_response[-1:] == ".":
             chat_response = chat_response[:-1]
-        if chat_response[:9].upper() == "I'M SORRY":
+
+        if "I'M SORRY" in chat_response or "DOES NOT" in chat_response or "NOT PROVIDED" in chat_response:
             chat_response = "Unknown"
-        if "DOES NOT" in chat_response:
-            chat_response = "Unknown"''''''
 
         name_to_use = chat_response
 
