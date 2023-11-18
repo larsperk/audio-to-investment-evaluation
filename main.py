@@ -193,16 +193,9 @@ def main():
             with open(work_file, "r") as f:
                 work_task = json.load(f)
 
-            subject = ""
-            from_email = ""
-            raw_text = ""
-
-            if "text" in work_task.keys():
-                raw_text = work_task["text"]
-            if "from" in work_task.keys():
-                from_email = work_task["from"]
-            if "subject" in work_task.keys():
-                subject = work_task["subject"]
+            raw_text = work_task.get("text")
+            from_email = work_task.get("from")
+            subject = work_task.get("subject")
 
             subject = subject or "DEFAULT"
 
@@ -256,13 +249,17 @@ def main():
                     subject, SUMMARY_FILENAME, EVALUATION_FILENAME
                 )
 
+                files_to_send = [TRANSCRIPTION_FILENAME, summary_docx]
+                if evaluation:
+                    files_to_send.append(evaluation_docx)
+
                 email_utils.send_email(
                     from_email, summary_docx, "See attachments",
-                    [TRANSCRIPTION_FILENAME, summary_docx, evaluation_docx]
+                    [files_to_send]
                 )
                 email_utils.send_email(
                     "lars@larsperkins.com", f"Evaluation processed for {from_email}", "See attachments",
-                    [TRANSCRIPTION_FILENAME, summary_docx, evaluation_docx]
+                    [files_to_send]
                 )
                 log_message("Reply sent")
                 os.remove(work_file)

@@ -102,7 +102,7 @@ def write_json_from_text_filepath(from_email, subject, text_filepath):
 def send_error_response_and_cleanup(filepath, work_filepath, from_email):
     send_email(from_email,
                "Invalid Request",
-               "Request must have one and only one M4A, WAV, PDF, RTF, PPTX, DOC or TXT attachment.\n"
+               "Request must have one and only one M4A, WAV, PDF, RTF, PPTX, DOC or TXT attachment "
                "and a valid subject line.",
                []
                )
@@ -242,7 +242,7 @@ def get_emails_and_create_work_files():
                     while subject.find(":") != -1:
                         subject = subject[subject.find(":")+1:].strip()
 
-                    subject = subject or "DEFAULT"
+                    subject = subject.upper() or "DEFAULT"
                     if subject in constants.summary_prompt_list.keys():
 
                         # Process attachments
