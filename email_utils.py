@@ -253,6 +253,7 @@ def get_emails_and_create_work_files():
                                 continue
                             if part.get('Content-Disposition') is None:
                                 msg_txt = msg_txt or part.get_payload()
+                                continue
 
                             filename = part.get_filename()
                             if filename:
