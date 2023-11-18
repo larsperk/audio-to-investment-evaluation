@@ -252,8 +252,7 @@ def get_emails_and_create_work_files():
                             if part.get_content_maintype() == 'multipart':
                                 continue
                             if part.get('Content-Disposition') is None:
-                                msg_txt = msg_txt or part.get_payload(decode=True).decode()
-                                continue
+                                msg_txt = msg_txt or part.get_payload()
 
                             filename = part.get_filename().upper()
                             filepath = ""
