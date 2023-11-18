@@ -24,6 +24,7 @@ import json
 import constants
 import main
 
+
 MODE = 'EMAIL'  # EMAIL or MICROPHONE or FORCE AUDIO or FORCE TEXT
 
 FORCED_TEXT_FILENAME = "transcription.txt"
