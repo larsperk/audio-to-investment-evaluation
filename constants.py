@@ -57,7 +57,7 @@ summary_prompts = {
         "PROGRAMS": 'has the company attended any other accelerator, incubator, or similar program'
          },
     "SUMMARY": {
-        "SUMMARY": "Please summarize the major points of this transcript in 10 bullets or less."
+        "SUMMARY": "Please summarize the major points of this transcript in {detail_level} bullets or less."
         },
     "DISCHARGE": {
         "STORY": "tell the story of why the patient was initially hospitalized.",

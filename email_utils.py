@@ -78,7 +78,7 @@ def convert_pptx_to_text(pptx_path):
     return plain_text
 
 
-def write_json_from_text_filepath(from_email, subject, text, text_filepath):
+def write_json_from_text_filepath(from_email, subject, text, text_filepath, detail_level):
     if text_filepath:
         with open(text_filepath, "r") as f:
             text = f.read()
@@ -86,7 +86,8 @@ def write_json_from_text_filepath(from_email, subject, text, text_filepath):
     json_dict = {
         "from": from_email,
         "subject": subject,
-        "text": text
+        "text": text,
+        "detail_level": detail_level
     }
 
     guid_str = str(uuid.uuid4())
@@ -244,6 +245,14 @@ def get_emails_and_create_work_files():
                         subject = subject[subject.find(":")+1:].strip()
 
                     subject = subject.upper() or "DEFAULT"
+
+                    detail_level = 10
+                    if subject[:7] == "SUMMARY":
+                        p = subject.find("-")
+                        if p != -1:
+                            detail_level = subject[p+1:p+3]
+                        subject = "SUMMARY"
+
                     if subject not in constants.summary_prompt_list.keys():
                         subject = "SUMMARY"
 
@@ -300,7 +309,8 @@ def get_emails_and_create_work_files():
                                         work_filepath = write_json_from_text_filepath(from_email,
                                                                                       subject,
                                                                                       "",
-                                                                                      transcription_filename
+                                                                                      transcription_filename,
+                                                                                      0
                                                                                       )
                                         if os.path.exists(filepath):
                                             os.remove(filepath)
@@ -317,7 +327,8 @@ def get_emails_and_create_work_files():
                             work_filepath = write_json_from_text_filepath(from_email,
                                                                           "SUMMARY",
                                                                           msg_txt,
-                                                                          ""
+                                                                          "",
+                                                                          detail_level
                                                                           )
                             no_new_work_to_do = False
                             main.log_message("we got some work to do (email text) ...")

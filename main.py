@@ -202,10 +202,15 @@ def main():
             raw_text = work_task.get("text")
             from_email = work_task.get("from")
             subject = work_task.get("subject")
+            detail_level = str(work_task.get("detail_level"))
 
             subject = subject or "DEFAULT"
 
             chunked_text = chunk_text(raw_text)
+
+            constants.summary_prompts[subject] = {k:v.replace("{detail_level}", detail_level)
+                                                  for k, v in constants.summary_prompts[subject].items()
+                                                  }
 
             consolidated_summary = ''
             for chunk in chunked_text:
