@@ -78,7 +78,7 @@ def convert_pptx_to_text(pptx_path):
     return plain_text
 
 
-def write_json_from_text_filepath(from_email, subject, text, text_filepath, detail_level):
+def write_json_from_text_filepath(from_email, subject, detail_level, text, text_filepath):
     if text_filepath:
         with open(text_filepath, "r") as f:
             text = f.read()
@@ -306,12 +306,14 @@ def get_emails_and_create_work_files():
                                             text = docx2txt.process(filepath)
                                             write_text_file(text, transcription_filename)
 
-                                        work_filepath = write_json_from_text_filepath(from_email,
-                                                                                      subject,
-                                                                                      "",
-                                                                                      transcription_filename,
-                                                                                      0
-                                                                                      )
+                                        work_filepath = write_json_from_text_filepath(
+                                            from_email,
+                                            subject,
+                                            detail_level,
+                                            "",
+                                            transcription_filename
+                                        )
+
                                         if os.path.exists(filepath):
                                             os.remove(filepath)
                                         no_new_work_to_do = False
@@ -319,17 +321,22 @@ def get_emails_and_create_work_files():
                                         main.log_message("we got some work to do (attachment) ...")
 
                                     else:
-                                        send_error_response_and_cleanup(filepath, work_filepath, from_email)
+                                        send_error_response_and_cleanup(
+                                            filepath,
+                                            work_filepath,
+                                            from_email
+                                        )
                             else:
                                 send_error_response_and_cleanup(filepath, work_filepath, from_email)
 
                         if len(msg_txt) > 500 and no_new_work_to_do:
-                            work_filepath = write_json_from_text_filepath(from_email,
-                                                                          "SUMMARY",
-                                                                          msg_txt,
-                                                                          "",
-                                                                          detail_level
-                                                                          )
+                            work_filepath = write_json_from_text_filepath(
+                                from_email,
+                                subject,
+                                detail_level,
+                                transcription_filename
+                            )
+
                             no_new_work_to_do = False
                             main.log_message("we got some work to do (email text) ...")
 
