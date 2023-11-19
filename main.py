@@ -140,13 +140,21 @@ def determine_subject_name(subject, input_line):
         if chat_response[-1:] == ".":
             chat_response = chat_response[:-1]
 
-        if "I'M SORRY" in chat_response or "DOES NOT" in chat_response or "NOT PROVIDED" in chat_response:
-            chat_response = "Unknown"
+        disqulaifier_words = [
+            "I'M SORRY",
+            "DOES NOT",
+            "DON'T HAVE",
+            "NOT PROVIDED"
+        ]
 
-        name_to_use = chat_response
+        name_unknown = [True for words in disqulaifier_words if words in chat_response]
+        if not name_unknown:
+            name_to_use = chat_response[:32]
+        else:
+            name_to_use = "Unknown"
 
     elif subject == "DISCHARGE":
-        name_to_use = "Discharge_Summary"
+        name_to_use = "Discharge"
 
     else:
         name_to_use = "Summary"
