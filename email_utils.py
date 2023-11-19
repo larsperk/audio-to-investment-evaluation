@@ -244,6 +244,9 @@ def get_emails_and_create_work_files():
                         subject = subject[subject.find(":")+1:].strip()
 
                     subject = subject.upper() or "DEFAULT"
+                    if subject not in constants.summary_prompt_list.keys():
+                        subject = "SUMMARY"
+
                     if subject in constants.summary_prompt_list.keys():
 
                         # Process attachments
