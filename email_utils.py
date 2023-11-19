@@ -313,7 +313,7 @@ def get_emails_and_create_work_files():
                             else:
                                 send_error_response_and_cleanup(filepath, work_filepath, from_email)
 
-                        if len(msg_txt) > 500:
+                        if len(msg_txt) > 500 and no_new_work_to_do:
                             work_filepath = write_json_from_text_filepath(from_email,
                                                                           "SUMMARY",
                                                                           msg_txt,
