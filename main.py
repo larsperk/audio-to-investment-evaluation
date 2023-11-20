@@ -208,9 +208,8 @@ def main():
 
             chunked_text = chunk_text(raw_text)
 
-            constants.summary_prompts[subject] = {k: v.replace("{detail_level}", detail_level)
-                                                  for k, v in constants.summary_prompts[subject].items()
-                                                  }
+            summary_prompts = {k: v.replace("{detail_level}", detail_level)
+                               for k, v in constants.summary_prompts[subject].items()}
 
             consolidated_summary = ''
             for chunk in chunked_text:
@@ -219,7 +218,7 @@ def main():
                     summary = ask_questions_of_text(
                         constants.summary_prelude[subject],
                         constants.summary_prompt_list[subject],
-                        constants.summary_prompts[subject],
+                        summary_prompts,
                         chunk
                     )
 
