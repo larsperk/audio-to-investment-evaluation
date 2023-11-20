@@ -208,7 +208,7 @@ def main():
 
             chunked_text = chunk_text(raw_text)
 
-            constants.summary_prompts[subject] = {k:v.replace("{detail_level}", detail_level)
+            constants.summary_prompts[subject] = {k: v.replace("{detail_level}", detail_level)
                                                   for k, v in constants.summary_prompts[subject].items()
                                                   }
 

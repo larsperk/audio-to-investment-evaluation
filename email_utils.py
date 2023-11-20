@@ -332,9 +332,10 @@ def get_emails_and_create_work_files():
                         if len(msg_txt) > 500 and no_new_work_to_do:
                             work_filepath = write_json_from_text_filepath(
                                 from_email,
-                                subject,
+                                "SUMMARY",
                                 detail_level,
-                                transcription_filename
+                                msg_txt,
+                                ""
                             )
 
                             no_new_work_to_do = False
