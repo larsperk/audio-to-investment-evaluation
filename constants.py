@@ -1,16 +1,16 @@
 # Ask questions of text
 
 summary_prelude = {
-    "DEFAULT": 'Please answer as a helpful ai agent.\r'
-               + 'The following is a transcript between an interviewer and an entrepreneur,\r'
-               + 'who is starting a business and discussing their business and their product.\r'
-               + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\r'
-               + 'Be as detailed as possible when answering the questions."\r'
+    "DEFAULT": 'Please answer as a helpful ai agent.\n'
+               + 'The following is a transcript between an interviewer and an entrepreneur,\n'
+               + 'who is starting a business and discussing their business and their product.\n'
+               + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\n'
+               + 'Be as detailed as possible when answering the questions."\n'
                + 'If you don\'t know the answer, please answer "unknown"',
     "SUMMARY": 'Please answer as a helpful AI agent.',
     "DISCHARGE": 'Please act as a helpful AI agent.\n'
                  'The following is a letter describing a patient who has received medical care.\n'
-                 'The author is a doctor and is written to a general practitioner who will be responsible'
+                 'The author is a doctor and is written to a general practitioner who will be responsible\n'
                  'for the patient\'s care after they are discharged'
 
 
@@ -70,41 +70,37 @@ summary_prompts = {
 
 # Consolidate Answers
 
-consolidate_prelude = "The supplied documents are\r" \
-                      + "summaries of conversations with an entrepreneur about a new business.\r" \
+consolidate_prelude = "The supplied documents are summaries of conversations\n" \
                       + "Please act as a helpful AI agent."
 
-consolidate_prompt_1 = "Please consolidate\r" \
-                       + "the information in the preceding "
-
-consolidate_prompt_2 = " documents into a single document\r" \
-                       + "preserving section headings and eliminating duplicate information.\r" \
-                       + "Please be as detailed as possible.\r\n"
-
+consolidate_prompt = "Please consolidate the information in the preceding {number_docs} " \
+                     "documents into a single document\n " \
+                     "preserving section headings and eliminating duplicate information.\n" \
+                     "Please be as detailed as possible.\n"
 
 # Evaluation
 
 evaluation_prelude = {
-    "DEFAULT": 'The following is a summary of a business that is being considered for investment.\r'
-               'The positive characteristics of a business that is good to invest in are:\r'
-               ' 1. Significant traction in terms of waitlist, customers, and revenue\r'
+    "DEFAULT": 'The following is a summary of a business that is being considered for investment.\n'
+               'The positive characteristics of a business that is good to invest in are:\n'
+               ' 1. Significant traction in terms of waitlist, customers, and revenue\n'
                ' 2. An experienced founding team who either together or individually '
-               'have founded other businesses\r'
-               ' 3. A large potential market greater than 500 million in size\r'
+               'have founded other businesses\n'
+               ' 3. A large potential market greater than 500 million in size\n'
                ' 4. A team that has worked together before, preferably at a company '
-               'that had an IPO or was acquired\r'
-               ' 5. Proprietary differentiated technology\r'
+               'that had an IPO or was acquired\n'
+               ' 5. Proprietary differentiated technology\n'
                ' 6. Already raised (not the amount they are trying to raise now) '
-               'at least 250,000 dollars in funding\r'
-               ' 7. Have been in business for less than three years\r'
-               ' 8. More than one founder\r'
-               ' 9. All founders working full-time for the business\r'
-               'Please evaluate the business from the summary and enumerate the points above as they \r'
-               'apply to the presented business. Count the number of points that they meet.\r'
+               'at least 250,000 dollars in funding\n'
+               ' 7. Have been in business for less than three years\n'
+               ' 8. More than one founder\n'
+               ' 9. All founders working full-time for the business\n'
+               'Please evaluate the business from the summary and enumerate the points above as they \n'
+               'apply to the presented business. Count the number of points that they meet.\n'
                'Also give your overall conclusion about whether '
                'this business is a good candidate for investment. Also, after the preceding overview, '
                'under the heading "SUGGESTED QUESTIONS:" suggest questions to be asked to elicit information'
-               ' on the unknown characteristics.\r',
+               ' on the unknown characteristics.\n',
     "DISCHARGE": '',
     "SUMMARY": ''
 }

@@ -1,6 +1,7 @@
 import imaplib
 import email
 import email.utils
+import email.header
 import time
 import uuid
 import smtplib
@@ -269,7 +270,8 @@ def get_emails_and_create_work_files():
 
                             filename = part.get_filename()
                             if filename:
-                                filename = filename.upper()
+                                decoded_header = email.header.decode_header(filename)
+                                filename = ''.join([part.decode(charset or 'utf-8') for part, charset in decoded_header]).upper()
 
                             filepath = ""
 

@@ -104,10 +104,10 @@ def consolidate_answers(chunk_answers):
     i = 1
     documents = ""
     for chunk_answer in chunk_answers:
-        documents += "Document " + str(i) + '\r\n'
-        documents += chunk_answer + '\r\n\r\n'
+        documents += "Document " + str(i) + '\n'
+        documents += chunk_answer + '\n\n'
         i += 1
-    documents += constants.consolidate_prompt_1 + str(len(chunk_answers)) + constants.consolidate_prompt_2
+    documents += constants.consolidate_prompt.replace("{number_docs}", str(i-1))
 
     response = openai.chat.completions.create(
         model=OPENAI_MODEL,
@@ -127,7 +127,8 @@ def determine_subject_name(subject, input_line):
         messages = [
             {"role": "system", "content": "Consider the following sentence and answer "
                                           "as a helpful AI agent with only the name of the company:\n\n"},
-            {"role": "user", "content": f'"{input_line[1]}"\n\n"What is the name of the company?' },
+            {"role": "user", "content": f'"{input_line[1]}"\n\n"What is the name of the company.'
+                                        f' Answer with only the name of the company?'},
         ]
         response = openai.chat.completions.create(
             model=OPENAI_MODEL,
@@ -135,19 +136,19 @@ def determine_subject_name(subject, input_line):
             temperature=0.0
         )
         chat_response = response.choices[0].message.content.strip().upper()
-        if chat_response[:26].upper() == 'THE NAME OF THE COMPANY IS':
+        if chat_response[:26] == 'THE NAME OF THE COMPANY IS':
             chat_response = chat_response[27:]
         if chat_response[-1:] == ".":
             chat_response = chat_response[:-1]
 
-        disqulaifier_words = [
+        disqualifier_words = [
             "I'M SORRY",
             "DOES NOT",
             "DON'T HAVE",
             "NOT PROVIDED"
         ]
 
-        name_unknown = [True for words in disqulaifier_words if words in chat_response]
+        name_unknown = [True for words in disqualifier_words if words in chat_response]
         if not name_unknown:
             name_to_use = chat_response[:32]
         else:
@@ -229,7 +230,7 @@ def main():
                 summary_of_summaries = ask_questions_of_text(
                     constants.summary_prelude[subject],
                     constants.summary_prompt_list[subject],
-                    constants.summary_prompts[subject],
+                    summary_prompts,
                     consolidated_summary
                 )
             else:
