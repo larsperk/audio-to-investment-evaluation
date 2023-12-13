@@ -271,7 +271,14 @@ def get_emails_and_create_work_files():
                             filename = part.get_filename()
                             if filename:
                                 decoded_header = email.header.decode_header(filename)
-                                filename = ''.join([part.decode(charset or 'utf-8') for part, charset in decoded_header]).upper()
+                                decoded_filename = ''
+                                for filename_part, charset in decoded_header:
+                                    if charset:
+                                        decoded_filename += filename_part.decode(charset)
+                                    else:
+                                        decoded_filename += filename_part
+
+                                filename = decoded_filename.upper()
 
                             filepath = ""
 
