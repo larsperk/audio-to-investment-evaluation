@@ -11,9 +11,11 @@ summary_prelude = {
     "DISCHARGE": 'Please act as a helpful AI agent.\n'
                  'The following is a letter describing a patient who has received medical care.\n'
                  'The author is a doctor and is written to a general practitioner who will be responsible\n'
-                 'for the patient\'s care after they are discharged'
-
-
+                 'for the patient\'s care after they are discharged',
+    "VESPER": 'Please answer as a helpful AI agent helping to summarize'
+              ' information related to a business seeking investment.\n',
+    "GENERAL": 'Please answer as a helpful AI agent helping to summarize'
+               ' information related to a business seeking investment. \n',
 }
 
 summary_prompt_list = {
@@ -27,6 +29,50 @@ summary_prompt_list = {
     "DISCHARGE": [
         "STORY", "ACTIONS PERFORMED", "ACTIONS REQUESTED",
         ],
+    "VESPER": [
+        "NAME",
+        "PROBLEM",
+        "SOLUTION",
+        "SECTOR",
+        "RISK",
+        "DISRUPTION",
+        "CYCLICALITY",
+        "US-BASED",
+        "EBITDA",
+        "EV",
+        "OPERATING HISTORY",
+        "GROWTH",
+        "MARGIN",
+        "REVENUE CONCENTRATION",
+        "SUPPLIER CONCENTRATION",
+        "ROLLUP",
+        "OWNERSHIP",
+        "CONFLICT OF INTEREST",
+        "VALUE ADD",
+        "INVESTMENT SIZE",
+        "RETURN PROFILE",
+        "DEBT",
+        "MANAGEMENT CONTINUITY",
+        "BILATERAL PATH",
+        "TIMING",
+        "CULTURE",
+        "EXPERIENCE",
+        "STRATEGY",
+        "COMPETITION"
+    ],
+    "GENERAL": [
+        "NAME",
+        "SECTOR",
+        "PROBLEM",
+        "SOLUTION",
+        "TEAM",
+        "TRACTION",
+        "TECH",
+        "TAM",
+        "COMPETITION",
+        "INVESTMENT SIZE",
+        "INVESTMENT USE"
+    ]
 }
 
 
@@ -148,6 +194,8 @@ evaluation_prelude = {
                'under the heading "SUGGESTED QUESTIONS:" suggest questions to be asked to elicit information'
                ' on the unknown characteristics.\n',
     "DISCHARGE": '',
-    "SUMMARY": ''
+    "SUMMARY": '',
+    "VESPER": '',
+    "GENERAL": '',
 }
 
