@@ -66,6 +66,7 @@ summary_prompt_list = {
         "PROBLEM",
         "SOLUTION",
         "TEAM",
+        "EXPERIENCE",
         "TRACTION",
         "TECH",
         "TAM",
@@ -113,10 +114,11 @@ summary_prompts = {
     },
     "VESPER": {
         "NAME": 'what is the name of the company?',
+        "SECTOR": "what sector is the company in?"
+                  " e.g. media; Content; financial services; professional services;"
+                  "sports, fintech, healthtech, edtech, etc.",
         "PROBLEM": 'what problems are they solving, and what customers have these problems?',
         "SOLUTION": 'how does their product solve the problem',
-        "SECTOR": "what sector is the company in?"
-                  " e.g. Content; financial services; tech-enabled & professional services",
         "RISK": "are there regulatory or reimbursement risks for the company or associated with its sector?",
         "DISRUPTION": "is the company or sector at risk of being disrupted by tech innovation?",
         "CYCLICALITY": "is the company or sector cyclical?",
@@ -150,6 +152,7 @@ summary_prompts = {
         "PROBLEM": 'what problems are they solving, and what customers have these problems?',
         "SOLUTION": 'how does their product solve the problem',
         "TEAM": 'what are the names and roles of the executive team',
+        "EXPERIENCE": 'what is the executive team\'s experience?',
         "TRACTION": 'how many customers do they have and what is their annual revenue?',
         "TECH": 'what technologies are they using in their product',
         "TAM": 'how big is the market they\'re addressing both in numbers of customers and dollar size',
