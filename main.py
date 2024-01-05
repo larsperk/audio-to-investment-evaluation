@@ -124,31 +124,35 @@ def consolidate_answers(chunk_answers):
 
 def determine_subject_name(subject, input_line):
     if subject == "DEFAULT":
-        messages = [
-            {"role": "system", "content": "Consider the following sentence and answer "
-                                          "as a helpful AI agent with only the name of the company:\n\n"},
-            {"role": "user", "content": f'"{input_line[1]}"\n\n"What is the name of the company.'
-                                        f' Answer with only the name of the company?'},
-        ]
-        response = openai.chat.completions.create(
-            model=OPENAI_MODEL,
-            messages=messages,
-            temperature=0.0
-        )
-        chat_response = response.choices[0].message.content.strip().upper()
-        if chat_response[:26] == 'THE NAME OF THE COMPANY IS':
-            chat_response = chat_response[27:]
-        if chat_response[-1:] == ".":
-            chat_response = chat_response[:-1]
+        if input_line:
+            messages = [
+                {"role": "system", "content": "Consider the following sentence and answer "
+                                              "as a helpful AI agent with only the name of the company:\n\n"},
+                {"role": "user", "content": f'"{input_line[1]}"\n\n"What is the name of the company.'
+                                            f' Answer with only the name of the company?'},
+            ]
+            response = openai.chat.completions.create(
+                model=OPENAI_MODEL,
+                messages=messages,
+                temperature=0.0
+            )
+            chat_response = response.choices[0].message.content.strip().upper()
+            if chat_response[:26] == 'THE NAME OF THE COMPANY IS':
+                chat_response = chat_response[27:]
+            if chat_response[-1:] == ".":
+                chat_response = chat_response[:-1]
 
-        disqualifier_words = [
-            "I'M SORRY",
-            "DOES NOT",
-            "DON'T HAVE",
-            "NOT PROVIDED"
-        ]
+            disqualifier_words = [
+                "I'M SORRY",
+                "DOES NOT",
+                "DON'T HAVE",
+                "NOT PROVIDED"
+            ]
 
-        name_unknown = [True for words in disqualifier_words if words in chat_response]
+            name_unknown = [True for words in disqualifier_words if words in chat_response]
+        else:
+            name_unknown = True
+
         if not name_unknown:
             name_to_use = chat_response[:32]
         else:

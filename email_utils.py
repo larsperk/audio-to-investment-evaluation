@@ -190,9 +190,9 @@ def write_docx_file(output_file_prefix, generated_name, text_file_contents, use_
                     bulleting_is_on = True
 
             else:
-                graph = doc.add_paragraph(line)
-                graph.paragraph_format.line_spacing = 1
-                graph.paragraph_format.space_after = 0
+                graf = doc.add_paragraph(line)
+                graf.paragraph_format.line_spacing = 1
+                graf.paragraph_format.space_after = 0
 
     todays_datetime = datetime.now().strftime("%Y-%m-%d %H%M")
     docx_filename = f"{output_file_prefix}-{generated_name}-{todays_datetime}.docx"
