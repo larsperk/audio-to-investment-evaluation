@@ -247,7 +247,7 @@ def get_emails_and_create_work_files():
 
                     subject = subject.upper() or "DEFAULT"
 
-                    detail_level = 10
+                    detail_level = 5
                     if subject[:7] == "SUMMARY":
                         p = subject.find("-")
                         if p != -1:

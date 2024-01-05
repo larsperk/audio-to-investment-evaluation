@@ -64,6 +64,52 @@ summary_prompts = {
         "ACTIONS PERFORMED": "list the actions performed while the patient was in the hospital",
         "ACTIONS REQUESTED": "list the actions that the physician is requesting from the general "
                              "practitioner and whether they are indicated or contraindicated given the patient's story."
+    },
+    "VESPER": {
+        "NAME": 'what is the name of the company?',
+        "PROBLEM": 'what problems are they solving, and what customers have these problems?',
+        "SOLUTION": 'how does their product solve the problem',
+        "SECTOR": "what sector is the company in?"
+                  " e.g. Content; financial services; tech-enabled & professional services",
+        "RISK": "are there regulatory or reimbursement risks for the company or associated with its sector?",
+        "DISRUPTION": "is the company or sector at risk of being disrupted by tech innovation?",
+        "CYCLICALITY": "is the company or sector cyclical?",
+        "US-BASED": "is the company US-based or its revenue majority US-based?",
+        "EBITDA": "what is the company's earnings before interest, taxes, depreciation, and amortization?",
+        "EV": "approximately what is the company's enterprise value?",
+        "OPERATING HISTORY": "how long has the company been in business?",
+        "GROWTH": "what is the company's growth rate?",
+        "MARGIN": "what is the company's gross margin?",
+        "REVENUE CONCENTRATION": "is the company\'s revenue concentrated in a few customers?",
+        "SUPPLIER CONCENTRATION": "is the company\'s supply chain concentrated in a few suppliers?",
+        "ROLLUP": "is the company part of a rollup?",
+        "OWNERSHIP": "what is the ownership structure of the company?",
+        "CONFLICT OF INTEREST": "is there a conflict of interest with other Vesper investments?",
+        "VALUE ADD": "what value add can Vesper provide to the company?",
+        "INVESTMENT SIZE": "what is the size of the investment?",
+        "RETURN PROFILE": "what is the expected return profile of the investment?",
+        "DEBT": "what is the company's debt?",
+        "MANAGEMENT CONTINUITY": "will management remain with the company post investment?",
+        "BILATERAL PATH": "is there a bilateral path to exit?",
+        "TIMING": "is there enough time to run a 3-month investment process?",
+        "CULTURE": "is the company's culture a good fit with Vesper's culture?",
+        "EXPERIENCE": "does management have industry experience and knowledge?",
+        "STRATEGY": "is there a relevant and clear value creation strategy?",
+        "COMPETITION": "is there a clear competitive differentiation and/or moat?",
+    },
+    "GENERAL": {
+        "NAME": 'what is the name of the company?',
+        "SECTOR": "what sector is the company in?"
+                  " e.g. Content; financial services; tech-enabled & professional services",
+        "PROBLEM": 'what problems are they solving, and what customers have these problems?',
+        "SOLUTION": 'how does their product solve the problem',
+        "TEAM": 'what are the names and roles of the executive team',
+        "TRACTION": 'how many customers do they have and what is their annual revenue?',
+        "TECH": 'what technologies are they using in their product',
+        "TAM": 'how big is the market they\'re addressing both in numbers of customers and dollar size',
+        "COMPETITION": "who are the company's competitors and what are their weaknesses",
+        "INVESTMENT SIZE": "what size investment are they looking for?",
+        "INVESTMENT USE": "what will they use the investment for?",
     }
 }
 
