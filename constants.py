@@ -36,7 +36,7 @@ summary_prompt_list = {
         "COMPETITION",
         "LEISURE",
         "PROGRAMS",
-        "TECHSTARS",
+        "EXPECTED VALUE FROM TECHSTARS",
         "ATTENDANCE",
         "DEAL",
         ],
@@ -124,7 +124,7 @@ summary_prompts = {
         "LEISURE": 'what do the founders and co-founders do in their spare time '
                    'for hobbies, avocations and interests, or sports',
         "PROGRAMS": 'has the company attended any other accelerator, incubator, or similar program',
-        "TECHSTARS": 'what does the company hope to get out of attending the Techstars accelerator',
+        "EXPECTED VALUE FROM TECHSTARS": 'what does the company hope to get out of attending the Techstars accelerator',
         "ATTENDANCE": 'Are the founders available to attend the 13 week accelerator program in person',
         "DEAL": 'do the founders understand the Techstars deal terms and are they willing to accept them',
          },
