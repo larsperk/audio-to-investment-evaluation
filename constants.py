@@ -36,6 +36,8 @@ summary_prompt_list = {
         "COMPETITION",
         "LEISURE",
         "PROGRAMS",
+        "TECHSTARS",
+        "ATTENDANCE",
         ],
     "SUMMARY": [
         "SUMMARY"
@@ -120,7 +122,9 @@ summary_prompts = {
         "COMPETITION": "who are the company's competitors and what are their weaknesses",
         "LEISURE": 'what do the founders and co-founders do in their spare time '
                    'for hobbies, avocations and interests, or sports',
-        "PROGRAMS": 'has the company attended any other accelerator, incubator, or similar program'
+        "PROGRAMS": 'has the company attended any other accelerator, incubator, or similar program',
+        "TECHSTARS": 'what does the company hope to get out of attending the Techstars accelerator',
+        "ATTENDANCE": 'Are the founders available to attend the 13 week accelerator program in person',
          },
     "SUMMARY": {
         "SUMMARY": "Please summarize the major points of this transcript in {detail_level} bullets or less."
