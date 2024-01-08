@@ -24,6 +24,7 @@ summary_prompt_list = {
         "PROBLEM",
         "SOLUTION",
         "WHY",
+        "BUSINESS MODEL",
         "TEAM",
         "CTO",
         "TEAM EXPERIENCE",
@@ -80,6 +81,7 @@ summary_prompt_list = {
         "SECTOR",
         "PROBLEM",
         "SOLUTION",
+        "BUSINESS MODEL",
         "TEAM",
         "EXPERIENCE",
         "TRACTION",
@@ -99,6 +101,8 @@ summary_prompts = {
         "PROBLEM": 'what problems are they solving, and what customers have these problems?',
         "SOLUTION": 'how does their product solve the problem',
         "WHY": 'what is their primary motivation for building the business',
+        "BUSINESS MODEL": 'what is their business model, '
+                          'how do they make money, and what is their pricing?',
         "TEAM": 'what are the names and roles of founders and co-founders '
                 '(CEO, CTO, COO, and any other C-level executives) and are they working full time on the company?',
         "CTO": 'who is the chief technology officer and what are his/her qualifications?',
@@ -166,6 +170,8 @@ summary_prompts = {
                   " e.g. Content; financial services; tech-enabled & professional services",
         "PROBLEM": 'what problems are they solving, and what customers have these problems?',
         "SOLUTION": 'how does their product solve the problem',
+        "BUSINESS MODEL": "what is their business model, "
+                          "how do they make money, and what is their pricing?",
         "TEAM": 'what are the names and roles of the executive team',
         "EXPERIENCE": 'what is the executive team\'s experience?',
         "TRACTION": 'how many customers do they have and what is their annual revenue?',
