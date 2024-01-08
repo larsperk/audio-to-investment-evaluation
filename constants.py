@@ -38,6 +38,7 @@ summary_prompt_list = {
         "PROGRAMS",
         "TECHSTARS",
         "ATTENDANCE",
+        "DEAL",
         ],
     "SUMMARY": [
         "SUMMARY"
@@ -125,6 +126,7 @@ summary_prompts = {
         "PROGRAMS": 'has the company attended any other accelerator, incubator, or similar program',
         "TECHSTARS": 'what does the company hope to get out of attending the Techstars accelerator',
         "ATTENDANCE": 'Are the founders available to attend the 13 week accelerator program in person',
+        "DEAL": 'do the founders understand the Techstars deal terms and are they willing to accept them',
          },
     "SUMMARY": {
         "SUMMARY": "Please summarize the major points of this transcript in {detail_level} bullets or less."
