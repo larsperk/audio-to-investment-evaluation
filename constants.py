@@ -20,14 +20,29 @@ summary_prelude = {
 
 summary_prompt_list = {
     "DEFAULT": [
-        "NAME", "PROBLEM", "SOLUTION", "WHY", "TEAM", "CTO", "TEAM EXPERIENCE", "TRACTION", "FUNDING",
-        "TECH", "TAM", "TIMING", "COMPETITION", "LEISURE", "PROGRAMS",
+        "NAME",
+        "PROBLEM",
+        "SOLUTION",
+        "WHY",
+        "TEAM",
+        "CTO",
+        "TEAM EXPERIENCE",
+        "TRACTION",
+        "FUNDING",
+        "TECH",
+        "TAM",
+        "TIMING",
+        "COMPETITION",
+        "LEISURE",
+        "PROGRAMS",
         ],
     "SUMMARY": [
         "SUMMARY"
         ],
     "DISCHARGE": [
-        "STORY", "ACTIONS PERFORMED", "ACTIONS REQUESTED",
+        "STORY",
+        "ACTIONS PERFORMED",
+        "ACTIONS REQUESTED",
         ],
     "VESPER": [
         "NAME",
@@ -80,7 +95,7 @@ summary_prompt_list = {
 summary_prompts = {
     "DEFAULT": {
         "NAME": 'what is the name of the company that the entrepreneur '
-                'is talking about and how long has it been in business?',
+                'is talking about, where is it located, and how long has it been in business?',
         "PROBLEM": 'what problems are they solving, and what customers have these problems?',
         "SOLUTION": 'how does their product solve the problem',
         "WHY": 'what is their primary motivation for building the business',
