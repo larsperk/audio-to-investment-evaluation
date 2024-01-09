@@ -35,6 +35,7 @@ summary_prompt_list = {
         "TAM",
         "TIMING",
         "COMPETITION",
+        "BIGGEST RISK",
         "LEISURE",
         "PROGRAMS",
         "EXPECTED VALUE FROM TECHSTARS",
@@ -123,6 +124,7 @@ summary_prompts = {
         "TIMING": 'is there something happening in technology or the market or society '
                   'that makes this more relevant or more possible right now',
         "COMPETITION": "who are the company's competitors and what are their weaknesses",
+        "BIGGEST RISK": 'what are the biggest risks to the company\'s success',
         "LEISURE": 'what do the founders and co-founders do in their spare time '
                    'for hobbies, avocations and interests, or sports',
         "PROGRAMS": 'has the company attended any other accelerator, incubator, or similar program',
