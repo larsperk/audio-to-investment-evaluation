@@ -4,6 +4,7 @@ summary_prelude = {
     "DEFAULT": 'Please answer as a helpful ai agent.\n'
                + 'The following is a transcript between an interviewer and an entrepreneur,\n'
                + 'who is starting a business and discussing their business and their product.\n'
+               + 'The interviewer will make some points and deliver opinions after the interview is over.\n'
                + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\n'
                + 'Be as detailed as possible when answering the questions."\n'
                + 'If you don\'t know the answer, please answer "unknown"',
@@ -39,6 +40,7 @@ summary_prompt_list = {
         "EXPECTED VALUE FROM TECHSTARS",
         "ATTENDANCE",
         "DEAL",
+        "INTERVIEWER NOTES"
         ],
     "SUMMARY": [
         "SUMMARY"
@@ -127,6 +129,8 @@ summary_prompts = {
         "EXPECTED VALUE FROM TECHSTARS": 'what does the company hope to get out of attending the Techstars accelerator',
         "ATTENDANCE": 'Are the founders available to attend the 13 week accelerator program in person',
         "DEAL": 'do the founders understand the Techstars deal terms and are they willing to accept them',
+        "INTERVIEWER NOTES": "Please summarize points that the interviewer enumerated "
+                             "at the end of the interview",
          },
     "SUMMARY": {
         "SUMMARY": "Please summarize the major points of this transcript in {detail_level} bullets or less."
