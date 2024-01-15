@@ -256,7 +256,7 @@ def get_emails_and_create_work_files():
                         subject = "SUMMARY"
 
                     if subject not in constants.summary_prompt_list.keys():
-                        subject = "SUMMARY"
+                        subject = "DEFAULT"
 
                     if subject in constants.summary_prompt_list.keys():
 
