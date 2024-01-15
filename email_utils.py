@@ -24,6 +24,7 @@ import json
 
 import constants
 import main
+import ocr_pdf
 
 MODE = 'EMAIL'  # EMAIL or MICROPHONE or FORCE AUDIO or FORCE TEXT
 
@@ -300,7 +301,8 @@ def get_emails_and_create_work_files():
                                             main.log_message("transcribe end")
 
                                         elif filename.endswith(".PDF"):
-                                            text = convert_pdf_to_txt(filepath)
+                                            # text = convert_pdf_to_txt(filepath)
+                                            text = ocr_pdf.ocr_pdf(filepath)
                                             write_text_file(text, transcription_filename)
 
                                         elif filename.endswith(".RTF"):

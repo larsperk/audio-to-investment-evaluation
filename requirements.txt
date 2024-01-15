@@ -9,3 +9,5 @@ python-pptx
 docx2txt
 assemblyai
 python-docx
+boto3
+botocore

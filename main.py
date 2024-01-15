@@ -25,6 +25,8 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 email_pass = os.getenv('EMAIL_PASS')
 email_user = "investmentevaluator@gmail.com"
 aai.settings.api_key = os.getenv('AAI_API_KEY')
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
 
 def transcribe_audio_using_whisper(raw_audio_file, transcription_file):
