@@ -17,6 +17,8 @@ summary_prelude = {
               ' information related to a business seeking investment.\n',
     "GENERAL": 'Please answer as a helpful AI agent helping to summarize'
                ' information related to a business seeking investment. \n',
+    "2nd": 'Please answer as a helpful AI agent helping to summarize '
+           'information related to a business seeking investment. \n',
 }
 
 summary_prompt_list = {
@@ -95,7 +97,19 @@ summary_prompt_list = {
         "TAM",
         "COMPETITION",
         "INVESTMENT SIZE",
-        "INVESTMENT USE"
+        "INVESTMENT USE",
+    ],
+    "2nd": [
+        "NAME",
+        "SUMMARY",
+        "TEAM",
+        "CAP TABLE",
+        "SOLE FOUNDER",
+        "TAM",
+        "COMPETITION",
+        "TECH",
+        "TRACTION",
+        "REFERENCE",
     ]
 }
 
