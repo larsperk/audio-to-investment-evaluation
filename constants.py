@@ -17,7 +17,7 @@ summary_prelude = {
               ' information related to a business seeking investment.\n',
     "GENERAL": 'Please answer as a helpful AI agent helping to summarize'
                ' information related to a business seeking investment. \n',
-    "2nd": 'Please answer as a helpful AI agent helping to summarize '
+    "2ND": 'Please answer as a helpful AI agent helping to summarize '
            'information related to a business seeking investment. \n',
 }
 
@@ -99,7 +99,7 @@ summary_prompt_list = {
         "INVESTMENT SIZE",
         "INVESTMENT USE",
     ],
-    "2nd": [
+    "2ND": [
         "NAME",
         "SUMMARY",
         "TEAM",
@@ -208,7 +208,7 @@ summary_prompts = {
         "INVESTMENT SIZE": "what size investment are they looking for?",
         "INVESTMENT USE": "what will they use the investment for?",
     },
-    "2nd": {
+    "2ND": {
         "NAME": 'what is the name of the company that the entrepreneur is speaking about?',
         "SUMMARY": "Provide a general summary of the business",
         "TEAM": 'what are the names, roles, and equity ownership of founders and co-founders '
@@ -264,6 +264,6 @@ evaluation_prelude = {
     "SUMMARY": '',
     "VESPER": '',
     "GENERAL": '',
-    "2nd": '',
+    "2ND": '',
 }
 
