@@ -193,6 +193,22 @@ summary_prompts = {
         "COMPETITION": "who are the company's competitors and what are their weaknesses",
         "INVESTMENT SIZE": "what size investment are they looking for?",
         "INVESTMENT USE": "what will they use the investment for?",
+    },
+    "2nd": {
+        "NAME": 'what is the name of the company that the entrepreneur is speaking about?',
+        "SUMMARY": "Provide a general summary of the business",
+        "TEAM": 'what are the names, roles, and equity ownership of founders and co-founders '
+                '(CEO, CTO, COO, and any other C-level executives) and are they working full time on the company?',
+        "CAP TABLE": 'besides the founding team, who else is on the cap table?',
+        "SOLE FOUNDER": 'is there only one founder (YES/NO)?',
+        "TAM": 'how big is the market they\'re addressing both in numbers of customers and dollar size'
+               'what is the service addressable market (SAM) and service obtainable market (SOM)?',
+        "COMPETITION": "who are the company's competitors, how big are they, how have they been funded"
+                       " and what are their weaknesses? please be as detailed as possible",
+        "TECH": 'provide a detailed description of what technologies are used'
+                ' in their product and what makes those technologies unique',
+        "TRACTION": 'provide a detailed list of what customers, pilots, and design partners the company has',
+        "REFERENCE": 'What name would the founder provide if asked to provide a reference?',
     }
 }
 
