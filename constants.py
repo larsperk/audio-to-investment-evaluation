@@ -99,7 +99,7 @@ summary_prompt_list = {
         "INVESTMENT SIZE",
         "INVESTMENT USE",
     ],
-    "2ND": [
+    "2ND": {
         "NAME",
         "SUMMARY",
         "TEAM",
@@ -107,10 +107,14 @@ summary_prompt_list = {
         "TAM",
         "COMPETITION",
         "TECH",
+        "PRODUCT",
         "TRACTION",
         "GO TO MARKET",
+        "TECHSTARS",
+        "CONVERTIBLE NOTE",
         "REFERENCE",
-    ]
+        "INTERVIEWER NOTES",
+    }
 }
 
 
@@ -220,9 +224,14 @@ summary_prompts = {
                        " and what are their weaknesses? please be as detailed as possible",
         "TECH": 'provide a detailed description of what technologies are used'
                 ' in their product and what makes those technologies unique',
+        "PRODUCT": 'provide a detailed description of the product\'s features and benefits',
         "TRACTION": 'provide a detailed list of what customers, pilots, and design partners the company has',
         "GO TO MARKET": "what is the company's go to market strategy?",
+        "TECHSTARS": "specifically and in detail, what do they hope to get out of attending the Techstars accelerator?",
+        "CONVERTIBLE NOTE": "Would the company want the $100,000 convertible note Techstars offers?",
         "REFERENCE": 'Who would the founder provide if asked to provide a reference?',
+        "INTERVIEWER NOTES": "Please summarize points that the interviewer enumerated "
+                             "at the end of the interview",
     }
 }
 
