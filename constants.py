@@ -104,7 +104,6 @@ summary_prompt_list = {
         "SUMMARY",
         "TEAM",
         "CAP TABLE",
-        "SOLE FOUNDER",
         "TAM",
         "COMPETITION",
         "TECH",
