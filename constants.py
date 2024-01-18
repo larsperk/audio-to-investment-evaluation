@@ -19,6 +19,8 @@ summary_prelude = {
                ' information related to a business seeking investment. \n',
     "2ND": 'Please answer as a helpful AI agent helping to summarize '
            'information related to a business seeking investment. \n',
+    "VC": 'Please answer as a helpful AI agent helping to summarize '
+          'information related to a business seeking investment. \n',
 }
 
 summary_prompt_list = {
@@ -99,7 +101,7 @@ summary_prompt_list = {
         "INVESTMENT SIZE",
         "INVESTMENT USE",
     ],
-    "2ND": {
+    "2ND": [
         "NAME",
         "SUMMARY",
         "TEAM",
@@ -114,7 +116,10 @@ summary_prompt_list = {
         "CONVERTIBLE NOTE",
         "REFERENCE",
         "INTERVIEWER NOTES",
-    }
+    ],
+    "VC": [
+        "SUMMARY",
+    ],
 }
 
 
@@ -232,6 +237,12 @@ summary_prompts = {
         "REFERENCE": 'Who would the founder provide if asked to provide a reference?',
         "INTERVIEWER NOTES": "Please summarize points that the interviewer enumerated "
                              "at the end of the interview",
+    },
+    "VC": {
+        "SUMMARY": "provide a summary of this conversation with key points. "
+                   "Focus the key points as if you were a venture capitalist trying to explain the "
+                   "main parts of the business including team, technology, market, and traction. Include "
+                   "information, if available, on funding the company has already received."
     }
 }
 
@@ -274,5 +285,6 @@ evaluation_prelude = {
     "VESPER": '',
     "GENERAL": '',
     "2ND": '',
+    "VC": '',
 }
 

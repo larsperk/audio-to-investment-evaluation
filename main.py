@@ -125,7 +125,7 @@ def consolidate_answers(chunk_answers):
 
 
 def determine_subject_name(subject, input_line):
-    if subject == "DEFAULT" or subject == "VESPER" or subject == "GENERAL" or subject == "2ND":
+    if subject == "DEFAULT" or subject == "VESPER" or subject == "GENERAL" or subject == "2ND" or subject == "VC":
         if input_line:
             messages = [
                 {"role": "system", "content": "Consider the following sentence and answer "
