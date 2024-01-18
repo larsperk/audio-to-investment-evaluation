@@ -172,6 +172,8 @@ def write_docx_file(output_file_prefix, generated_name, text_file_contents, use_
     line_numbering_is_on = False
     bulleting_is_on = False
     for line in text_file_contents:
+        if line.startswith('**') and line.endswith('**'):
+            line = line[2:-2]
         if line != "":
             if line.endswith(":") or (line == line.upper()):
                 heading = doc.add_heading(line)
