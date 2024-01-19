@@ -110,6 +110,8 @@ summary_prompt_list = {
         "COMPETITION",
         "TECH",
         "PRODUCT",
+        "DEVELOPMENT STATUS",
+        "IP",
         "TRACTION",
         "GO TO MARKET",
         "TECHSTARS",
@@ -231,6 +233,8 @@ summary_prompts = {
         "TECH": 'provide a detailed description of what technologies are used'
                 ' in their product and what makes those technologies unique',
         "PRODUCT": 'provide a detailed description of the product\'s features and benefits',
+        "DEVELOPMENT STATUS": "what is the status of the product's development?",
+        "IP": "is there proprietary intellectual property and how is it protected?",
         "TRACTION": 'provide a detailed list of what customers, pilots, and design partners the company has',
         "GO TO MARKET": "what is the company's go to market strategy?",
         "TECHSTARS": "specifically and in detail, what do they hope to get out of attending the Techstars accelerator?",
