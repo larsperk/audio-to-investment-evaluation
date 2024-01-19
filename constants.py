@@ -45,7 +45,7 @@ summary_prompt_list = {
         "EXPECTED VALUE FROM TECHSTARS",
         "ATTENDANCE",
         "DEAL",
-        "INTERVIEWER NOTES"
+        "INTERVIEWER NOTES",
         ],
     "SUMMARY": [
         "SUMMARY"
@@ -84,7 +84,7 @@ summary_prompt_list = {
         "CULTURE",
         "EXPERIENCE",
         "STRATEGY",
-        "COMPETITION"
+        "COMPETITION",
     ],
     "GENERAL": [
         "NAME",
@@ -118,6 +118,7 @@ summary_prompt_list = {
         "INTERVIEWER NOTES",
     ],
     "VC": [
+        "NAME",
         "SUMMARY",
     ],
 }
@@ -239,6 +240,7 @@ summary_prompts = {
                              "at the end of the interview",
     },
     "VC": {
+        "NAME": 'what is the name of the company that the entrepreneur is speaking about?',
         "SUMMARY": "provide a summary of this conversation with key points. "
                    "Focus the key points as if you were a venture capitalist trying to explain the "
                    "main parts of the business including team, technology, market, and traction. Include "
