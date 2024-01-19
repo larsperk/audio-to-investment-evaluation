@@ -127,10 +127,11 @@ def consolidate_answers(chunk_answers):
 def determine_subject_name(subject, input_line):
     if subject == "DEFAULT" or subject == "VESPER" or subject == "GENERAL" or subject == "2ND" or subject == "VC":
         if input_line:
+            source_line = input_line[1] + '\n' + input_line[2] + '\n' + input_line[3] + '\n' + input_line[4]
             messages = [
                 {"role": "system", "content": "Consider the following sentence and answer "
                                               "as a helpful AI agent with only the name of the company:\n\n"},
-                {"role": "user", "content": f'"{input_line[1]}"\n\n"What is the name of the company.'
+                {"role": "user", "content": f'"{source_line}"\n\n"What is the name of the company.'
                                             f' Answer with only the name of the company?'},
             ]
             response = openai.chat.completions.create(
