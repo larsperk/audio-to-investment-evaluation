@@ -172,6 +172,8 @@ def write_docx_file(output_file_prefix, generated_name, text_file_contents, use_
     line_numbering_is_on = False
     bulleting_is_on = False
     for line in text_file_contents:
+        if line.startswith("-"):
+            line = line[1:]
         if line.startswith("### "):
             line = line[4:]
         if line.startswith('**') and line.endswith('**'):
