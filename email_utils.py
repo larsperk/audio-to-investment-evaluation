@@ -176,6 +176,8 @@ def write_docx_file(output_file_prefix, generated_name, text_file_contents, use_
             line = line[1:]
         if line.startswith("### "):
             line = line[4:]
+        if line.startswith(" "):
+            line = line[1:]
         if line.startswith('**') and line.endswith('**'):
             line = line[2:-2]
         if line != "":
