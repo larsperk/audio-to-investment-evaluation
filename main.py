@@ -28,7 +28,6 @@ aai.settings.api_key = os.getenv('AAI_API_KEY')
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
-# revert test
 
 def transcribe_audio_using_whisper(raw_audio_file, transcription_file):
     model = whisper.load_model("tiny")
@@ -150,7 +149,8 @@ def determine_subject_name(subject, input_line):
                 "I'M SORRY",
                 "DOES NOT",
                 "DON'T HAVE",
-                "NOT PROVIDED"
+                "NOT PROVIDED",
+                "YOU DID NOT",
             ]
 
             name_unknown = [True for words in disqualifier_words if words in chat_response]
@@ -166,7 +166,7 @@ def determine_subject_name(subject, input_line):
         name_to_use = "Discharge"
 
     else:
-        name_to_use = "Summary"
+        name_to_use = "Unknown"
 
     return name_to_use
 
