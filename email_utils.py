@@ -171,15 +171,26 @@ def write_docx_file(output_file_prefix, generated_name, text_file_contents, use_
 
     line_numbering_is_on = False
     bulleting_is_on = False
+
+    clean_text_file_contents = []
     for line in text_file_contents:
-        if line.startswith("-"):
-            line = line[1:]
-        if line.startswith("### "):
-            line = line[4:]
-        if line.startswith(" "):
-            line = line[1:]
-        if line.startswith('**') and line.endswith('**'):
-            line = line[2:-2]
+        line.replace("**", "")
+        line.replace("###", "")
+
+        p = line.find(":")
+        if p != -1:
+            heading = line[:p].strip()
+            if heading.startswith("-"):
+                heading = heading[1:].strip()
+
+            clean_text_file_contents.append(heading.upper()+":")
+            text_after_heading = line[p+1:].strip()
+            if text_after_heading:
+                clean_text_file_contents.append(text_after_heading)
+        else:
+            clean_text_file_contents.append(line)
+
+    for line in clean_text_file_contents:
         if line != "":
             if line.endswith(":") or (line == line.upper()):
                 heading = doc.add_heading(line)
