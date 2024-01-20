@@ -122,6 +122,8 @@ summary_prompt_list = {
     "VC": [
         "NAME",
         "SUMMARY",
+        "INTERVIEWER NOTES",
+        "QUESTIONS",
     ],
 }
 
@@ -248,7 +250,14 @@ summary_prompts = {
         "SUMMARY": "provide a summary of this conversation with key points. "
                    "Focus the key points as if you were a venture capitalist trying to explain the "
                    "main parts of the business including team, technology, market, and traction. Include "
-                   "information, if available, on funding the company has already received."
+                   "information, if available, on funding the company has already received.",
+        "INTERVIEWER NOTES": "At the end of the interview, the interviewer may make notes. "
+                             "This will be prefaced by the words 'my notes' or 'interviewer notes."
+                             "Please summarize points that the interviewer enumerated at the end of the interview",
+        "QUESTIONS": "As an investor, what questions should be asked of the entrepreneur to validate that this"
+                     "is a good investment? Keep in mind that a successful investment relies on understanding "
+                     "team, timing, business maturity, traction, product readiness, competition, timing"
+                     "market size, technology, intellectual property, and funding, among other factors."
     }
 }
 
