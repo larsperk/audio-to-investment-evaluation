@@ -122,8 +122,6 @@ summary_prompt_list = {
     "VC": [
         "NAME",
         "SUMMARY",
-        "INTERVIEWER NOTES",
-        "QUESTIONS",
     ],
 }
 
