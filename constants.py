@@ -122,6 +122,8 @@ summary_prompt_list = {
     "VC": [
         "NAME",
         "SUMMARY",
+        "INTERVIEWER NOTES",
+        "QUESTIONS",
     ],
 }
 
@@ -245,10 +247,14 @@ summary_prompts = {
     },
     "VC": {
         "NAME": 'what is the name of the company that the entrepreneur is speaking about?',
-        "SUMMARY": "provide a summary of this conversation with key points. "
+        "SUMMARY": "provide a summary of this conversation with key points."
                    "Focus the key points as if you were a venture capitalist trying to explain the "
                    "main parts of the business including team, technology, market, and traction. Include "
-                   "information, if available, on funding the company has already received.",
+                   "information, if available, on funding the company has already received. Each point should be under"
+                   "its own heading. For example, when describing the team, the heading would be "
+                   "'TEAM' and underneath would be a description of the team."
+                   "WHen describing the technology, the heading would be 'TECHNOLOGY', etc.",
+
         "INTERVIEWER NOTES": "At the end of the interview, the interviewer may make notes. "
                              "This will be prefaced by the words 'my notes' or 'interviewer notes."
                              "Please summarize points that the interviewer enumerated at the end of the interview",
