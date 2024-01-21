@@ -160,7 +160,7 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
 
 
 def write_docx_file(output_file_prefix, generated_name, text_file_contents, use_numbering):
-    todays_datetime = datetime.now().strftime("%Y-%m-%d %H%M")
+    todays_datetime = datetime.now().strftime("%Y-%m-%d %H:%M")
     doc = docx.Document()
 
     title = doc.add_paragraph(f"{output_file_prefix} of {generated_name}\n{todays_datetime}")
@@ -174,19 +174,18 @@ def write_docx_file(output_file_prefix, generated_name, text_file_contents, use_
 
     clean_text_file_contents = []
     for line in text_file_contents:
-        line.replace("**", "")
-        line.replace("###", "")
+        line = line.replace("**", "")
+        line = line.replace("###", "")
 
         p = line.find(":")
-        if p != -1:
+        text_after_heading = line[p + 1:].strip()
+
+        if p != -1 and len(text_after_heading) > 50:
             heading = line[:p].strip()
             if heading.startswith("-"):
                 heading = heading[1:].strip()
+            clean_text_file_contents.append(heading)
 
-            clean_text_file_contents.append(heading.upper()+":")
-            text_after_heading = line[p+1:].strip()
-            if text_after_heading:
-                clean_text_file_contents.append(text_after_heading)
         else:
             clean_text_file_contents.append(line)
 
