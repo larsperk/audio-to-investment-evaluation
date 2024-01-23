@@ -249,8 +249,7 @@ summary_prompts = {
         "NAME": 'what is the name of the company that the entrepreneur is speaking about?',
         "SUMMARY": "provide a summary of this conversation with key points."
                    "Focus the key points as if you were a venture capitalist trying to explain the "
-                   "main parts of the business including team, technology, market, traction, future plans, roadmap, "
-                   "and competitive moat. Also include any other relevant "
+                   "main parts of the business including team, technology, market, and traction. Include "
                    "information, if available, on funding the company has already received. Each point should be under"
                    "its own heading. For example, when describing the team, the heading would be "
                    "'TEAM' and underneath would be a description of the team."
