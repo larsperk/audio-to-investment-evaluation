@@ -252,7 +252,8 @@ summary_prompts = {
                    "main parts of the business including team, technology, market, and traction. Include "
                    "information, if available, on funding the company has already received. Each point should be under"
                    "its own heading. For example, when describing the team, the heading would be "
-                   "'TEAM' and underneath would be a description of the team."
+                   "'TEAM' and underneath would be a description of the team. Also include a section on future"
+                   "plans and lon-term vision. This should be under the heading 'FUTURE PLANS'."
                    "WHen describing the technology, the heading would be 'TECHNOLOGY', etc.",
 
         "INTERVIEWER NOTES": "At the end of the interview, the interviewer may make notes. "
