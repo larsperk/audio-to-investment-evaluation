@@ -254,7 +254,9 @@ summary_prompts = {
                    "its own heading. For example, when describing the team, the heading would be "
                    "'TEAM' and underneath would be a description of the team. Also include a section on future"
                    "plans and lon-term vision. This should be under the heading 'FUTURE PLANS'."
-                   "WHen describing the technology, the heading would be 'TECHNOLOGY', etc.",
+                   "Lastly, include a section on their competitive moat, i.e. what will prevent others"
+                   "from easily coming in and competing with them. This should be under the heading "
+                   "'COMPETITIVE MOAT'. WHen describing the technology, the heading would be 'TECHNOLOGY', etc.",
 
         "INTERVIEWER NOTES": "At the end of the interview, the interviewer may make notes. "
                              "This will be prefaced by the words 'my notes' or 'interviewer notes."
