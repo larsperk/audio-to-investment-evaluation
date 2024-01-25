@@ -154,8 +154,7 @@ summary_prompts = {
         "COMPETITION": "who are the company's competitors and what are their weaknesses",
         "BIGGEST RISK": 'what are the biggest risks to the company\'s success'
                         ' and how are they mitigating those risks',
-        "LEISURE": 'what do the founders and co-founders do in their spare time '
-                   'for hobbies, avocations and interests, or sports',
+
         "PROGRAMS": 'has the company attended any other accelerator, incubator, or similar program',
         "EXPECTED VALUE FROM TECHSTARS": 'what does the company hope to get out of attending the Techstars accelerator',
         "ATTENDANCE": 'Are the founders available to attend the 13 week accelerator program in person',
@@ -252,18 +251,16 @@ summary_prompts = {
                    "main parts of the business including team, technology, market, and traction. Include "
                    "information, if available, on funding the company has already received. Each point should be under"
                    "its own heading. For example, when describing the team, the heading would be "
-                   "'TEAM' and underneath would be a description of the team. Also include a section on future"
-                   "plans and lon-term vision. This should be under the heading 'FUTURE PLANS'."
+                   "'TEAM' and underneath would be a description of the team.  WHen describing the technology, "
+                   "the heading would be 'TECHNOLOGY', etc. Also include a section on future"
+                   "plans and long-term vision. This should be under the heading 'FUTURE PLANS'."
                    "Lastly, include a section on their competitive moat, i.e. what will prevent others"
-                   "from easily coming in and competing with them. This should be under the heading "
-                   "'COMPETITIVE MOAT'. WHen describing the technology, the heading would be 'TECHNOLOGY', etc.",
-
-        "INTERVIEWER NOTES": "At the end of the interview, the interviewer may make notes. "
-                             "This will be prefaced by the words 'my notes' or 'interviewer notes."
-                             "Please summarize points that the interviewer enumerated at the end of the interview",
+                   "from easily competing with them. This should be under the heading 'COMPETITIVE MOAT'.",
+        "INTERVIEWER NOTES": "Please summarize points that the interviewer enumerated "
+                             "at the end of the interview",
         "QUESTIONS": "As an investor, what questions should be asked of the entrepreneur to validate that this"
-                     "is a good investment? Keep in mind that a successful investment relies on understanding "
-                     "team, timing, business maturity, traction, product readiness, competition, timing"
+                     "is a good investment? Keep in mind that determining the likelihood of an investment\'s success'"
+                     "requires understanding team, timing, business maturity, traction, product readiness, competition,"
                      "market size, technology, intellectual property, and funding, among other factors."
     }
 }
