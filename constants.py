@@ -40,7 +40,6 @@ summary_prompt_list = {
         "TIMING",
         "COMPETITION",
         "BIGGEST RISK",
-        "LEISURE",
         "PROGRAMS",
         "EXPECTED VALUE FROM TECHSTARS",
         "ATTENDANCE",
