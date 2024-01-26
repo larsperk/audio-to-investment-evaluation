@@ -28,6 +28,7 @@ aai.settings.api_key = os.getenv('AAI_API_KEY')
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
+# force deploy
 
 def transcribe_audio_using_whisper(raw_audio_file, transcription_file):
     model = whisper.load_model("tiny")
