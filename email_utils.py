@@ -288,6 +288,8 @@ def get_emails_and_create_work_files():
                                 continue
 
                             filename = part.get_filename()
+                            filename = filename.replace("\r", "").replace("\n", "")
+
                             if filename:
                                 decoded_header = email.header.decode_header(filename)
                                 decoded_filename = ''
