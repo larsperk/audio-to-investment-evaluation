@@ -279,9 +279,11 @@ consolidate_prompt = "Please consolidate the information in the preceding {numbe
 
 evaluation_prelude = {
     "DEFAULT": 'Below this prompt is a summary of a business that is being considered for investment.\n'
-               'Evaluate the business from the summary and enumerate how well the business meets\n'
+               'Evaluate the business from that summary and enumerate how well the business meets\n'
                'the positive characteristics listed below.\n'
-               'When listing the characteristics, specify whether or not the company has met it.\n'
+               'When listing the characteristics, for each and every characteristic,'
+               ' indicate whether or not the company has met it by '
+               'outputting "MET or "NOT MET" or "PARTIALLY MET" on the same line as the characteristic.\n'
                'Also give your overall conclusion about whether this business is a good candidate for investment.\n' 
                'The positive characteristics of a business that is good to invest in are:\n'
                ' 1. Significant traction in terms of waitlist and/or customers, and/or revenue\n'
@@ -296,8 +298,8 @@ evaluation_prelude = {
                ' 7. Have been in business for less than three years\n'
                ' 8. More than one founder\n'
                ' 9. All founders working full-time for the business\n'
-               'Also, after the preceding overview, '
-               'Under the heading "OVERALL SCORE:" Count the number of points that they meet.\n'
+               'Also, after indicating whether or not the business meets the characteristic,'
+               'Under the heading "OVERALL SCORE:" Count the number of points that they meet.'
                'under the heading "SUGGESTED QUESTIONS:" suggest questions to be asked to elicit information'
                'on the unknown characteristics.\n',
     "DISCHARGE": '',
