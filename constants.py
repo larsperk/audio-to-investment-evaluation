@@ -278,15 +278,16 @@ consolidate_prompt = "Please consolidate the information in the preceding {numbe
 # Evaluation
 
 evaluation_prelude = {
-    "DEFAULT": 'The following is a summary of a business that is being considered for investment.\n'
-               'Please evaluate the business from the summary and enumerate how well the business meets\n'
-               'the positive characteristics listed below. For each characteristic, indicate whether or not the company has met it\n'
+    "DEFAULT": 'Below this prompt is a summary of a business that is being considered for investment.\n'
+               'Evaluate the business from the summary and enumerate how well the business meets\n'
+               'the positive characteristics listed below.\n'
+               'When listing the characteristics, specify whether or not the company has met it.\n'
                'Also give your overall conclusion about whether this business is a good candidate for investment.\n' 
                'The positive characteristics of a business that is good to invest in are:\n'
                ' 1. Significant traction in terms of waitlist and/or customers, and/or revenue\n'
                ' 2. An experienced founding team who either together or individually '
                'have founded other businesses\n'
-               ' 3. A large potential market greater than 500 million in size\n'
+               ' 3. A large potential market greater than 1 billion in size\n'
                ' 4. A team that has worked together before, preferably at a company '
                'that had an IPO or was acquired\n'
                ' 5. Proprietary differentiated technology\n'
@@ -298,7 +299,7 @@ evaluation_prelude = {
                'Also, after the preceding overview, '
                'Under the heading "OVERALL SCORE:" Count the number of points that they meet.\n'
                'under the heading "SUGGESTED QUESTIONS:" suggest questions to be asked to elicit information'
-               ' on the unknown characteristics.\n',
+               'on the unknown characteristics.\n',
     "DISCHARGE": '',
     "SUMMARY": '',
     "VESPER": '',
