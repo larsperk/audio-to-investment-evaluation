@@ -193,7 +193,7 @@ def log_message(message):
 
 
 def main():
-    log_message("audio-to-investment-summary started")
+    log_message("investment evaluator started")
     # docx_filename = email_utils.convert_txt_to_docx(SUMMARY_FILENAME, EVALUATION_FILENAME)
     while True:
         files = check_for_work_to_do()
