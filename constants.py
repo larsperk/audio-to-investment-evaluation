@@ -282,7 +282,7 @@ evaluation_prelude = {
                'Please evaluate the business from the summary and enumerate how well the business meets\n'
                'the positive characteristics listed below\n'
                'Count the number of points that they meet.\n'
-               'Also give your overall conclusion about whether this business is a good candidate for investment. 
+               'Also give your overall conclusion about whether this business is a good candidate for investment.\n' 
                'The positive characteristics of a business that is good to invest in are:\n'
                ' 1. Significant traction in terms of waitlist, customers, and revenue\n'
                ' 2. An experienced founding team who either together or individually '
