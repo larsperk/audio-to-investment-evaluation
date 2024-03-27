@@ -213,8 +213,10 @@ def write_docx_file(output_file_prefix, generated_name, text_file_contents, use_
                 graf.paragraph_format.line_spacing = 1
                 graf.paragraph_format.space_after = 0
 
-    todays_datetime = datetime.now().strftime("%Y-%m-%d %H%M")
+    todays_datetime = datetime.now().strftime("%Y-%m-%d-%H%M")
     docx_filename = f"{output_file_prefix}-{generated_name}-{todays_datetime}.docx"
+    docx_filename = docx_filename.replace(" ", "-")
+
     doc.save(docx_filename)
 
     return docx_filename
@@ -379,6 +381,7 @@ def get_emails_and_create_work_files():
 
         try:
             imap_server.logout()
+
         except:
             pass
 
