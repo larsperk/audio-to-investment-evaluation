@@ -339,6 +339,9 @@ def get_emails_and_create_work_files():
                                             text = docx2txt.process(filepath)
                                             write_text_file(text, transcription_filename)
 
+                                        elif filename.endswith(".TXT"):
+                                            transcription_filename = filepath
+
                                         work_filepath = write_json_from_text_filepath(
                                             from_email,
                                             subject,
