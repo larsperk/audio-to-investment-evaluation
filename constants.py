@@ -8,6 +8,13 @@ summary_prelude = {
                + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\n'
                + 'Be as detailed as possible when answering the questions."\n'
                + 'If you don\'t know the answer, please answer "unknown"',
+    "TECHSTARS": 'Please answer as a helpful AI agent.\n'
+               + 'The following is a transcript between an interviewer and an entrepreneur,\n'
+               + 'who is starting a business and discussing their business and their product.\n'
+               + 'The interviewer will make some points and deliver opinions after the interview is over.\n'
+               + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\n'
+               + 'Be as detailed as possible when answering the questions."\n'
+               + 'If you don\'t know the answer, please answer "unknown"',
     "SUMMARY": 'Please answer as a helpful AI agent.',
     "DISCHARGE": 'Please act as a helpful AI agent.\n'
                  'The following is a letter describing a patient who has received medical care.\n'
@@ -25,6 +32,25 @@ summary_prelude = {
 
 summary_prompt_list = {
     "DEFAULT": [
+        "NAME",
+        "PROBLEM",
+        "SOLUTION",
+        "WHY",
+        "BUSINESS MODEL",
+        "TEAM",
+        "CTO",
+        "TEAM EXPERIENCE",
+        "TRACTION",
+        "FUNDING",
+        "TECH",
+        "TAM",
+        "TIMING",
+        "COMPETITION",
+        "BIGGEST RISK",
+        "PROGRAMS",
+        "INTERVIEWER NOTES",
+        ],
+    "TECHSTARS": [
         "NAME",
         "PROBLEM",
         "SOLUTION",
@@ -129,6 +155,36 @@ summary_prompt_list = {
 
 summary_prompts = {
     "DEFAULT": {
+        "NAME": 'what is the name of the company that the entrepreneur '
+                'is talking about, where is it located, and how long has it been in business?',
+        "PROBLEM": 'what problems are they solving, and what customers have these problems?',
+        "SOLUTION": 'how does their product solve the problem',
+        "WHY": 'what is their primary motivation for building the business',
+        "BUSINESS MODEL": 'what is their business model, '
+                          'how do they make money, and what is their pricing?',
+        "TEAM": 'what are the names and roles of founders and co-founders '
+                '(CEO, CTO, COO, and any other C-level executives) and are they working full time on the company?',
+        "CTO": 'who is the chief technology officer and what are his/her qualifications?',
+        "TEAM EXPERIENCE": 'has the CEO founded any other company, '
+                           'and is this the first time the founders have worked together',
+        "TRACTION": 'how many customers do they have and what is their revenue?, '
+                    'and what are the names of their customers and prospects, including those on their waitlist',
+        "FUNDING": 'how has the company been funded to-date, is it bootstrapped, self-funded, '
+                   'or has it received friends and family investment or professional investment '
+                   'and how much has been raised',
+        "TECH": 'what technologies are they using in their product and what makes those technologies unique',
+        "TAM": 'how big is the market they\'re addressing both in numbers of customers and dollar size',
+        "TIMING": 'is there something happening in technology or the market or society '
+                  'that makes this more relevant or more possible right now',
+        "COMPETITION": "who are the company's competitors and what are their weaknesses",
+        "BIGGEST RISK": 'what are the biggest risks to the company\'s success'
+                        ' and how are they mitigating those risks',
+
+        "PROGRAMS": 'has the company attended any other accelerator, incubator, or similar program',
+        "INTERVIEWER NOTES": "Please summarize points that the interviewer enumerated "
+                             "at the end of the interview",
+         },
+"TECHSTARS": {
         "NAME": 'what is the name of the company that the entrepreneur '
                 'is talking about, where is it located, and how long has it been in business?',
         "PROBLEM": 'what problems are they solving, and what customers have these problems?',
@@ -268,17 +324,41 @@ summary_prompts = {
 # Consolidate Answers
 
 consolidate_prelude = "The supplied documents are summaries of conversations\n" \
-                      + "Please act as a helpful AI agent."
+                      + "Act as a helpful AI agent."
 
-consolidate_prompt = "Please consolidate the information in the preceding {number_docs} " \
+consolidate_prompt = "Consolidate the information in the preceding {number_docs} " \
                      "documents into a single document\n " \
                      "preserving section headings and eliminating duplicate information.\n" \
-                     "Please be as detailed as possible.\n"
+                     "Be as detailed as possible.\n"
 
 # Evaluation
 
 evaluation_prelude = {
     "DEFAULT": 'Below this prompt is a summary of a business that is being considered for investment.\n'
+               'Evaluate the business from that summary and enumerate how well the business meets\n'
+               'the positive characteristics listed below.\n'
+               'When listing the characteristics, for each and every characteristic,'
+               ' indicate whether or not the company has met it by '
+               'outputting "MET or "NOT MET" or "PARTIALLY MET" on the same line as the characteristic.\n'
+               'Also give your overall conclusion about whether this business is a good candidate for investment.\n' 
+               'The positive characteristics of a business that is good to invest in are:\n'
+               ' 1. Significant traction in terms of waitlist and/or customers, and/or revenue\n'
+               ' 2. An experienced founding team who either together or individually '
+               'have founded other businesses\n'
+               ' 3. A large potential market greater than 1 billion in size\n'
+               ' 4. A team that has worked together before, preferably at a company '
+               'that had an IPO or was acquired\n'
+               ' 5. Proprietary differentiated technology\n'
+               ' 6. Already raised (not the amount they are trying to raise now) '
+               'at least 250,000 dollars in funding\n'
+               ' 7. Have been in business for less than three years\n'
+               ' 8. More than one founder\n'
+               ' 9. All founders working full-time for the business\n'
+               'Also, after indicating whether or not the business meets the characteristic,'
+               'Under the heading "OVERALL SCORE:" Count the number of points that they meet.'
+               'under the heading "SUGGESTED QUESTIONS:" suggest questions to be asked to elicit information'
+               'on the unknown characteristics.\n',
+    "TECHSTARS": 'Below this prompt is a summary of a business that is being considered for investment.\n'
                'Evaluate the business from that summary and enumerate how well the business meets\n'
                'the positive characteristics listed below.\n'
                'When listing the characteristics, for each and every characteristic,'
