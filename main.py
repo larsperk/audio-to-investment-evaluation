@@ -125,7 +125,7 @@ def consolidate_answers(chunk_answers):
 
 
 def determine_subject_name(subject, input_line):
-    if subject == "DEFAULT" or subject == "VESPER" or subject == "GENERAL" or subject == "2ND" or subject == "VC":
+    if subject in constants.summary_prelude.keys():
         if input_line:
             source_line = input_line[1] + '\n' + input_line[2] + '\n' + input_line[3] + '\n' + input_line[4]
             messages = [
@@ -161,10 +161,6 @@ def determine_subject_name(subject, input_line):
             name_to_use = chat_response[:32]
         else:
             name_to_use = "Unknown"
-
-    elif subject == "DISCHARGE":
-        name_to_use = "Discharge"
-
     else:
         name_to_use = "Unknown"
 
