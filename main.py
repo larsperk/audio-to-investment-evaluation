@@ -126,6 +126,7 @@ def consolidate_answers(chunk_answers):
 
 def determine_subject_name(subject, input_line):
     if subject in constants.summary_prelude.keys():
+        chat_response = []
         if input_line:
             source_line = input_line[1] + '\n' + input_line[2] + '\n' + input_line[3] + '\n' + input_line[4]
             messages = [
@@ -260,16 +261,17 @@ def main():
                     with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
                         txt.write(evaluation)
 
-                summary_docx, evaluation_docx = email_utils.convert_txt_to_docx(
+                summary_docx, evaluation_docx, conclusion = email_utils.convert_txt_to_docx(
                     subject, SUMMARY_FILENAME, EVALUATION_FILENAME
                 )
 
-                files_to_send = [TRANSCRIPTION_FILENAME, summary_docx]
+                # files_to_send = [TRANSCRIPTION_FILENAME, summary_docx]
+                files_to_send = [summary_docx]
                 if evaluation:
                     files_to_send.append(evaluation_docx)
 
                 email_utils.send_email(
-                    from_email, summary_docx, "See attachments",
+                    from_email, summary_docx, conclusion,
                     files_to_send
                 )
                 email_utils.send_email(

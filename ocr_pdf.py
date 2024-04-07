@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 import os
 import time
 
+import main
+
 
 def check_bucket_exists(s3_bucket_name):
     s3_client = boto3.client('s3')
@@ -27,7 +29,7 @@ def create_bucket(s3_bucket_name, region=None):
             location = {'LocationConstraint': region}
             s3_client.create_bucket(Bucket=s3_bucket_name, CreateBucketConfiguration=location)
     except ClientError as e:
-        print(e)
+        main.log_message(f"{e}")
         return False
     return True
 
@@ -39,13 +41,13 @@ def upload_to_aws(local_file_name, s3_bucket_name, s3_file_name):
     try:
         # Upload the file
         s3.upload_file(local_file_name, s3_bucket_name, s3_file_name)
-        print("Upload Successful")
+        main.log_message("Upload to S3 bucket successful")
         return True
     except FileNotFoundError:
-        print("The file was not found")
+        main.log_message("The file to upload to S3 bucket was not found")
         return False
     except NoCredentialsError:
-        print("Credentials not available")
+        main.log_message("AWS credentials not available")
         return False
 
 
@@ -108,7 +110,7 @@ def delete_file(bucket_name, file_name):
     try:
         # Delete the file
         s3.delete_object(Bucket=bucket_name, Key=file_name)
-        print(f"File {file_name} deleted successfully from bucket {bucket_name}.")
+        main.log_message(f"OCR complete and file {file_name} deleted successfully from bucket {bucket_name}.")
     except ClientError as e:
         return False
     return True
@@ -125,7 +127,7 @@ def ocr_pdf(local_file_name):
     uploaded = upload_to_aws(local_file_name, s3_bucket_name, s3_file_name)
 
     job_id = start_job(s3_bucket_name, s3_file_name)
-    print(f"Started job with id: {job_id}")
+    main.log_message("Started OCR job")
 
     # Wait for the job to complete
     while is_job_complete(job_id) == "IN_PROGRESS":
