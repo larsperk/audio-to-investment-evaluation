@@ -275,7 +275,7 @@ def main():
                     files_to_send
                 )
                 email_utils.send_email(
-                    "lars@larsperkins.com", f"Evaluation processed for {from_email}", "See attachments",
+                    "lars@larsperkins.com", f"Evaluation processed for {from_email}", conclusion,
                     files_to_send
                 )
                 log_message("Reply sent")

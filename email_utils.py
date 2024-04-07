@@ -137,7 +137,7 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
 
     summary_txt_file_contents = temp
 
-    conclusion = "See attachments."
+    conclusion = "See attachments.\n\n"
     if os.path.exists(evaluation_txt_file):
         with open(evaluation_txt_file, "r") as f:
             evaluation_txt_file_contents = [line.strip() for line in f]
