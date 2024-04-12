@@ -129,7 +129,7 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
             left_of_space = line[:first_space]
             if left_of_space == left_of_space.upper() and left_of_space.endswith(":"):
                 temp.append(left_of_space)
-                temp.append(line[first_space+1:])
+                temp.append(line[first_space:])
             else:
                 temp.append(line)
         else:

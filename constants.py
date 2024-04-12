@@ -323,8 +323,7 @@ summary_prompts = {
 
 # Consolidate Answers
 
-consolidate_prelude = "The supplied documents are summaries of conversations\n" \
-                      + "Act as a helpful AI agent."
+consolidate_prelude = "The supplied documents are summaries of conversations. Act as a helpful AI agent."
 
 consolidate_prompt = "Consolidate the information in the preceding {number_docs} " \
                      "documents into a single document\n " \
@@ -346,18 +345,24 @@ evaluation_prelude = {
                'already been raised.\n\n'
                ' 1. Significant traction in terms of waitlist and/or customers, and/or revenue \n'
                '- MET or NOT MET or PARTIALLY MET\n'
-               ' 2. An experienced founding team who either together or individually '
-               'have founded other businesses - MET or NOT MET or PARTIALLY MET\n'
-               ' 3. A large potential market greater than 1 billion in size - MET or NOT MET or PARTIALLY MET\n'
+               ' 2. An experienced founding team who either together or individually\n'
+               'have founded other businesses. if MET, indicate whether together or individually'
+               ' - MET or NOT MET or PARTIALLY MET\n'
+               ' 3. A large potential market greater than 1 billion in size - MET or NOT MET\n'
                ' 4. A team that has worked together before - MET or NOT MET or PARTIALLY MET\n'
                ' 5. Proprietary differentiated technology - MET or NOT MET or PARTIALLY MET\n'
                ' 6. Already raised at least 250,000 dollars in funding - MET or NOT MET or PARTIALLY MET\n'
                ' 7. Have been in business for less than three years - MET or NOT MET or PARTIALLY MET\n'
                ' 8. More than one founder - MET or NOT MET or PARTIALLY MET\n'
                ' 9. All founders working full-time for the business - MET or NOT MET or PARTIALLY MET\n\n'
-               'After listing all the characteristics, under the heading "OVERALL SCORE:"\n'
-               'Count the number of positive characteristics that are met, not met, and partially met. \n'
-               'List those three counts on a single line.\n'
+               'After listing all the characteristics, under the heading "BUSINESS MODEL:"\n'
+               'indicate whether the business is a B2B SaaS business, a marketplace, a consumer software company,\n'
+               'a hardware company without an ongoing subscription, or a hardware company with an '
+               'ongoing subscription.\n'
+               'If the business model is not clear, indicate that as well.\n'
+               'Under the heading "OVERALL SCORE:"\n'
+               'on a single line, count the number of positive characteristics that are met, not met, and'
+               'partially met.\n'
                'Under the heading "SUGGESTED QUESTIONS:" suggest questions to be asked to elicit\n'
                'information on the unknown characteristics.\n'
                'Under the heading "OVERALL CONCLUSION:", give your overall conclusion about whether\n'
