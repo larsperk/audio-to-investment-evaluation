@@ -137,7 +137,7 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
 
     summary_txt_file_contents = temp
 
-    conclusion = "See attachments.\n\n"
+    email_body_txt = "See attachments.\n\n"
     if os.path.exists(evaluation_txt_file):
         with open(evaluation_txt_file, "r") as f:
             evaluation_txt_file_contents = [line.strip() for line in f]
@@ -148,7 +148,7 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
                     appending = True
 
                 if appending:
-                    conclusion = conclusion + line
+                    email_body_txt = email_body_txt + line
     else:
         evaluation_txt_file_contents = []
 
@@ -165,7 +165,7 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
     else:
         evaluation_file = ""
 
-    return filename_list[0], evaluation_file, conclusion
+    return filename_list[0], evaluation_file, email_body_txt
 
 
 def write_docx_file(output_file_prefix, generated_name, text_file_contents, use_numbering):
