@@ -152,6 +152,8 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
     else:
         evaluation_txt_file_contents = []
 
+    email_body_txt += '\n Thank you for using Investment Evaluator. To learn more, contact lars@perpetual-labs.com'
+
     generated_name = main.determine_subject_name(subject, summary_txt_file_contents)
     subject_name = generated_name or "UNKNOWN"
 
