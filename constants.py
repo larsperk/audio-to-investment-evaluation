@@ -1,35 +1,3 @@
-# Ask questions of text
-
-summary_prelude = {
-    "DEFAULT": 'Please answer as a helpful ai agent.\n'
-               + 'The following is a transcript between an interviewer and an entrepreneur,\n'
-               + 'who is starting a business and discussing their business and their product.\n'
-               + 'The interviewer will make some points and deliver opinions after the interview is over.\n'
-               + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\n'
-               + 'Be as detailed as possible when answering the questions."\n'
-               + 'If you don\'t know the answer, please answer "unknown"',
-    "TECHSTARS": 'Please answer as a helpful AI agent.\n'
-               + 'The following is a transcript between an interviewer and an entrepreneur,\n'
-               + 'who is starting a business and discussing their business and their product.\n'
-               + 'The interviewer will make some points and deliver opinions after the interview is over.\n'
-               + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\n'
-               + 'Be as detailed as possible when answering the questions."\n'
-               + 'If you don\'t know the answer, please answer "unknown"',
-    "SUMMARY": 'Please answer as a helpful AI agent.',
-    "DISCHARGE": 'Please act as a helpful AI agent.\n'
-                 'The following is a letter describing a patient who has received medical care.\n'
-                 'The author is a doctor and is written to a general practitioner who will be responsible\n'
-                 'for the patient\'s care after they are discharged',
-    "VESPER": 'Please answer as a helpful AI agent helping to summarize'
-              ' information related to a business seeking investment.\n',
-    "GENERAL": 'Please answer as a helpful AI agent helping to summarize'
-               ' information related to a business seeking investment. \n',
-    "2ND": 'Please answer as a helpful AI agent helping to summarize '
-           'information related to a business seeking investment. \n',
-    "VC": 'Please answer as a helpful AI agent helping to summarize '
-          'information related to a business seeking investment. \n',
-}
-
 summary_prompt_list = {
     "DEFAULT": [
         "NAME",
@@ -150,6 +118,48 @@ summary_prompt_list = {
         "INTERVIEWER NOTES",
         "QUESTIONS",
     ],
+    "TECH DILIGENCE": [
+        "NAME",
+        "PRODUCTS",
+        "PRODUCT AND TECHNOLOGY OVERVIEW",
+        "TECHNOLOGY STACK",
+        "TECHNOLOGY TEAM",
+        "CONCERNS",
+        "RECOMMENDATIONS",
+        "SUMMARY",
+    ],
+}
+summary_prelude = {
+    "DEFAULT": 'Please answer as a helpful ai agent.\n'
+# Ask questions of text
+               + 'The following is a transcript between an interviewer and an entrepreneur,\n'
+               + 'who is starting a business and discussing their business and their product.\n'
+               + 'The interviewer will make some points and deliver opinions after the interview is over.\n'
+               + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\n'
+               + 'Be as detailed as possible when answering the questions."\n'
+               + 'If you don\'t know the answer, please answer "unknown"',
+    "TECHSTARS": 'Please answer as a helpful AI agent.\n'
+               + 'The following is a transcript between an interviewer and an entrepreneur,\n'
+               + 'who is starting a business and discussing their business and their product.\n'
+               + 'The interviewer will make some points and deliver opinions after the interview is over.\n'
+               + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\n'
+               + 'Be as detailed as possible when answering the questions."\n'
+               + 'If you don\'t know the answer, please answer "unknown"',
+    "SUMMARY": 'Please answer as a helpful AI agent.',
+    "DISCHARGE": 'Please act as a helpful AI agent.\n'
+                 'The following is a letter describing a patient who has received medical care.\n'
+                 'The author is a doctor and is written to a general practitioner who will be responsible\n'
+                 'for the patient\'s care after they are discharged',
+    "VESPER": 'Please answer as a helpful AI agent helping to summarize'
+              ' information related to a business seeking investment.\n',
+    "GENERAL": 'Please answer as a helpful AI agent helping to summarize'
+               ' information related to a business seeking investment. \n',
+    "2ND": 'Please answer as a helpful AI agent helping to summarize '
+           'information related to a business seeking investment. \n',
+    "VC": 'Please answer as a helpful AI agent helping to summarize '
+          'information related to a business seeking investment. \n',
+    "TECH DILIGENCE": 'Please answer as a helpful AI agent helping to summarize '
+          'technical information discussed in a conversation. \n',
 }
 
 
@@ -184,7 +194,7 @@ summary_prompts = {
         "INTERVIEWER NOTES": "Please summarize points that the interviewer enumerated "
                              "at the end of the interview",
          },
-"TECHSTARS": {
+    "TECHSTARS": {
         "NAME": 'what is the name of the company that the entrepreneur '
                 'is talking about, where is it located, and how long has it been in business?',
         "PROBLEM": 'what problems are they solving, and what customers have these problems?',
@@ -317,7 +327,17 @@ summary_prompts = {
                      "is a good investment? Keep in mind that determining the likelihood of an investment\'s success'"
                      "requires understanding team, timing, business maturity, traction, product readiness, competition,"
                      "market size, technology, intellectual property, and funding, among other factors."
-    }
+    },
+    "TECH DILIGENCE": {
+        "NAME": 'what is the name of the company that is being discussed, and on what date did this conversation occur?',
+        "PRODUCTS": "Describe the company and the products or services it offers in a few sentences.",
+        "PRODUCT AND TECHNOLOGY OVERVIEW": "List the components of the company's platform and the technologies they use",
+        "TECHNOLOGY STACK": "What technologies are used in the company's product?",
+        "TECHNOLOGY TEAM": "Who are the key members of the technology team and what are their roles?",
+        "CONCERNS": "List any concerns discussed abou tthe technology or team.",
+        "RECOMMENDATIONS": "List any recommendations for further investigation or due diligence.",
+        "SUMMARY": "Summarize the key points of the conversation, including any comments identified as summary points.",
+    },
 }
 
 
@@ -326,7 +346,7 @@ summary_prompts = {
 consolidate_prelude = "The supplied documents are summaries of conversations. Act as a helpful AI agent."
 
 consolidate_prompt = "Consolidate the information in the preceding {number_docs} " \
-                     "documents into a single document\n " \
+                     "documents into a single document,\n " \
                      "preserving section headings and eliminating duplicate information.\n" \
                      "Be as detailed as possible.\n"
 
@@ -399,5 +419,6 @@ evaluation_prelude = {
     "GENERAL": '',
     "2ND": '',
     "VC": '',
+    "TECH DILIGENCE": '',
 }
 
