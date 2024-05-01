@@ -15,7 +15,7 @@ SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
 TRANSCRIPTION_FILENAME = "transcription.txt"
 
-OPENAI_MODEL = 'gpt-4-1106-preview'      # 'gpt-4'
+OPENAI_MODEL = 'gpt-4-turbo-2024-04-09'      # 'gpt-4'
 TEMPERATURE = 0.0
 CHUNK_SIZE = 16384
 CHUNK_OVERLAP = 200
@@ -28,7 +28,7 @@ aai.settings.api_key = os.getenv('AAI_API_KEY')
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
-# force change for push test
+
 def transcribe_audio_using_whisper(raw_audio_file, transcription_file):
     model = whisper.load_model("tiny")
     audio = raw_audio_file
@@ -269,6 +269,8 @@ def main():
                 files_to_send = [summary_docx]
                 if evaluation:
                     files_to_send.append(evaluation_docx)
+                else:
+                    conclusion = ""
 
                 email_utils.send_email(
                     from_email, summary_docx, conclusion,

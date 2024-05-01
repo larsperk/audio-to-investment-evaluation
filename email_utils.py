@@ -274,6 +274,7 @@ def get_emails_and_create_work_files():
                     if isinstance(subject, bytes):
                         subject = subject.decode(encoding or "utf-8")
 
+                    subject = subject.strip()
                     while subject.find(":") != -1:
                         subject = subject[subject.find(":")+1:].strip()
 

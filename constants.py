@@ -331,7 +331,7 @@ summary_prompts = {
     "TECH DILIGENCE": {
         "NAME": 'what is the name of the company that is being discussed, and on what date did this conversation occur?',
         "PRODUCTS": "Describe the company and the products or services it offers in a few sentences.",
-        "PRODUCT AND TECHNOLOGY OVERVIEW": "List the components of the company's platform and the technologies they use",
+        "PRODUCT AND TECHNOLOGY OVERVIEW": "What are the components of the company's product suite or service?",
         "TECHNOLOGY STACK": "What technologies are used in the company's product?",
         "TECHNOLOGY TEAM": "Who are the key members of the technology team and what are their roles?",
         "CONCERNS": "List any concerns discussed abou tthe technology or team.",
