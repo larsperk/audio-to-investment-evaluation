@@ -217,7 +217,7 @@ def main():
             summary_prompts = {k: v.replace("{detail_level}", detail_level)
                                for k, v in constants.summary_prompts[subject].items()}
 
-            consolidated_summary = ''
+            consolidated_summary = []
             for chunk in chunked_text:
                 if chunk:
                     log_message("Summary start")
@@ -228,16 +228,11 @@ def main():
                         chunk
                     )
 
-                    consolidated_summary += summary
+                    consolidated_summary.append(summary)
             log_message("Summary complete")
 
             if len(chunked_text) > 1:
-                summary_of_summaries = ask_questions_of_text(
-                    constants.summary_prelude[subject],
-                    constants.summary_prompt_list[subject],
-                    summary_prompts,
-                    consolidated_summary
-                )
+                summary_of_summaries = consolidate_answers(consolidated_summary)
             else:
                 summary_of_summaries = consolidated_summary
 
