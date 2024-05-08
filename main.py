@@ -119,7 +119,7 @@ def consolidate_answers(chunk_answers):
         ],
         temperature=TEMPERATURE
     )
-    chat_response = response.choices[0]['message']['content'] + '\r'
+    chat_response = response.choices[0].message.content + '\r'
 
     return chat_response
 
