@@ -234,7 +234,7 @@ def main():
             if len(chunked_text) > 1:
                 summary_of_summaries = consolidate_answers(consolidated_summary)
             else:
-                summary_of_summaries = consolidated_summary
+                summary_of_summaries = consolidated_summary[0]
 
             log_message("Evaluation start")
             evaluation = ""
