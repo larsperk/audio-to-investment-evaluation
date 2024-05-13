@@ -15,7 +15,8 @@ SUMMARY_FILENAME = "summary.txt"
 EVALUATION_FILENAME = "evaluation.txt"
 TRANSCRIPTION_FILENAME = "transcription.txt"
 
-OPENAI_MODEL = 'gpt-4-turbo-2024-04-09'      # 'gpt-4'
+# OPENAI_MODEL = 'gpt-4-turbo-2024-04-09'      # 'gpt-4'
+OPENAI_MODEL = 'gpt-4o'      # 'gpt-4'
 TEMPERATURE = 0.0
 CHUNK_SIZE = 16384
 CHUNK_OVERLAP = 200
