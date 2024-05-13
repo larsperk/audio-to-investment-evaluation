@@ -231,10 +231,12 @@ def main():
                     consolidated_summary.append(summary)
             log_message("Summary complete")
 
-            if len(chunked_text) > 1:
-                summary_of_summaries = consolidate_answers(consolidated_summary)
-            else:
+            if len(chunked_text) == 0:
+                summary_of_summaries = ""
+            elif len(chunked_text) == 1:
                 summary_of_summaries = consolidated_summary[0]
+            elif len(chunked_text) > 1:
+                summary_of_summaries = consolidate_answers(consolidated_summary)
 
             log_message("Evaluation start")
             evaluation = ""
@@ -260,7 +262,6 @@ def main():
                     subject, SUMMARY_FILENAME, EVALUATION_FILENAME
                 )
 
-                # files_to_send = [TRANSCRIPTION_FILENAME, summary_docx]
                 files_to_send = [summary_docx]
                 if evaluation:
                     files_to_send.append(evaluation_docx)

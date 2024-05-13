@@ -140,7 +140,7 @@ def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
     email_body_txt = "See attachments.\n\n"
     if os.path.exists(evaluation_txt_file):
         with open(evaluation_txt_file, "r") as f:
-            evaluation_txt_file_contents = [line.strip() for line in f]
+            evaluation_txt_file_contents = [line.replace("*", "").strip() for line in f]
 
             appending = False
             for line in evaluation_txt_file_contents:
