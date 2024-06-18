@@ -319,6 +319,7 @@ evaluation_prelude = {
                'Please answer as a helpful AI agent. \n\n',
     "DISCHARGE": '',
     "SUMMARY": '',
+    "SUMMARY_WITH_MEMO": '',
     "VESPER": '',
     "GENERAL": '',
     "2ND": '',
