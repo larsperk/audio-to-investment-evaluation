@@ -116,7 +116,7 @@ def delete_file(bucket_name, file_name):
     return True
 
 
-def ocr_pdf(local_file_name):
+def ocr_pdf(local_file_name, upload=True):
     s3_bucket_name = 'investmentevaluator-ocr-2024-01-16'
     s3_file_name = local_file_name
 
@@ -124,7 +124,8 @@ def ocr_pdf(local_file_name):
     if not bucket_exists:
         bucket_created = create_bucket(s3_bucket_name)
 
-    uploaded = upload_to_aws(local_file_name, s3_bucket_name, s3_file_name)
+    if upload:
+        uploaded = upload_to_aws(local_file_name, s3_bucket_name, s3_file_name)
 
     job_id = start_job(s3_bucket_name, s3_file_name)
     main.log_message("Started OCR job")
@@ -147,3 +148,7 @@ def ocr_pdf(local_file_name):
     file_deleted = delete_file(s3_bucket_name, s3_file_name)
 
     return text
+
+
+def load_and_convert_from_s3(local_file_name):
+    return ocr_pdf(local_file_name, upload=False)

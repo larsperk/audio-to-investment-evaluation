@@ -117,10 +117,13 @@ def send_error_response_and_cleanup(filepath, work_filepath, from_email):
         os.remove(work_filepath)
 
 
-def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file):
+def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file, outline):
     filename_list = []
     with open(summary_txt_file, "r") as f:
-        summary_txt_file_contents = [line.strip() for line in f]
+        if outline:
+            summary_txt_file_contents = [line for line in f]
+        else:
+            summary_txt_file_contents = [line.strip() for line in f]
 
     temp = []
     for line in summary_txt_file_contents:
@@ -287,10 +290,10 @@ def get_emails_and_create_work_files():
                             detail_level = subject[p+1:p+3]
                         subject = "SUMMARY"
 
-                    if subject not in constants.summary_prompt_list.keys():
+                    if subject not in constants.summary_prompts.keys():
                         subject = "DEFAULT"
 
-                    if subject in constants.summary_prompt_list.keys():
+                    if subject in constants.summary_prompts.keys():
 
                         # Process attachments
                         msg_txt = ""
@@ -318,7 +321,7 @@ def get_emails_and_create_work_files():
                             filepath = ""
 
                             if filename:
-                                if filename.endswith((".M4A", ".WAV", ".TXT", ".PDF", ".RTF", ".PPTX", ".DOCX")):
+                                if filename.endswith((".M4A", ".WAV", ".TXT", ".PDF", ".RTF", ".PPTX", ".DOCX", ".XL")):
                                     valid_attachments += 1
                                     if valid_attachments == 1:
                                         filepath = os.path.join(attachment_dir, filename)
@@ -335,7 +338,6 @@ def get_emails_and_create_work_files():
                                             main.log_message("transcribe end")
 
                                         elif filename.endswith(".PDF"):
-                                            # text = convert_pdf_to_txt(filepath)
                                             text = ocr_pdf.ocr_pdf(filepath)
                                             write_text_file(text, transcription_filename)
 
@@ -353,6 +355,10 @@ def get_emails_and_create_work_files():
 
                                         elif filename.endswith(".TXT"):
                                             transcription_filename = filepath
+
+                                        elif filename.endswith(".XL"):
+                                            text = ocr_pdf.load_and_convert_from_s3(filepath)
+                                            write_text_file(text, transcription_filename)
 
                                         work_filepath = write_json_from_text_filepath(
                                             from_email,

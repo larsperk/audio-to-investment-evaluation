@@ -148,7 +148,7 @@ def determine_subject_name(subject, input_line):
                 chat_response = chat_response[:-1]
 
             disqualifier_words = [
-                "I'M SORRY",
+                "SORRY",
                 "DOES NOT",
                 "DON'T HAVE",
                 "NOT PROVIDED",
@@ -219,12 +219,17 @@ def main():
                                for k, v in constants.summary_prompts[subject].items()}
 
             consolidated_summary = []
+            outline = False
             for chunk in chunked_text:
                 if chunk:
                     log_message("Summary start")
+                    prelude = constants.summary_prelude[subject]
+                    if "{outline=True}" in prelude:
+                        prelude = prelude.replace("{outline=True}", "")
+                        outline = True
                     summary = ask_questions_of_text(
-                        constants.summary_prelude[subject],
-                        constants.summary_prompt_list[subject],
+                        prelude,
+                        constants.summary_prompts[subject].keys(),
                         summary_prompts,
                         chunk
                     )
@@ -260,7 +265,7 @@ def main():
                         txt.write(evaluation)
 
                 summary_docx, evaluation_docx, conclusion = email_utils.convert_txt_to_docx(
-                    subject, SUMMARY_FILENAME, EVALUATION_FILENAME
+                    subject, SUMMARY_FILENAME, EVALUATION_FILENAME, outline
                 )
 
                 files_to_send = [summary_docx]

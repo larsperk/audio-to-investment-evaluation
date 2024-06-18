@@ -1,137 +1,5 @@
-summary_prompt_list = {
-    "DEFAULT": [
-        "NAME",
-        "PROBLEM",
-        "SOLUTION",
-        "WHY",
-        "BUSINESS MODEL",
-        "TEAM",
-        "CTO",
-        "TEAM EXPERIENCE",
-        "TRACTION",
-        "FUNDING",
-        "TECH",
-        "TAM",
-        "TIMING",
-        "COMPETITION",
-        "BIGGEST RISK",
-        "PROGRAMS",
-        "INTERVIEWER NOTES",
-        ],
-    "TECHSTARS": [
-        "NAME",
-        "PROBLEM",
-        "SOLUTION",
-        "WHY",
-        "BUSINESS MODEL",
-        "TEAM",
-        "CTO",
-        "TEAM EXPERIENCE",
-        "TRACTION",
-        "FUNDING",
-        "TECH",
-        "TAM",
-        "TIMING",
-        "COMPETITION",
-        "BIGGEST RISK",
-        "PROGRAMS",
-        "EXPECTED VALUE FROM TECHSTARS",
-        "ATTENDANCE",
-        "DEAL",
-        "INTERVIEWER NOTES",
-        ],
-    "SUMMARY": [
-        "SUMMARY"
-        ],
-    "DISCHARGE": [
-        "STORY",
-        "ACTIONS PERFORMED",
-        "ACTIONS REQUESTED",
-        ],
-    "VESPER": [
-        "NAME",
-        "PROBLEM",
-        "SOLUTION",
-        "SECTOR",
-        "RISK",
-        "DISRUPTION",
-        "CYCLICALITY",
-        "US-BASED",
-        "EBITDA",
-        "EV",
-        "OPERATING HISTORY",
-        "GROWTH",
-        "MARGIN",
-        "REVENUE CONCENTRATION",
-        "SUPPLIER CONCENTRATION",
-        "ROLLUP",
-        "OWNERSHIP",
-        "CONFLICT OF INTEREST",
-        "VALUE ADD",
-        "INVESTMENT SIZE",
-        "RETURN PROFILE",
-        "DEBT",
-        "MANAGEMENT CONTINUITY",
-        "BILATERAL PATH",
-        "TIMING",
-        "CULTURE",
-        "EXPERIENCE",
-        "STRATEGY",
-        "COMPETITION",
-    ],
-    "GENERAL": [
-        "NAME",
-        "SECTOR",
-        "PROBLEM",
-        "SOLUTION",
-        "BUSINESS MODEL",
-        "TEAM",
-        "EXPERIENCE",
-        "TRACTION",
-        "TECH",
-        "TAM",
-        "COMPETITION",
-        "INVESTMENT SIZE",
-        "INVESTMENT USE",
-    ],
-    "2ND": [
-        "NAME",
-        "SUMMARY",
-        "TEAM",
-        "CAP TABLE",
-        "TAM",
-        "COMPETITION",
-        "TECH",
-        "PRODUCT",
-        "DEVELOPMENT STATUS",
-        "IP",
-        "TRACTION",
-        "GO TO MARKET",
-        "TECHSTARS",
-        "CONVERTIBLE NOTE",
-        "REFERENCE",
-        "INTERVIEWER NOTES",
-    ],
-    "VC": [
-        "NAME",
-        "SUMMARY",
-        "INTERVIEWER NOTES",
-        "QUESTIONS",
-    ],
-    "TECH DILIGENCE": [
-        "NAME",
-        "PRODUCTS",
-        "PRODUCT AND TECHNOLOGY OVERVIEW",
-        "TECHNOLOGY STACK",
-        "TECHNOLOGY TEAM",
-        "CONCERNS",
-        "RECOMMENDATIONS",
-        "SUMMARY",
-    ],
-}
 summary_prelude = {
     "DEFAULT": 'Please answer as a helpful ai agent.\n'
-# Ask questions of text
                + 'The following is a transcript between an interviewer and an entrepreneur,\n'
                + 'who is starting a business and discussing their business and their product.\n'
                + 'The interviewer will make some points and deliver opinions after the interview is over.\n'
@@ -145,7 +13,8 @@ summary_prelude = {
                + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\n'
                + 'Be as detailed as possible when answering the questions."\n'
                + 'If you don\'t know the answer, please answer "unknown"',
-    "SUMMARY": 'Please answer as a helpful AI agent.',
+    "SUMMARY": '{outline=True}Please answer as a helpful AI agent.',
+    "SUMMARY_WITH_MEMO": '{outline=True}Please answer as a helpful AI agent.',
     "DISCHARGE": 'Please act as a helpful AI agent.\n'
                  'The following is a letter describing a patient who has received medical care.\n'
                  'The author is a doctor and is written to a general practitioner who will be responsible\n'
@@ -160,6 +29,8 @@ summary_prelude = {
           'information related to a business seeking investment. \n',
     "TECH DILIGENCE": 'Please answer as a helpful AI agent helping to summarize '
           'technical information discussed in a conversation. \n',
+    "MEDICAL": 'Please answer as a helpful AI agent helping to summarize '
+               'information in the attached annual medical report. \n',
 }
 
 
@@ -228,8 +99,32 @@ summary_prompts = {
                              "at the end of the interview",
          },
     "SUMMARY": {
-        "SUMMARY": "Please summarize the major points of this transcript in {detail_level} bullets or less."
+        "SUMMARY": "You are an AI agent who is an expert at summarizing documents by creating outlines."
+                   "Outline the major points of this document in {detail_level} outline headings or fewer."
+                   "Under each major outline heading, use subheadings to provide detail on the major point. "
+                   "Use as many subheadings as necessary to describe the point in as much detail as possible."
+                   "indent each subheading to show its relationship to the point above it.\n\n"
+                   "For example:\n\n"
+                   "1. Major heading describing major point covered in the document\n"
+                   "   1.1 Sub heading providing detail on the major point (1)\n"
+                   "   1.2 Sub heading providing more detail on the major point (1)\n"
+                   "      1.2.1 Sub heading providing more detail on the minor point (1.2)\n\n"
         },
+    "SUMMARY_WITH_MEMO": {
+        "SUMMARY": "You are an AI agent who is an expert at summarizing documents by creating outlines."
+                   "Outline the major points of this document."
+                   "Under each major outline heading, use subheadings to provide detail on the major point. "
+                   "Use as many subheadings as necessary to describe the point in as much detail as possible."
+                   "indent each subheading to show its relationship to the point above it.\n\n"
+                   "For example:\n\n"
+                   "1. Major heading describing major point covered in the document\n"
+                   "   1.1 Sub heading providing detail on the major point (1)\n"
+                   "   1.2 Sub heading providing more detail on the major point (1)\n"
+                   "      1.2.1 Sub heading providing more detail on the minor point (1.2)\n\n"
+                   "After creating the outline, write a one-page prose memo describing the document's main "
+                   "points. Under each major point in the memo, write two to three sentences describing the point. "
+                   "At the end, suggest questions to ask the author to clarify any unclear points."
+    },
     "DISCHARGE": {
         "STORY": "tell the story of why the patient was initially hospitalized.",
         "ACTIONS PERFORMED": "list the actions performed while the patient was in the hospital",
@@ -338,19 +233,29 @@ summary_prompts = {
         "RECOMMENDATIONS": "List any recommendations for further investigation or due diligence.",
         "SUMMARY": "Summarize the key points of the conversation, including any comments identified as summary points.",
     },
+    "MEDICAL": {
+        "DATE": 'what is the date of the medical report?',
+        "NAME": 'what is the name, gender, and age of the patient?',
+        "HISTORY": 'what is the patient\'s medical history?',
+        "MEDICATIONS": 'what medications is the patient currently taking?',
+        "ALLERGIES": 'what allergies does the patient have?',
+        "DIAGNOSIS": "what is the diagnosis of the patient?",
+        "BLOOD WORK": "what are the results of the patient's blood work, both currently and over time?",
+        "CARDIAC": "what are the results of the patient's cardiac tests?",
+        "IMAGING": "what are the results of the patient's imaging studies?",
+        "TREATMENT": "what treatment was provided to the patient?",
+        "FOLLOWUP": "what follow-up care is recommended for the patient?",
+        "INTERVIEWER NOTES": "Please summarize points that the interviewer enumerated "
+                             "at the end of the interview",
+    },
 }
-
-
 # Consolidate Answers
 
 consolidate_prelude = "The supplied documents are summaries of conversations. Act as a helpful AI agent."
 
-consolidate_prompt = "Consolidate the information in the preceding {number_docs} " \
-                     "documents into a single document,\n " \
+consolidate_prompt = "Consolidate the information in the preceding {number_docs} documents into a single document,\n" \
                      "preserving section headings and eliminating duplicate information.\n" \
                      "Be as detailed as possible.\n"
-
-# Evaluation
 
 evaluation_prelude = {
     "DEFAULT": 'Below is a summary of a business that is being considered for investment.\n'
@@ -382,8 +287,7 @@ evaluation_prelude = {
                'Under the heading "SUGGESTED QUESTIONS:", suggest questions to be asked to elicit '
                'information on the unknown characteristics.\n'
                'Under the heading "OVERALL CONCLUSION:", give your overall conclusion about whether '
-               'this business is a good candidate for investment.\n'
-               'Please answer as a helpful AI agent. \n\n',
+               'this business is a good candidate for investment.\n Please answer as a helpful AI agent. \n\n',
     "TECHSTARS": 'Below is a summary of a business that is being considered for investment.\n'
                'Evaluate the business from the summary and list how well the business meets\n'
                'each of these positive characteristics. List each characteristic, and indicate \n'
@@ -420,5 +324,6 @@ evaluation_prelude = {
     "2ND": '',
     "VC": '',
     "TECH DILIGENCE": '',
+    "MEDICAL": '',
 }
 
