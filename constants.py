@@ -99,16 +99,8 @@ summary_prompts = {
                              "at the end of the interview",
          },
     "SUMMARY": {
-        "SUMMARY": "You are an AI agent who is an expert at summarizing documents by creating outlines."
-                   "Outline the major points of this document in {detail_level} outline headings or fewer."
-                   "Under each major outline heading, use subheadings to provide detail on the major point. "
-                   "Use as many subheadings as necessary to describe the point in as much detail as possible."
-                   "indent each subheading to show its relationship to the point above it.\n\n"
-                   "For example:\n\n"
-                   "1. Major heading describing major point covered in the document\n"
-                   "   1.1 Sub heading providing detail on the major point (1)\n"
-                   "   1.2 Sub heading providing more detail on the major point (1)\n"
-                   "      1.2.1 Sub heading providing more detail on the minor point (1.2)\n\n"
+        "SUMMARY": "You are an AI agent who is an expert at summarizing documents. "
+                   "Summarize the content of this document in {detail_level} bullet points or fewer.\n\n"
         },
     "SUMMARY_WITH_MEMO": {
         "SUMMARY": "You are an AI agent who is an expert at summarizing documents by creating outlines."
@@ -123,7 +115,7 @@ summary_prompts = {
                    "      1.2.1 Sub heading providing more detail on the minor point (1.2)\n\n"
                    "After creating the outline, write a one-page prose memo describing the document's main "
                    "points. Under each major point in the memo, write two to three sentences describing the point. "
-                   "At the end, suggest questions to ask the author to clarify any unclear points."
+                   "At the end, suggest questions to ask the author to clarify any unclear points.\n\n"
     },
     "DISCHARGE": {
         "STORY": "tell the story of why the patient was initially hospitalized.",
