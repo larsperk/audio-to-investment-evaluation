@@ -100,7 +100,8 @@ summary_prompts = {
          },
     "SUMMARY": {
         "SUMMARY": "You are an AI agent who is an expert at summarizing documents. "
-                   "Summarize the content of this document in {detail_level} bullet points or fewer.\n\n"
+                   "Summarize the content of this document in {detail_level} bullet points or fewer. Under each point,"
+                   "write two or three sentences elaborating the supporting information for the point.\n\n"
         },
     "SUMMARY_WITH_MEMO": {
         "SUMMARY": "You are an AI agent who is an expert at summarizing documents by creating outlines."
