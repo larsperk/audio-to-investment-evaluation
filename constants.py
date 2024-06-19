@@ -13,8 +13,8 @@ summary_prelude = {
                + 'Refer to the entrepreneur as "they" rather than "the entrepreneur."\n'
                + 'Be as detailed as possible when answering the questions."\n'
                + 'If you don\'t know the answer, please answer "unknown"',
-    "SUMMARY": '{outline=True}Please answer as a helpful AI agent.',
-    "SUMMARY_WITH_MEMO": '{outline=True}Please answer as a helpful AI agent.',
+    "SUMMARY": '{outline=True}Please answer as a helpful AI agent who is an expert in summarizing documents.',
+    "SUMMARY_WITH_MEMO": 'Please answer as a helpful AI agent who is an expert in summarizing documents.',
     "DISCHARGE": 'Please act as a helpful AI agent.\n'
                  'The following is a letter describing a patient who has received medical care.\n'
                  'The author is a doctor and is written to a general practitioner who will be responsible\n'
@@ -108,12 +108,12 @@ summary_prompts = {
                    "Outline the major points of this document."
                    "Under each major outline heading, use subheadings to provide detail on the major point. "
                    "Use as many subheadings as necessary to describe the point in as much detail as possible."
-                   "indent each subheading to show its relationship to the point above it.\n\n"
-                   "For example:\n\n"
+                   "indent each subheading to show its relationship to the point above it.\n"
+                   "For example:\n"
                    "1. Major heading describing major point covered in the document\n"
                    "   1.1 Sub heading providing detail on the major point (1)\n"
                    "   1.2 Sub heading providing more detail on the major point (1)\n"
-                   "      1.2.1 Sub heading providing more detail on the minor point (1.2)\n\n"
+                   "      1.2.1 Sub heading providing more detail on the minor point (1.2)\n"
                    "After creating the outline, write a one-page prose memo describing the document's main "
                    "points. Under each major point in the memo, write two to three sentences describing the point. "
                    "At the end, suggest questions to ask the author to clarify any unclear points.\n\n"
