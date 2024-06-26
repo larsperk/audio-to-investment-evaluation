@@ -7,11 +7,13 @@ import uuid
 import smtplib
 import PyPDF2
 import docx2txt
+
 from rtf_converter import rtf_to_txt
 from pptx import Presentation
-import docx
-from docx.shared import RGBColor
 from datetime import datetime
+from htmldocx import HtmlToDocx
+
+import markdown
 
 from email import encoders
 from email.mime.text import MIMEText
@@ -117,123 +119,102 @@ def send_error_response_and_cleanup(filepath, work_filepath, from_email):
         os.remove(work_filepath)
 
 
-def convert_txt_to_docx(subject, summary_txt_file, evaluation_txt_file, outline):
+def convert_markdown_to_docx(subject, has_evaluation, outline):
     filename_list = []
-    with open(summary_txt_file, "r") as f:
-        if outline:
-            summary_txt_file_contents = [line for line in f]
-        else:
-            summary_txt_file_contents = [line.strip() for line in f]
 
-    temp = []
-    for line in summary_txt_file_contents:
-        first_space = line.find(" ")
-        if first_space > 1:
-            left_of_space = line[:first_space]
-            if left_of_space == left_of_space.upper() and left_of_space.endswith(":"):
-                temp.append(left_of_space)
-                temp.append(line[first_space:])
-            else:
-                temp.append(line)
-        else:
-            temp.append(line)
+    with open(main.SUMMARY_FILENAME, "r") as f:
+        summary_txt_file_contents = [line for line in f]
 
-    summary_txt_file_contents = temp
+    subject_name = main.determine_subject_name(subject, summary_txt_file_contents)
+
+    preprocess(main.SUMMARY_FILENAME, subject_name)
+    summary_html_file = convert_markdown_to_html(main.SUMMARY_FILENAME)
+    summary_docx_file = convert_html_to_docx(summary_html_file, subject_name) + ".docx"
+
+    filename_list.append(summary_docx_file)
+
+    if has_evaluation:
+        preprocess(main.EVALUATION_FILENAME, subject_name)
+        evaluation_html_file = convert_markdown_to_html(main.EVALUATION_FILENAME)
+        evaluation_docx_file = convert_html_to_docx(evaluation_html_file, subject_name) + ".docx"
+
+        overall_conclusion = get_overall_conclusion(main.EVALUATION_FILENAME)
+
+        filename_list.append(evaluation_docx_file)
+
+    else:
+        overall_conclusion = ""
 
     email_body_txt = "See attachments.\n\n"
-    if os.path.exists(evaluation_txt_file):
-        with open(evaluation_txt_file, "r") as f:
-            evaluation_txt_file_contents = [line.replace("*", "").strip() for line in f]
+    email_body_txt += overall_conclusion + '\n\n'
+    email_body_txt += 'Thank you for using Investment Evaluator. To learn more, contact lars@perpetual-labs.com'
 
-            appending = False
-            for line in evaluation_txt_file_contents:
-                if line.upper().startswith("OVERALL CONCLUSION:"):
-                    appending = True
-
-                if appending:
-                    email_body_txt = email_body_txt + line
-    else:
-        evaluation_txt_file_contents = []
-
-    email_body_txt += '\n\nThank you for using Investment Evaluator. To learn more, contact lars@perpetual-labs.com'
-
-    generated_name = main.determine_subject_name(subject, summary_txt_file_contents)
-    subject_name = generated_name or "UNKNOWN"
-
-    docx_filename = write_docx_file("Summary", subject_name, summary_txt_file_contents, False)
-    filename_list.append(docx_filename)
-    if len(evaluation_txt_file_contents) != 0:
-        docx_filename = write_docx_file("Evaluation", subject_name, evaluation_txt_file_contents, True)
-        filename_list.append(docx_filename)
-        evaluation_file = filename_list[1]
-
-    else:
-        evaluation_file = ""
-
-    return filename_list[0], evaluation_file, email_body_txt
+    return filename_list, email_body_txt
 
 
-def write_docx_file(output_file_prefix, generated_name, text_file_contents, use_numbering):
+def preprocess(filename, subject_name):
+    with open(filename, "r") as f:
+        file_contents = [line for line in f]
+
     todays_datetime = datetime.now().strftime("%Y-%m-%d %H:%M")
-    doc = docx.Document()
+    title = f"**{filename.split('.')[0].upper()} OF {subject_name}    {todays_datetime}**\n\n"
 
-    title = doc.add_paragraph(f"{output_file_prefix} of {generated_name}\n{todays_datetime}")
+    modified_lines = []
+    for line in file_contents:
+        p = line.find(":**")
+        if p != -1:
+            heading = line[:p].strip() + "**\n\n"
+            line = line[p + 3:]
+            while line.startswith("*"):
+                line = line[1:]
+            line = heading + line
 
-    run = title.runs[0]
-    run.font.size = docx.shared.Pt(14)
-    run.font.bold = True
+        modified_lines.append(line)
 
-    line_numbering_is_on = False
-    bulleting_is_on = False
+    with open(filename, "w") as f:
+        f.write(title)
+        for line in modified_lines:
+            f.write(line)
 
-    clean_text_file_contents = []
-    for line in text_file_contents:
-        line = line.replace("**", "")
-        line = line.replace("###", "")
+    return
 
-        p = line.find(":")
-        text_after_heading = line[p + 1:].strip()
 
-        if p != -1 and len(text_after_heading) > 50:
-            heading = line[:p].strip()
-            if heading.startswith("-"):
-                heading = heading[1:].strip()
-            clean_text_file_contents.append(heading)
+def convert_markdown_to_html(filename):
+    filepath = ""
+    if os.path.exists(filename):
+        with open(filename, "r") as f:
+            text = f.read()
 
-        else:
-            clean_text_file_contents.append(line)
+        html = markdown.markdown(text)
+        filepath = os.path.splitext(filename)[0] + ".html"
 
-    for line in clean_text_file_contents:
-        if line != "":
-            if line.endswith(":") or (line == line.upper()):
-                heading = doc.add_heading(line)
-                run = heading.runs[0]
-                run.font.size = docx.shared.Pt(14)
-                run.font.bold = True
-                run.font.color.rgb = RGBColor(0, 0, 0)
-                line_numbering_is_on = not line_numbering_is_on and not bulleting_is_on
+        with open(filepath, 'w') as f:
+            f.write(html)
 
-            elif use_numbering:
-                while line[:1] in "01234567890. ":
-                    line = line[1:]
-                if line_numbering_is_on:
-                    doc.add_paragraph(line, style="List Number")
-                else:
-                    doc.add_paragraph(line, style="List Bullet")
-                    bulleting_is_on = True
+    return filepath
 
-            else:
-                graf = doc.add_paragraph(line)
-                graf.paragraph_format.line_spacing = 1
-                graf.paragraph_format.space_after = 0
 
-    todays_datetime = datetime.now().strftime("%Y-%m-%d-%H%M")
-    docx_filename = f"{output_file_prefix}-{generated_name}-{todays_datetime}.docx"
-    docx_filename = docx_filename.replace(" ", "-")
+def convert_html_to_docx(filename, subject_name):
+    output_filename = os.path.splitext(filename)[0].upper() + f'-{subject_name}'
+    htmlconverter = HtmlToDocx()
+    htmlconverter.parse_html_file(filename, output_filename)
 
-    doc.save(docx_filename)
+    return output_filename
 
-    return docx_filename
+
+def get_overall_conclusion(evaluation_file):
+    overall_conclusion = ""
+    if os.path.exists(evaluation_file):
+        with open(evaluation_file, "r") as f:
+            text = f.read().replace("#", "").replace("*", "")
+
+        p = text.find("OVERALL CONCLUSION")
+        if p != -1:
+            overall_conclusion = text[p + 19:].strip()
+            if overall_conclusion.startswith(":"):
+                overall_conclusion = overall_conclusion[1:].strip()
+
+    return overall_conclusion
 
 
 def get_emails_and_create_work_files():
@@ -459,3 +440,4 @@ def send_email(recipient_email, subject, body, attachments):
 
     # Quit the server
     server.quit()
+

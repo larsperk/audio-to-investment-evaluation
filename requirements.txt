@@ -11,3 +11,5 @@ assemblyai
 python-docx
 boto3
 botocore
+markdown
+htmldocx

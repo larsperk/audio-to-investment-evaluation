@@ -31,6 +31,15 @@ summary_prelude = {
           'technical information discussed in a conversation. \n',
     "MEDICAL": 'Please answer as a helpful AI agent helping to summarize '
                'information in the attached annual medical report. \n',
+    "FINANCIAL": 'Please answer as a helpful AI agent helping to analyze hotel financial statements. '
+                 'The attached document is an income statement of a hotel\'s financial performance'
+                 'for a specific period. Current period information is under the heading PTD (Period to Date),'
+                 'and the budgeted period information is under the heading PTD budget.\n\n'
+                 'Please analyze the variances between the PTD actual and budgeted revenue and expenses and produce a'
+                 'summary of the variances. and discussion of the probable causes of these variances. '
+                 'This report is called "Management\'s Discussion and Analysis" (MD&A).\n\n,'
+                 # 'This is a sample report:\n'
+                 # '{INCLUDE: Hotel-MD&A.PDF}',
 }
 
 
@@ -241,6 +250,10 @@ summary_prompts = {
         "INTERVIEWER NOTES": "Please summarize points that the interviewer enumerated "
                              "at the end of the interview",
     },
+    "FINANCIAL": {
+        "MD&A": "produce a Management's Discussion and Analysis (MD&A) of the hotel's financial performance from the"
+                "supplied document.",
+    },
 }
 # Consolidate Answers
 
@@ -319,5 +332,6 @@ evaluation_prelude = {
     "VC": '',
     "TECH DILIGENCE": '',
     "MEDICAL": '',
+    "FINANCIAL": '',
 }
 

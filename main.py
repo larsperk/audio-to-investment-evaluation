@@ -11,8 +11,8 @@ import constants
 from dotenv import load_dotenv
 
 RAW_FILENAME_BASE = "recorded_audio"
-SUMMARY_FILENAME = "summary.txt"
-EVALUATION_FILENAME = "evaluation.txt"
+SUMMARY_FILENAME = "summary.md"
+EVALUATION_FILENAME = "evaluation.md"
 TRANSCRIPTION_FILENAME = "transcription.txt"
 
 # OPENAI_MODEL = 'gpt-4-turbo-2024-04-09'      # 'gpt-4'
@@ -28,6 +28,112 @@ email_user = "investmentevaluator@gmail.com"
 aai.settings.api_key = os.getenv('AAI_API_KEY')
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+
+
+def main():
+    log_message("investment evaluator started")
+    # docx_filename = email_utils.convert_txt_to_docx(SUMMARY_FILENAME, EVALUATION_FILENAME)
+    while True:
+        files = check_for_work_to_do()
+
+        if len(files) == 0:
+            email_utils.get_emails_and_create_work_files()
+            files = check_for_work_to_do()
+
+        files_by_create_date = sorted(files, key=lambda x: os.path.getctime(x), reverse=True)
+
+        for work_file in files_by_create_date:
+            with open(work_file, "r") as f:
+                work_task = json.load(f)
+
+            raw_text = work_task.get("text")
+            from_email = work_task.get("from")
+            subject = work_task.get("subject") or "DEFAULT"
+            detail_level = str(work_task.get("detail_level"))
+
+            subject = subject or "DEFAULT"
+
+            chunked_text = chunk_text(raw_text)
+
+            summary_prompts = {k: v.replace("{detail_level}", detail_level)
+                               for k, v in constants.summary_prompts[subject].items()}
+
+            consolidated_summary = []
+            outline = False
+            for chunk in chunked_text:
+                if chunk:
+                    log_message("Summary start")
+                    prelude = constants.summary_prelude[subject]
+
+                    p = prelude.find("{INCLUDE:")
+                    if p != -1:
+                        q = prelude.find("}", p)
+                        if q > p:
+                            include_file = prelude[p+9:q].replace(" ", "")
+                            _, extension = os.path.splitext(include_file.lower())
+                            if extension == ".txt":
+                                with open(include_file, "r", encoding="utf-8") as txt:
+                                    prelude = prelude[:p] + txt.read() + prelude[q+1:]
+                            elif extension == ".pdf":
+                                prelude = prelude[:p] + email_utils.convert_pdf_to_txt(include_file) + prelude[q+1:]
+                            else:
+                                pass
+
+                    if "{outline=True}" in prelude:
+                        prelude = prelude.replace("{outline=True}", "")
+                        outline = True
+                    summary = ask_questions_of_text(
+                        prelude,
+                        constants.summary_prompts[subject].keys(),
+                        summary_prompts,
+                        chunk
+                    )
+
+                    consolidated_summary.append(summary)
+            log_message("Summary complete")
+
+            summary_of_summaries = ""
+            if len(chunked_text) == 1:
+                summary_of_summaries = consolidated_summary[0]
+            elif len(chunked_text) > 1:
+                summary_of_summaries = consolidate_answers(consolidated_summary)
+
+            log_message("Evaluation start")
+            evaluation_text = ""
+            if constants.evaluation_prelude[subject]:
+                evaluation_text = evaluate_business_for_investment(
+                    constants.evaluation_prelude[subject],
+                    summary_of_summaries
+                )
+            log_message("Evaluation complete")
+
+            if from_email:
+                with open(TRANSCRIPTION_FILENAME, "w", encoding="utf-8") as txt:
+                    txt.write(raw_text)
+
+                with open(SUMMARY_FILENAME, "w", encoding="utf-8") as txt:
+                    txt.write(summary_of_summaries)
+
+                if evaluation_text:
+                    has_evaluation = True
+                    with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
+                        txt.write(evaluation_text)
+                else:
+                    has_evaluation = False
+
+                files_to_send, email_body_text = email_utils.convert_markdown_to_docx(
+                    subject, has_evaluation, outline
+                )
+
+                email_utils.send_email(
+                    from_email, files_to_send[0], email_body_text, files_to_send
+                )
+                email_utils.send_email(
+                    "lars@larsperkins.com", f"Evaluation processed for {from_email}", email_body_text,
+                    files_to_send
+                )
+                log_message("Reply sent")
+                os.remove(work_file)
 
 
 def transcribe_audio_using_whisper(raw_audio_file, transcription_file):
@@ -131,7 +237,7 @@ def determine_subject_name(subject, input_line):
         if input_line:
             source_line = input_line[1] + '\n' + input_line[2] + '\n' + input_line[3] + '\n' + input_line[4]
             messages = [
-                {"role": "system", "content": "Consider the following sentence and answer "
+                {"role": "system", "content": "Consider the provided information and answer "
                                               "as a helpful AI agent with only the name of the company:\n\n"},
                 {"role": "user", "content": f'"{source_line}"\n\n"What is the name of the company.'
                                             f' Answer with only the name of the company?'},
@@ -166,7 +272,7 @@ def determine_subject_name(subject, input_line):
     else:
         name_to_use = "Unknown"
 
-    return name_to_use
+    return name_to_use or "Unknown"
 
 
 def check_for_work_to_do():
@@ -188,102 +294,6 @@ def log_message(message):
         myfile.write(f"{datetime.now()} : {message}\r\n")
 
     return
-
-
-def main():
-    log_message("investment evaluator started")
-    # docx_filename = email_utils.convert_txt_to_docx(SUMMARY_FILENAME, EVALUATION_FILENAME)
-    while True:
-        files = check_for_work_to_do()
-
-        if len(files) == 0:
-            email_utils.get_emails_and_create_work_files()
-            files = check_for_work_to_do()
-
-        files_by_create_date = sorted(files, key=lambda x: os.path.getctime(x), reverse=True)
-
-        for work_file in files_by_create_date:
-            with open(work_file, "r") as f:
-                work_task = json.load(f)
-
-            raw_text = work_task.get("text")
-            from_email = work_task.get("from")
-            subject = work_task.get("subject")
-            detail_level = str(work_task.get("detail_level"))
-
-            subject = subject or "DEFAULT"
-
-            chunked_text = chunk_text(raw_text)
-
-            summary_prompts = {k: v.replace("{detail_level}", detail_level)
-                               for k, v in constants.summary_prompts[subject].items()}
-
-            consolidated_summary = []
-            outline = False
-            for chunk in chunked_text:
-                if chunk:
-                    log_message("Summary start")
-                    prelude = constants.summary_prelude[subject]
-                    if "{outline=True}" in prelude:
-                        prelude = prelude.replace("{outline=True}", "")
-                        outline = True
-                    summary = ask_questions_of_text(
-                        prelude,
-                        constants.summary_prompts[subject].keys(),
-                        summary_prompts,
-                        chunk
-                    )
-
-                    consolidated_summary.append(summary)
-            log_message("Summary complete")
-
-            if len(chunked_text) == 0:
-                summary_of_summaries = ""
-            elif len(chunked_text) == 1:
-                summary_of_summaries = consolidated_summary[0]
-            elif len(chunked_text) > 1:
-                summary_of_summaries = consolidate_answers(consolidated_summary)
-
-            log_message("Evaluation start")
-            evaluation = ""
-            if constants.evaluation_prelude[subject]:
-                evaluation = evaluate_business_for_investment(
-                    constants.evaluation_prelude[subject],
-                    summary_of_summaries
-                )
-            log_message("Evaluation complete")
-
-            if from_email:
-                with open(TRANSCRIPTION_FILENAME, "w", encoding="utf-8") as txt:
-                    txt.write(raw_text)
-
-                with open(SUMMARY_FILENAME, "w", encoding="utf-8") as txt:
-                    txt.write(summary_of_summaries)
-
-                if evaluation:
-                    with open(EVALUATION_FILENAME, "w", encoding="utf-8") as txt:
-                        txt.write(evaluation)
-
-                summary_docx, evaluation_docx, conclusion = email_utils.convert_txt_to_docx(
-                    subject, SUMMARY_FILENAME, EVALUATION_FILENAME, outline
-                )
-
-                files_to_send = [summary_docx]
-                if evaluation:
-                    files_to_send.append(evaluation_docx)
-                else:
-                    conclusion = ""
-
-                email_utils.send_email(
-                    from_email, summary_docx, conclusion,
-                    files_to_send
-                )
-                email_utils.send_email(
-                    "lars@larsperkins.com", f"Evaluation processed for {from_email}", conclusion,
-                    files_to_send
-                )
-                log_message("Reply sent")
-                os.remove(work_file)
 
 
 if __name__ == "__main__":
